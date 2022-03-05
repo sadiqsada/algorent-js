@@ -7,13 +7,9 @@ import {
   Text,
   Menu,
   MenuButton,
-  Button,
+  MenuItemOption,
+  MenuOptionGroup,
   MenuList,
-  Center,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
 } from '@chakra-ui/react';
 const Explore = () => {
   return (
@@ -36,15 +32,36 @@ const Explore = () => {
           </Select>
           <Menu>
             <MenuButton>
-              <Box borderWidth="1px" ml={2}>
-                Price
+              <Box w="100px" borderWidth="1px" ml={2} mt={0.5}>
+                <Text fontSize="sm">Price</Text>
               </Box>
             </MenuButton>
-            <MenuList alignItems={'center'}>
-              <Flex direction="column" justifyContent="center">
-                <Input placeholder="Min" size="xs" w="50%" mt={0.5} />
-                <Input placeholder="Max" size="xs" w="50%" mt={0.5} />
-              </Flex>
+            <MenuList>
+              <Input placeholder="Min" size="xs" w="40%" mt={0.5} ml={4} />
+              <Input placeholder="Max" size="xs" w="40%" mt={0.5} ml={4} />
+            </MenuList>
+          </Menu>
+          <Menu>
+            <MenuButton>
+              <Box w="100px" borderWidth="1px" ml={2} mt={0.5}>
+                <Text fontSize="sm">Amenities</Text>
+              </Box>
+            </MenuButton>
+            <MenuList>
+              <MenuOptionGroup type="checkbox">
+                <MenuItemOption value="hardwoodFloor" closeOnSelect={false}>
+                  Hardwood Floor
+                </MenuItemOption>
+                <MenuItemOption value="airConditioning" closeOnSelect={false}>
+                  Air Conditioning
+                </MenuItemOption>
+                <MenuItemOption value="inUnitLaundry" closeOnSelect={false}>
+                  In-Unit Laundry
+                </MenuItemOption>
+                <MenuItemOption value="gym" closeOnSelect={false}>
+                  Gym
+                </MenuItemOption>
+              </MenuOptionGroup>
             </MenuList>
           </Menu>
         </Flex>
