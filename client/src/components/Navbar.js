@@ -10,6 +10,7 @@ import {
   MenuDivider,
   useColorModeValue,
   Stack,
+  Text,
   useColorMode,
   Center,
 } from '@chakra-ui/react';
@@ -21,26 +22,19 @@ const Nav = () => {
     <>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          <Box>AlgoRent</Box>
+          <Text fontSize="xl">AlgoRent</Text>
 
           <Flex alignItems={'center'}>
-            
             <Stack direction={'row'} spacing={5}>
-              <Button onClick={console.log("button clicked")}>
+              <Button onClick={console.log('button clicked')}>
                 Create a Listing
               </Button>
 
-              <Button onClick={console.log("button clicked")}>
-                Explore
-              </Button>
+              <Button onClick={console.log('button clicked')}>Explore</Button>
 
-              <Button onClick={console.log("button clicked")}>
-                Shortlist
-              </Button>
+              <Button onClick={console.log('button clicked')}>Shortlist</Button>
 
-              <Button onClick={console.log("button clicked")}>
-                Wallet
-              </Button>
+              <Button onClick={console.log('button clicked')}>Wallet</Button>
 
               <Button onClick={toggleColorMode}>
                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
@@ -52,7 +46,8 @@ const Nav = () => {
                   rounded={'full'}
                   variant={'link'}
                   cursor={'pointer'}
-                  minW={0}>
+                  minW={0}
+                >
                   <Avatar
                     size={'sm'}
                     src={'https://avatars.dicebear.com/api/male/username.svg'}
@@ -82,6 +77,6 @@ const Nav = () => {
       </Box>
     </>
   );
-}
+};
 
 export default Nav;
