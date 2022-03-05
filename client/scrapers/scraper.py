@@ -1,5 +1,6 @@
 from audioop import add
 import re
+import sys
 from webbrowser import get
 import requests
 from geopy.geocoders import Nominatim
@@ -16,6 +17,40 @@ def scrape_remax(url):
 			href_stats.append(base_url+a['href'])
 	return href_stats[0:10] #Give a portion first -> gives independed sites
 
+def scrape_remax_fast(url, limit):
+	base_url = "https://www.remax.com"
+	page = requests.get(url)
+	soup = bs(page.content, "lxml")
+	href_stats = []
+	all_links = soup.find_all('a', href=True)
+	for a in all_links:
+		if("home-details" in a['href']):
+			href_stats.append(base_url+a['href'])
+			limit-=1
+		if(limit < 0):
+			break
+	return href_stats #Give a portion first -> gives independed sites
+
+def process_remax_page_fast(url):
+	page = requests.get(url)
+	soup = bs(page.content, "lxml")
+	info_list = {}
+	image = [] #kept like this in case we want more images in the future
+	title = str(soup.find("title"))
+	address = title[7:title.find(" |")]
+	all_img = soup.find_all("img")
+	for img in all_img:
+		img_url = None
+		try:
+			img_url = img['data-src']
+		except Exception as ex:
+			pass
+		if(img_url is not None and len(img_url) > 10):
+			image.append(img_url)#We only need the first
+			break
+	print(image[0], "|", address, "**")
+	return info_list
+
 def process_remax_page(url):
 	page = requests.get(url)
 	soup = bs(page.content, "html.parser")
@@ -24,9 +59,6 @@ def process_remax_page(url):
 	image = []
 	title = str(soup.find("title"))
 	address = title[7:title.find(" |")]
-	#price_start = soup_string.find("")
-	#print(address)
-	#soup_string = str(soup)
 	for img in soup.find_all("img"):
 		str_img = str(img)
 		if("aws." in str(img)):
@@ -50,7 +82,7 @@ def get_coords(address):
 def get_complete_addr_link(address): #format of address : {"country": ,"state": , "city": , "zip": }
 	try:
 		geolocator = Nominatim(user_agent="html")
-		country = address["country"]
+		country = address["country"] if "country" in address else "US"
 		state = address["state"]
 		city = address["city"]
 		zip = address["zip"]
@@ -62,24 +94,32 @@ def get_complete_addr_link(address): #format of address : {"country": ,"state": 
 		print("Error Encountered: ", err)
 		return None #Means Address is invalid
 
-def img_urls_from_address(address): #format of address : {"country": ,"state": , "city": , "zip": }
-	comp_address = get_complete_addr_link(address)
+def house_info_from_address(address): #format of address : {"country": ,"state": , "city": , "zip": }
+	comp_address = get_complete_addr_link(address) if "state" not in address or "city" not in address or "zip" not in address else address
 	state = comp_address["state"].replace(" ", "+")
 	city = comp_address["city"].replace(" ", "+")
-	zip = comp_address["postcode"].replace(" ", "+")
+	zip = comp_address["postcode"].replace(" ", "+") if "postcode" in comp_address else comp_address["zip"]
 	BASE_URL = "https://www.remax.com"
 	EXTENDED_URL = "/homes-for-sale/"+state+"/"+city+"/zip/"+zip
 	SEARCH_URL = BASE_URL+EXTENDED_URL
-	print("Search Link: ", SEARCH_URL)
-	display_page_links = scrape_remax(SEARCH_URL)
+	#print("Search Link: ", SEARCH_URL)
+	display_page_links = scrape_remax_fast(SEARCH_URL, 15)
 	#print("Links Obtained: ", display_page_links)
 	house_info = []
 	for link in display_page_links:
-		house_info.append(process_remax_page(link))
-	print("Images Gathered: ", house_info)
+		house_info.append(process_remax_page_fast(link))
 	return house_info
 
-
+print("Arguments Given: ", sys.argv)
+my_args = sys.argv[1:]
+if(len(my_args) > 0):
+	split_address = my_args[0].split("|")
+	state = split_address[0] if len(split_address) >= 1 else ""
+	city = split_address[1] if len(split_address) >= 2 else ""
+	zip = split_address[2] if len(split_address) >= 3 else ""
+	address = {"state":state, "city":city, "zip": zip}
+	#print("Address is: ", address, "\n")
+	house_info = house_info_from_address(address)
 
 '''
 address = {"country": "US", "state": "", "city" : "", "zip":"11432"}
