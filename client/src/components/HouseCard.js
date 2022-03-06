@@ -9,8 +9,8 @@ const HouseCard = () => {
         <Image
           w="120px"
           h="120px"
-          src="https://bit.ly/dan-abramov"
-          alt="dan"
+          src="https://www.looper.com/img/gallery/komi-cant-communicate-release-date-cast-and-plot-what-we-know-so-far/l-intro-1620915743.jpg"
+          alt="komi"
           borderRadius="md"
         />
       </Box>
