@@ -2,6 +2,7 @@ import {
   Box,
   Divider,
   Flex,
+  Grid,
   Input,
   Select,
   Text,
@@ -11,13 +12,14 @@ import {
   MenuOptionGroup,
   MenuList,
 } from '@chakra-ui/react';
+import HouseCard from '../components/HouseCard';
 const Explore = () => {
   return (
     <Flex justifyContent="center" mt={8}>
       <Box w="60%">
         <Text fontSize="2xl">Good Evening, Sadiq</Text>
         <Divider />
-        <Flex mt={4}>
+        <Flex mt={4} mb={4}>
           <Input placeholder="Mountain View, CA" size="xs" w="20%" mt={0.5} />
           <Select w="15%" size="xs" ml={2}>
             <option value="Studio">Studio</option>
@@ -65,6 +67,14 @@ const Explore = () => {
             </MenuList>
           </Menu>
         </Flex>
+        <Grid templateColumns='repeat(2, 1fr)' gap={4}>
+          <HouseCard />
+          <HouseCard />
+          <HouseCard />
+          <HouseCard />
+          <HouseCard />
+          <HouseCard />
+        </Grid>
       </Box>
     </Flex>
   );
