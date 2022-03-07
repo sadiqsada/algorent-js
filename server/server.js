@@ -17,7 +17,7 @@ const top5listsRouter = require('./routes/router')
 app.use('/', top5listsRouter)
 
 mongoose
-  .connect(process.env.DB_CONNECT, {
+  .connect('mongodb://127.0.0.1:27017/algorent', {
     useNewUrlParser: true
   })
   .then(() => {

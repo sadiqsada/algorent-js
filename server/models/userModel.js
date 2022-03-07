@@ -6,7 +6,10 @@ const UserSchema = new Schema(
         lastName: { type: String, required: true },
         email: { type: String, required: true },
         passwordHash: { type: String, required: true },
-        accountType: { type:String, required: true }
+        accountType: { type:String, required: true },
+        status: { type: String, enum: ['Pending', 'Active'], default: 'Pending'},
+        confirmationCode: { type: String, unique: true},
+        resetCode: { type: String, unique: true},
     },
     { timestamps: true },
 )
