@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": " cd scrapers/env/Scripts && activate && cd ../../../ && nodemon server.js",
+    "start": " cd scrapers/env/Scripts && ./activate && cd ../../../ && nodemon server.js",
     "start2": "node server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.3"
   }
 }

@@ -19,20 +19,13 @@ import HouseCard from '../components/HouseCard';
 import listAmenities from '../utils/listAmenities';
 import axios from 'axios';
 const Explore = () => {
-  const input = {
-    title: 'Heritage Park',
-    address: '555 Washington Avenue',
-    price: 275,
-    numAmenities: 3,
-    imgUrl:
-      'https://www.looper.com/img/gallery/komi-cant-communicate-release-date-cast-and-plot-what-we-know-so-far/l-intro-1620915743.jpg',
-  };
   const [searchField, setSearchField] = useState('NY|Kew Gardens|11415');
   const [numBeds, setNumBeds] = useState('Studio');
   const [numBaths, setNumBaths] = useState('1 Bath');
   const [priceMax, setPriceMax] = useState('');
   const [priceMin, setPriceMin] = useState('');
   const [amenities, setAmenities] = useState([]);
+  const [houses, setHouses] = useState([]);
 
   const handleSearchField = event => setSearchField(event.target.value);
   const handleNumBeds = event => setNumBeds(event.target.value);
@@ -47,16 +40,17 @@ const Explore = () => {
 
     setAmenities(updatedAmenities);
   };
-  const handleSubmit =  () => {
-    axios.post('http://localhost:8000/explore', {
-      address: searchField
-    })
-    .then(response => {
-      console.log(response);
-    })
-    .catch(error => {
-      console.error(error);
-    });
+  const handleSubmit = () => {
+    axios
+      .post('http://localhost:8000/explore', {
+        address: searchField,
+      })
+      .then(response => {
+        setHouses(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
   return (
@@ -66,7 +60,7 @@ const Explore = () => {
         <Divider />
         <Flex mt={4} mb={4}>
           <Input
-            placeholder='NY, Kew Gardens, 11415'
+            placeholder="NY, Kew Gardens, 11415"
             value={searchField}
             onChange={handleSearchField}
             size="xs"
@@ -104,7 +98,7 @@ const Explore = () => {
             </MenuButton>
             <MenuList>
               <Input
-                placeholder='min'
+                placeholder="min"
                 value={priceMin}
                 onChange={handlePriceMin}
                 size="xs"
@@ -113,7 +107,7 @@ const Explore = () => {
                 ml={4}
               />
               <Input
-                placeholder='max'
+                placeholder="max"
                 value={priceMax}
                 onChange={handlePriceMax}
                 size="xs"
@@ -157,10 +151,17 @@ const Explore = () => {
           />
         </Flex>
         <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-          <HouseCard data={input} />
-          <HouseCard data={input} />
-          <HouseCard data={input} />
-          <HouseCard data={input} />
+          {houses.map(item => (
+            <HouseCard
+              data={{
+                imgUrl: item[0],
+                title: 'Heritage Park',
+                address: item[1],
+                price: 275,
+                numAmenities: 3,
+              }}
+            />
+          ))}
         </Grid>
       </Box>
     </Flex>

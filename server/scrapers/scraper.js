@@ -3,7 +3,7 @@ async function scrape_remax(address, _callback)//Note: Address MUST be in form <
     args =[address];
     output = []
     const { spawn } = require('child_process');
-    const pyProg = spawn('python', ['./scraper.py', args]);
+    const pyProg = spawn('python', ['./scrapers/scraper.py', args]);
     pyProg.stdout.on('data', function(data) {
         //console.log(data.toString());
         output = []
