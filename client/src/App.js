@@ -1,11 +1,11 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Link as RouteLink } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { Header } from './components/sections/Header';
-import { Landing } from './pages/Landing';
-import { Login } from './pages/Login';
-import { ForgotPassword } from './pages/ForgotPassword';
-import { SignUp } from './pages/SignUp';
+import Header from './components/sections/Header';
+import Landing from './pages/Landing';
+import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
+import SignUp from './pages/SignUp';
 export default function App() {
     return (
         <BrowserRouter>

@@ -9,7 +9,7 @@ import {
     useColorModeValue,
   } from '@chakra-ui/react';
   
-  export function ForgotPassword() {
+  const ForgotPassword = () => {
     return (
       <Flex
         minH={'100vh'}
@@ -50,3 +50,5 @@ import {
       </Flex>
     );
   }
+
+  export default ForgotPassword;

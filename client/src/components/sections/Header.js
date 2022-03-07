@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import {
   Box,
   Flex,
@@ -38,7 +37,7 @@ const NavLink = ({ children }) => (
   </Link>
 );
 
-export function Header(props) {
+const Header = (props) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -127,3 +126,5 @@ export function Header(props) {
     </>
   );
 }
+
+export default Header;

@@ -21,7 +21,7 @@ import {
     Field,
 } from 'formik';
 
-export function Login() {
+const Login = () => {
 
     function validateEmail(value) {
         let error;
@@ -114,3 +114,5 @@ export function Login() {
         </Flex>
     );
 }
+
+export default Login;

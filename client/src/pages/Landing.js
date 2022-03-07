@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Text, useColorModeValue } from '@chakra-ui/react';
 
-export function Landing() {
+const Landing = () => {
     return (
         <Box>
         <Text p={'4'} fontSize={'2xl'} color={useColorModeValue('gray.800', 'gray.400')}>
@@ -12,3 +12,5 @@ export function Landing() {
       </Box>
     );
 }
+
+export default Landing;

@@ -17,7 +17,7 @@ import {
   import { useState } from 'react';
   import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
   
-  export function SignUp() {
+  const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
   
     return (
@@ -94,3 +94,5 @@ import {
       </Flex>
     );
   }
+
+  export default SignUp;
