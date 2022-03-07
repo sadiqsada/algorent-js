@@ -12,7 +12,7 @@ import {
   MenuButton,
   MenuItemOption,
   MenuOptionGroup,
-  MenuList
+  MenuList,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import HouseCard from '../components/HouseCard';
@@ -26,24 +26,33 @@ const Explore = () => {
     imgUrl:
       'https://www.looper.com/img/gallery/komi-cant-communicate-release-date-cast-and-plot-what-we-know-so-far/l-intro-1620915743.jpg',
   };
-  const [searchField, setSearchField] = useState('Mountain View, CA');
+  const [searchField, setSearchField] = useState('');
   const [numBeds, setNumBeds] = useState('Studio');
   const [numBaths, setNumBaths] = useState('1 Bath');
-  const [priceMax, setPriceMax] = useState('Max');
-  const [priceMin, setPriceMin] = useState('Min');
-  const [amenities, setAmenities] = useState([false, false, false, false]);
+  const [priceMax, setPriceMax] = useState('');
+  const [priceMin, setPriceMin] = useState('');
+  const [amenities, setAmenities] = useState([]);
 
-  const handleSearch = event => setSearchField(event.target.value);
+  const handleSearchField = event => setSearchField(event.target.value);
   const handleNumBeds = event => setNumBeds(event.target.value);
   const handleNumBaths = event => setNumBaths(event.target.value);
   const handlePriceMin = event => setPriceMin(event.target.value);
   const handlePriceMax = event => setPriceMax(event.target.value);
-  const handleAmenities = position => {
-    const updatedAmenities = amenities.map((item, index) =>
-      index === position ? !item : item
-    );
+  const handleAmenities = arrState => {
+    let updatedAmenities = [false, false, false, false];
+    for (let i = 0; i < arrState.length; i++) {
+      updatedAmenities[arrState[i]] = true;
+    }
 
     setAmenities(updatedAmenities);
+  };
+  const handleSubmit = () => {
+    console.log(searchField);
+    console.log(numBeds);
+    console.log(numBaths);
+    console.log(priceMax);
+    console.log(priceMin);
+    console.log(amenities);
   };
 
   return (
@@ -53,8 +62,9 @@ const Explore = () => {
         <Divider />
         <Flex mt={4} mb={4}>
           <Input
+            placeholder='NY, Kew Gardens, 11415'
             value={searchField}
-            onChange={handleSearch}
+            onChange={handleSearchField}
             size="xs"
             w="20%"
             mt={0.5}
@@ -90,6 +100,7 @@ const Explore = () => {
             </MenuButton>
             <MenuList>
               <Input
+                placeholder='min'
                 value={priceMin}
                 onChange={handlePriceMin}
                 size="xs"
@@ -98,6 +109,7 @@ const Explore = () => {
                 ml={4}
               />
               <Input
+                placeholder='max'
                 value={priceMax}
                 onChange={handlePriceMax}
                 size="xs"
@@ -114,13 +126,14 @@ const Explore = () => {
               </Box>
             </MenuButton>
             <MenuList>
-              <MenuOptionGroup type="checkbox">
+              <MenuOptionGroup
+                type="checkbox"
+                onChange={event => handleAmenities(event)}
+              >
                 {listAmenities.map((name, index) => (
                   <MenuItemOption
-                    value={name}
-                    checked={amenities[index]}
+                    value={index}
                     key={index}
-                    onChange={() => handleAmenities(index)}
                     closeOnSelect={false}
                   >
                     {name}
@@ -133,8 +146,9 @@ const Explore = () => {
             ml={2}
             mt={0.5}
             size="xs"
-            colorScheme='purple'
+            colorScheme="purple"
             aria-label="Search database"
+            onClick={handleSubmit}
             icon={<SearchIcon />}
           />
         </Flex>
