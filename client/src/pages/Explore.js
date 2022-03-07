@@ -17,6 +17,7 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 import HouseCard from '../components/HouseCard';
 import listAmenities from '../utils/listAmenities';
+import axios from 'axios';
 const Explore = () => {
   const input = {
     title: 'Heritage Park',
@@ -26,7 +27,7 @@ const Explore = () => {
     imgUrl:
       'https://www.looper.com/img/gallery/komi-cant-communicate-release-date-cast-and-plot-what-we-know-so-far/l-intro-1620915743.jpg',
   };
-  const [searchField, setSearchField] = useState('');
+  const [searchField, setSearchField] = useState('NY|Kew Gardens|11415');
   const [numBeds, setNumBeds] = useState('Studio');
   const [numBaths, setNumBaths] = useState('1 Bath');
   const [priceMax, setPriceMax] = useState('');
@@ -46,13 +47,16 @@ const Explore = () => {
 
     setAmenities(updatedAmenities);
   };
-  const handleSubmit = () => {
-    console.log(searchField);
-    console.log(numBeds);
-    console.log(numBaths);
-    console.log(priceMax);
-    console.log(priceMin);
-    console.log(amenities);
+  const handleSubmit =  () => {
+    axios.post('http://localhost:8000/explore', {
+      address: searchField
+    })
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => {
+      console.error(error);
+    });
   };
 
   return (

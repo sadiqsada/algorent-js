@@ -6,7 +6,9 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import SignUp from './pages/SignUp';
-export default function App() {
+import Explore from './pages/Explore';
+
+export const App = () => {
     return (
         <BrowserRouter>
               <Header />
@@ -15,28 +17,10 @@ export default function App() {
                 <Route path='/login' element={<Login/>} />
                 <Route path='/SignUp' element={<SignUp/>} />
                 <Route path='/ForgotPassword' element={<ForgotPassword/>} />
+                <Route path='/Explore' element={<Explore/>} />
               </Routes>
         </BrowserRouter>
     );
 }
 
-/* --- BELOW IS THE OLD App.js, I kept it for no particular reason ---
-import React from 'react';
-import {
-  ChakraProvider,
-  theme
-} from '@chakra-ui/react';
-import Navbar from './components/Navbar';
-import Explore from './pages/Explore';
-
-const App = () => {
-  return (
-    <ChakraProvider theme={theme}>
-      <Navbar />
-      <Explore />
-    </ChakraProvider>
-  );
-}
-
 export default App;
-*/
