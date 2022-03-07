@@ -88,10 +88,10 @@ def get_complete_addr_link(address): #format of address : {"country": ,"state": 
 		zip = address["zip"]
 		possible_addr = country + " " + state + " " + city + " " + zip
 		location = geolocator.geocode(possible_addr, addressdetails=True, language="en")
-		print("The Complete Address is: ", location.raw['address'])
+		#print("The Complete Address is: ", location.raw['address'])
 		return location.raw['address']
 	except Exception as err:
-		print("Error Encountered: ", err)
+		#print("Error Encountered: ", err)
 		return None #Means Address is invalid
 
 def house_info_from_address(address): #format of address : {"country": ,"state": , "city": , "zip": }
@@ -110,7 +110,7 @@ def house_info_from_address(address): #format of address : {"country": ,"state":
 		house_info.append(process_remax_page_fast(link))
 	return house_info
 
-print("Arguments Given: ", sys.argv)
+#print("Arguments Given: ", sys.argv)
 my_args = sys.argv[1:]
 if(len(my_args) > 0):
 	split_address = my_args[0].split("|")
