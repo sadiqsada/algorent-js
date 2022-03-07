@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": " cd scrapers/env/Scripts && activate && cd ../../../ && nodemon server.js",
     "start2": "node server.js"
   },
   "keywords": [],
