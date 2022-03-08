@@ -1,8 +1,15 @@
 const router = require('./routes/router');
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose')
+const cookieParser = require('cookie-parser')
+const dotenv = require('dotenv')
 const app = express();
-const port = 8000;
+const PORT = 8000;
+dotenv.config()
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(cookieParser())
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -13,7 +20,18 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-});
+const top5listsRouter = require('./routes/router')
+app.use('/', top5listsRouter)
 
+mongoose
+  .connect('mongodb://127.0.0.1:27017/algorent', {
+    useNewUrlParser: true
+  })
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on port: ${PORT}`)
+    })
+  })
+  .catch((err) => {
+    console.log(err.message)
+  })
