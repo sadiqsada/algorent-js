@@ -183,7 +183,56 @@ forgotPassword = async (req,res) =>{
 }
 
 resetPassword = async (req,res) =>{
-    
+    const { password, passwordVerify } = req.body;
+
+    if (password !== passwordVerify) {
+        return res
+            .status(400)
+            .json({
+                message: "Please enter the same password twice."
+            })
+    }
+
+    if (password.length < 8) {
+        return res
+            .status(400)
+            .json({
+                message: "Please enter a password of at least 8 characters."
+            });
+    }
+
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const passwordHash = await bcrypt.hash(password, salt);
+
+    await User.findOne({resetCode: req.params.resetCode,}).then((user) => {
+        if (!user) {
+            return res.status(404).send({ message: "User Not Found" });
+        }
+
+        const match = bcrypt.compare(password, user.passwordHash)
+        if (match) {
+            return res
+                .status(400)
+                .json({
+                    message: "Please enter a new password"
+                })
+        }
+        
+        user.passwordHash = passwordHash
+        user.save((err) => {
+        if (err) {
+            return res.status(500).send({ message: err });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Password reset successfully",
+        });
+
+        })
+    })
+    .catch((e) => console.log("error", e));
 }
 
 module.exports = {
