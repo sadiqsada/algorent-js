@@ -1,4 +1,3 @@
-const router = require('./routes/router');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose')
@@ -10,21 +9,13 @@ dotenv.config()
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser())
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-app.use('/', router);
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
 
 const top5listsRouter = require('./routes/router')
 app.use('/', top5listsRouter)
 
 mongoose
-  .connect('mongodb://127.0.0.1:27017/algorent', {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true
   })
   .then(() => {
