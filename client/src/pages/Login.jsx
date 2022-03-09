@@ -45,7 +45,7 @@ const Login = () => {
       error = 'Invalid email address';
     }
     return error;
-  }
+  };
 
   const [rememberMe, setRememberMe] = useBoolean();
 
@@ -75,9 +75,9 @@ const Login = () => {
             <Formik
               initialValues={{ email: '', password: '' }}
               onSubmit={(values, actions) => {
-                  const useValues = { ...values, rememberMe };
-                  handleSubmit(useValues);
-                  actions.setSubmitting(false);
+                const useValues = { ...values, rememberMe };
+                handleSubmit(useValues);
+                actions.setSubmitting(false);
               }}
             >
               {props => (

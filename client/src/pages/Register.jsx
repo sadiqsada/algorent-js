@@ -45,7 +45,7 @@ const SignUp = () => {
       error = 'Invalid email address';
     }
     return error;
-  }
+  };
 
   const validatePassword = value => {
     let error;
@@ -55,7 +55,7 @@ const SignUp = () => {
       error = 'Password must be at least 8 characters';
     }
     return error;
-  }
+  };
 
   const validateConfirmPassword = value => {
     let pass = document.getElementById('password').value;
@@ -68,7 +68,7 @@ const SignUp = () => {
       error = 'Required';
     }
     return error;
-  }
+  };
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -104,8 +104,8 @@ const SignUp = () => {
                 passwordVerify: '',
               }}
               onSubmit={(values, actions) => {
-                  handleSubmit(values);
-                  actions.setSubmitting(false);
+                handleSubmit(values);
+                actions.setSubmitting(false);
               }}
             >
               {props => (
