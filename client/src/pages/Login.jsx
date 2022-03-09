@@ -28,9 +28,7 @@ const Login = () => {
       password: values.password,
     })
       .then(response => {
-        if (response.data.message === undefined)
-          alert('User successfully logged in!');
-        else alert(response.data.message);
+        console.log(response);
       })
       .catch(error => {
         alert(error);

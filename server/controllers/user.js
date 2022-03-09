@@ -107,8 +107,7 @@ const login = async (req, res) => {
           user: {
             firstName: existingUser.firstName,
             lastName: existingUser.lastName,
-            email: existingUser.email,
-            accountType: existingUser.accountType,
+            email: existingUser.email
           },
         })
         .send();
