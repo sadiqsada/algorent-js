@@ -3,6 +3,7 @@ const scraper = require('../scrapers/scraper.js');
 explore = (req, res) => {
     try {
         const { address } = req.body;
+        console.log("Exploring")
         scraper.scrape_remax(address, data => {
             return res.json(data);
         });
