@@ -4,6 +4,8 @@ import {
     FormControl,
     FormLabel,
     Input,
+    InputRightElement,
+    InputGroup,
     Checkbox,
     Stack,
     Link,
@@ -14,14 +16,29 @@ import {
     FormErrorMessage,
     useBoolean,
 } from '@chakra-ui/react';
-  
-import {
-    Formik,
-    Form,
-    Field,
-} from 'formik';
+import { useState } from 'react';
+import { Formik, Form, Field } from 'formik';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import Axios from 'axios';
 
 const Login = () => {
+
+    const handleSubmit = (values) => {
+        Axios
+          .post('http://localhost:8000/login', {
+            email: values.email,
+            password: values.password
+          })
+          .then(response => {
+            if (response.data.message === undefined)
+                alert("User successfully logged in!");
+            else
+                alert(response.data.message);
+          })
+          .catch(error => {
+            alert(error);
+          });
+    };
 
     function validateEmail(value) {
         let error;
@@ -35,6 +52,9 @@ const Login = () => {
 
     const [rememberMe, setRememberMe] = useBoolean();
 
+    const [showPassword, setShowPassword] = useState(false);
+    
+
     return (
         <Flex
         minH={'100vh'}
@@ -44,6 +64,9 @@ const Login = () => {
         <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
             <Stack align={'center'}>
             <Heading fontSize={'4xl'}>Sign in to your account</Heading>
+            <Text fontSize={'lg'} color={'gray.600'}>
+              and continue where you left off
+            </Text>
             </Stack>
             <Box
             rounded={'lg'}
@@ -56,7 +79,7 @@ const Login = () => {
                 onSubmit={(values, actions) => {
                     setTimeout(() => {
                         const useValues = {...values, rememberMe}
-                        alert(JSON.stringify(useValues, null, 2))
+                        handleSubmit(useValues);
                         actions.setSubmitting(false)
                     }, 1000)
                 }}
@@ -67,19 +90,30 @@ const Login = () => {
                             <Stack spacing={4}>
                                 <Field name='email' validate={validateEmail}>
                                     {({ field, form }) => (
-                                    <FormControl isInvalid={form.errors.name && form.touched.name} isRequired>
+                                    <FormControl isInvalid={form.errors.email && form.touched.email} isRequired>
                                         <FormLabel htmlFor='email'>Email address</FormLabel>
                                         <Input {...field} id='email' placeholder='' type={'text'}/>
-                                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                                        <FormErrorMessage>{form.errors.email}</FormErrorMessage>
                                     </FormControl>
                                     )}
                                 </Field>
                                 <Field name='password'>
                                     {({ field, form }) => (
-                                    <FormControl isInvalid={form.errors.name && form.touched.name} isRequired>
+                                    <FormControl isInvalid={form.errors.password && form.touched.password} isRequired>
                                         <FormLabel htmlFor='password'>Password</FormLabel>
-                                        <Input {...field} id='password' placeholder='' type={'text'}/>
-                                        <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                                        <InputGroup>
+                                            <Input {...field} id='password' placeholder='' type={showPassword ? 'text' : 'password'} />
+                                            <InputRightElement h={'full'}>
+                                            <Button
+                                                variant={'ghost'}
+                                                onClick={() =>
+                                                setShowPassword((showPassword) => !showPassword)
+                                                }>
+                                                {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                                            </Button>
+                                            </InputRightElement>
+                                        </InputGroup>
+                                        <FormErrorMessage>{form.errors.password}</FormErrorMessage>
                                     </FormControl>
                                     )}
                                 </Field>
@@ -102,7 +136,7 @@ const Login = () => {
                                 Login
                             </Button>
                             <Text align={'center'}>
-                                Not a user? <Link color={'blue.400'} href={'SignUp'}>Sign up</Link>
+                                Not a user? <Link color={'blue.400'} href={'Register'}>Sign up</Link>
                             </Text>
                         </Stack>
                     </Form>
