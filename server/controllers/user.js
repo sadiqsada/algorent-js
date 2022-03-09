@@ -94,7 +94,7 @@ const login = async (req, res) => {
           userId: existingUser._id,
         },
         'token',
-        { expiresIn: '1h' }
+        { expiresIn: '24h' }
       );
       await res
         .cookie('token', token, {
@@ -107,7 +107,7 @@ const login = async (req, res) => {
           user: {
             firstName: existingUser.firstName,
             lastName: existingUser.lastName,
-            email: existingUser.email
+            email: existingUser.email,
           },
         })
         .send();
@@ -142,7 +142,7 @@ const verify = async (req, res) => {
           userId: user._id,
         },
         'token',
-        { expiresIn: '1h' }
+        { expiresIn: '24h' }
       );
       res
         .cookie('token', token, {
@@ -246,6 +246,23 @@ const resetPassword = async (req, res) => {
     .catch((e) => console.log('error', e));
 };
 
+const tokenIsValid = async (req, res) => {
+  try {
+    const { token } = req.body;
+    if (!token) return res.json(false);
+
+    const verified = jwt.verify(token, 'token');
+    if (!verified) return res.json(false);
+
+    const user = await User.findById(verified.id);
+    if (!user) return res.json(false);
+
+    return res.json(true);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -253,4 +270,5 @@ module.exports = {
   verify,
   forgotPassword,
   resetPassword,
+  tokenIsValid,
 };

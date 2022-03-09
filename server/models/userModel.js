@@ -8,7 +8,7 @@ const UserSchema = new Schema(
     passwordHash: { type: String, required: true },
     status: { type: String, enum: ['Pending', 'Active'], default: 'Pending' },
     confirmationCode: { type: String, unique: true },
-    resetCode: { type: String, unique: true },
+    resetCode: { type: String, unique: false },
   },
   { timestamps: true }
 );

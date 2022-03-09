@@ -16,19 +16,21 @@ import {
   FormErrorMessage,
   useBoolean,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import Axios from 'axios';
 
 const Login = () => {
+  const navigate = useNavigate();
   const handleSubmit = values => {
     Axios.post('http://localhost:8000/login', {
       email: values.email,
       password: values.password,
     })
       .then(response => {
-        console.log(response);
+        navigate('../Explore', { replace: true });
       })
       .catch(error => {
         alert(error);

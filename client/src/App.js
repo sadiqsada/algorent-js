@@ -12,8 +12,7 @@ import Explore from './pages/Explore';
 export const App = () => {
   return (
     <BrowserRouter>
-      <Header />
-      <Navbar />
+      { document.cookie ? <Navbar /> : <Header /> }
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/Login" element={<Login />} />

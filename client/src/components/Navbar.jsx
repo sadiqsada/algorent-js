@@ -21,6 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { Logo } from './ui/Logo';
+import axios from 'axios';
 
 const Links = ['Explore', 'Shortlist', 'Wallet'];
 
@@ -46,6 +47,11 @@ const Nav = () => {
   const showNavbarOptions = useBreakpointValue({ base: 'base', md: 'md' });
   const bgColor = useColorModeValue('#2eca6a', '#176534');
   const hoverColor = useColorModeValue('#61db8e', '#21944c');
+
+  const handleLogout = async () => {
+    await axios.get('http://localhost:8000/logout', { withCredentials: true });
+  }
+
   return (
     <>
       <Box bg={useColorModeValue('#2eca6a', '#176534')} px={4}>
@@ -102,7 +108,7 @@ const Nav = () => {
                     <br />
                     <MenuDivider />
                     <MenuItem>Account Settings</MenuItem>
-                    <MenuItem>Logout</MenuItem>
+                    <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
                   </MenuList>
                 </Menu>
               </Flex>
