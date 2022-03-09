@@ -33,12 +33,13 @@ const NavLink = ({ children }) => (
       textDecoration: 'none',
       bg: useColorModeValue('#61db8e', '#21944c'), // useColorModeValue('gray.200', 'gray.700')
     }}
-    href={children}>
+    href={children}
+  >
     {children}
   </Link>
 );
 
-const Header = (props) => {
+const Header = props => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   // bg=useColorModeValue('gray.100', 'gray.900')}
@@ -46,7 +47,7 @@ const Header = (props) => {
     <>
       <Box bg={useColorModeValue('#2eca6a', '#176534')} px={4}>
         <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-        <IconButton
+          <IconButton
             size={'md'}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
             aria-label={'Open Menu'}
@@ -54,7 +55,7 @@ const Header = (props) => {
             onClick={isOpen ? onClose : onOpen}
           />
 
-          <Link href='/'>
+          <Link href="/">
             <Logo />
           </Link>
 
@@ -64,7 +65,7 @@ const Header = (props) => {
               spacing={4}
               display={{ base: 'none', md: 'flex' }}
             >
-              {Links.map((link) => (
+              {Links.map(link => (
                 <NavLink key={link}>{link}</NavLink>
               ))}
             </HStack>
@@ -72,7 +73,11 @@ const Header = (props) => {
 
           <Flex alignItems={'center'}>
             <Stack direction={'row'} spacing={7}>
-              <Button onClick={toggleColorMode} bg={useColorModeValue('#2eca6a', '#176534')} _hover={{bg: useColorModeValue('#61db8e', '#21944c')}}>
+              <Button
+                onClick={toggleColorMode}
+                bg={useColorModeValue('#2eca6a', '#176534')}
+                _hover={{ bg: useColorModeValue('#61db8e', '#21944c') }}
+              >
                 {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
               </Button>
               {Logged_In ? (
@@ -82,10 +87,13 @@ const Header = (props) => {
                     rounded={'full'}
                     variant={'link'}
                     cursor={'pointer'}
-                    minW={0}>
+                    minW={0}
+                  >
                     <Avatar
                       size={'sm'}
-                      src={'https://img.icons8.com/material/96/000000/user-male-circle--v1.png'}
+                      src={
+                        'https://img.icons8.com/material/96/000000/user-male-circle--v1.png'
+                      }
                     />
                   </MenuButton>
                   <MenuList alignItems={'center'}>
@@ -93,7 +101,9 @@ const Header = (props) => {
                     <Center>
                       <Avatar
                         size={'2xl'}
-                        src={'https://img.icons8.com/material/96/000000/user-male-circle--v1.png'}
+                        src={
+                          'https://img.icons8.com/material/96/000000/user-male-circle--v1.png'
+                        }
                       />
                     </Center>
                     <br />
@@ -117,7 +127,7 @@ const Header = (props) => {
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
-              {Links.map((link) => (
+              {Links.map(link => (
                 <NavLink key={link}>{link}</NavLink>
               ))}
             </Stack>
@@ -126,6 +136,6 @@ const Header = (props) => {
       </Box>
     </>
   );
-}
+};
 
 export default Header;

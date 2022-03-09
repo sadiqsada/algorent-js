@@ -57,7 +57,7 @@ const Explore = () => {
   return (
     <Flex justifyContent="center" mt={8}>
       <Box w="60%">
-        <Text fontSize="2xl">{ getTimeOfDay() }, Sadiq</Text>
+        <Text fontSize="2xl">{getTimeOfDay()}, Sadiq</Text>
         <Divider />
         <Flex mt={4} mb={4}>
           <Input
