@@ -1,4 +1,3 @@
-const auth = require('../auth/auth');
 const express = require('express');
 const UserController = require('../controllers/user');
 const ExploreController = require('../controllers/explore');

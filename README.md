@@ -38,7 +38,11 @@ Algorent is a platform for conducting real-estate transactions with crypto. We h
        select nodemailer from Integrations dropdown
        copy the user and pass to server/utils/sendEmails.js
        verification emails will show up in mailtrap inbox
-       
+
+* Using linting/formatting in /server directory (please resolve all linting/formatting issues before merging)
+
+       linting: npm run lint
+       formatting: npm format
 ### Notes
 * Nodemon keeps the server running as changes are made to the files so that the server doesn't have to be restarted. -g flag stands for global. Installing it globally will allow you to use it for other projects.
 

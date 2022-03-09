@@ -1,15 +1,14 @@
 const scraper = require('../scrapers/scraper.js');
 
-explore = (req, res) => {
-    try {
-        const { address } = req.body;
-        scraper.scrape_remax(address, data => {
-            return res.json(data);
-        });
-    }
-    catch (error) {
-        console.error(error);
-    }
-}
+const explore = (req, res) => {
+  try {
+    const { address } = req.body;
+    scraper.scrapeRemax(address, (data) => {
+      return res.json(data);
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
-module.exports = { explore }
+module.exports = { explore };
