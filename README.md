@@ -18,6 +18,26 @@ Algorent is a platform for conducting real-estate transactions with crypto. We h
        npm install
        npm install -g nodemon
        npm start
+
+* Connecting to the database
+
+       Create a .env file in the server root
+       Paste the string from discord in .env
+
+* In order to make the scraper work, conda will have to be installed.
+
+       Download and install conda from the link below
+       https://docs.conda.io/projects/conda/en/latest/user-guide/install/download.html
+
+       conda activate 
+
+* To confirm email when registering an account
+
+       register an account on mailtrap.io
+       go to inbox -> SMTP Settings
+       select nodemailer from Integrations dropdown
+       copy the user and pass to server/utils/sendEmails.js
+       verification emails will show up in mailtrap inbox
        
 ### Notes
 * Nodemon keeps the server running as changes are made to the files so that the server doesn't have to be restarted. -g flag stands for global. Installing it globally will allow you to use it for other projects.

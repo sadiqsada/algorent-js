@@ -7,8 +7,8 @@ const sendEmail = async (email, subject, html) => {
             port: 587,
             secure: false,
             auth: {
-                user: "f582cc584b008b",
-                pass: "a3ecaa0e9aca7c"
+                user: "e18245205a8c4e",
+                pass: "80f3e50a62a7c2"
             },
         });
 

@@ -17,6 +17,7 @@ import {
 import { SearchIcon } from '@chakra-ui/icons';
 import HouseCard from '../components/HouseCard';
 import listAmenities from '../utils/listAmenities';
+import getTimeOfDay from '../utils/getTimeOfDay';
 import axios from 'axios';
 const Explore = () => {
   const [searchField, setSearchField] = useState('NY|Kew Gardens|11415');
@@ -56,7 +57,7 @@ const Explore = () => {
   return (
     <Flex justifyContent="center" mt={8}>
       <Box w="60%">
-        <Text fontSize="2xl">Good Evening, Sadiq</Text>
+        <Text fontSize="2xl">{ getTimeOfDay() }, Sadiq</Text>
         <Divider />
         <Flex mt={4} mb={4}>
           <Input

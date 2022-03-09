@@ -141,7 +141,6 @@ verify = async (req,res) =>{
                 lastName: user.lastName,
                 username: user.username,
                 email: user.email,
-                accountType: user.accountType,
                 status: user.status
             }
         }).send();
