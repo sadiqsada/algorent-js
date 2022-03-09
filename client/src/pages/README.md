@@ -2,9 +2,8 @@ This folder contains all the webpages for AlgoRent. Our React application uses t
 
 To redirect user from one page to another, use the following imports:
 
-`import { BrowserRouter, Routes, Route, Link as RouteLink } from "react-router-dom";`
-
-Note: If you have not installed react-router-dom, use:
-`nvm i react-router-dom`
-
-Chakra UI has its own "Link" tag, so we import React's Link as RouteLink.
+1) Check if the page you're routing to exists in App.js, if not:
+    1.1) Go to App.js and import the page.js that you're redirecting to
+    1.2) Next inside App.js, create a new route, just copy the existing routes to create the new one
+3) Inside the page you're redirecting, just add the Link tag:
+`<Link href='/the route'>`
