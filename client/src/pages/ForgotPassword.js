@@ -31,7 +31,7 @@ import {
           <Text
             fontSize={{ base: 'sm', sm: 'md' }}
             color={useColorModeValue('gray.800', 'gray.400')}>
-            You'll get an email with a reset link
+            You'll get an email with a reset link (Page Under Construction!)
           </Text>
           <FormControl id="email">
             <Input

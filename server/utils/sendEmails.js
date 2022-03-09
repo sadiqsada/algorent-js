@@ -4,11 +4,11 @@ const sendEmail = async (email, subject, html) => {
     try {
         const transporter = nodemailer.createTransport({
             host:  "smtp.mailtrap.io",
-            port: 587,
+            port: 2525,
             secure: false,
             auth: {
-                user: "f582cc584b008b",
-                pass: "a3ecaa0e9aca7c"
+                user: "b4d56e8ca4e4b3",
+                pass: "9a378ae29e6478"
             },
         });
 

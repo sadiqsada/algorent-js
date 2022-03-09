@@ -42,7 +42,7 @@ register = async (req, res) => {
         const confirmationCode = jwt.sign({email:email}, "token")
 
         const newUser = new User({
-            firstName, lastName, email, passwordHash, accountType, confirmationCode
+            firstName, lastName, email, passwordHash, confirmationCode
         });
         const savedUser = await newUser.save();
 
