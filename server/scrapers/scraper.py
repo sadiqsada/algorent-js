@@ -39,6 +39,11 @@ def process_remax_page_fast(url):
 	title = str(soup.find("title"))
 	address = title[7:title.find(" |")]
 	all_img = soup.find_all("img")
+	whitelist = [
+		'div'
+	]
+	price = max([t.replace('\n', ' ').replace(' ','') for t in soup.find_all(text=True) if t.parent.name in whitelist and "$" in t])
+	#print("Prices?: ", price)
 	for img in all_img:
 		img_url = None
 		try:
@@ -48,7 +53,7 @@ def process_remax_page_fast(url):
 		if(img_url is not None and len(img_url) > 10):
 			image.append(img_url)#We only need the first
 			break
-	print(image[0], "|", address, "**")
+	print(image[0], "|", address, "|", price, "**")
 	return info_list
 
 def process_remax_page(url):
@@ -144,3 +149,4 @@ print("list: \n", list)
 #scrape_remax("https://www.remax.com/ny/jamaica/home-details/84-50-169th-st-102-jamaica-ny-11432/9637000322339336887/M00000489/3378032")
 #Value: KEY WORD: value:"$
 #Address: <title> tag -> |
+process_remax_page_fast("https://www.remax.com/ny/jamaica/home-details/84-50-169th-st-102-jamaica-ny-11432/9637000322339336887/M00000489/3378032")
