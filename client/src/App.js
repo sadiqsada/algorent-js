@@ -13,7 +13,6 @@ export const App = () => {
   return (
     <BrowserRouter>
       <Header />
-      <Navbar />
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/Login" element={<Login />} />

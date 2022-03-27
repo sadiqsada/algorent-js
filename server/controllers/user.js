@@ -77,7 +77,7 @@ const login = async (req, res) => {
     if (existingUser.status !== 'Active') {
       return res
         .status(400)
-        .json({ message: 'Please check your email for comfirmation' });
+        .json({ message: 'Please check your email for confirmation' });
     }
 
     const match = await bcrypt.compare(password, existingUser.passwordHash);

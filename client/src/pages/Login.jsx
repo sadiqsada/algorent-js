@@ -28,10 +28,10 @@ const Login = () => {
       password: values.password,
     })
       .then(response => {
-        console.log(response);
+        if (response.data.success) alert('Successfully logged in');
       })
       .catch(error => {
-        alert(error);
+        alert(error.response.data.message);
       });
   };
 
