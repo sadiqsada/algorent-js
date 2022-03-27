@@ -1,0 +1,5 @@
+https://www.remax.com/homes-for-sale/ny/jamaica/zip/11432?filters={%22minBaths%22:2}
+
+filters={"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}
+
+https://www.remax.com/homes-for-sale/ny/jamaica/zip/11432?page=2&filters={}

@@ -1,11 +1,13 @@
 from audioop import add
 import re
 import sys
+from warnings import filters
 from webbrowser import get
 import requests
 from geopy.geocoders import Nominatim
 from bs4 import BeautifulSoup as bs
 import time
+import ast
 
 def scrape_remax(url):
 	base_url = "https://www.remax.com"
@@ -35,7 +37,7 @@ def scrape_remax_fast_filter(url, limit, filter):
 	#padded url = "?page=1&filters={}"
 	base_url = "https://www.remax.com"
 	#filters={"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}
-	url+="?page=1&filters="+str(filter) #Please make sure filter is in the form of: {"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}
+	url+="?filters="+str(filter) #Please make sure filter is in the form of: {"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}
 	page = requests.get(url)
 	soup = bs(page.content, "lxml")
 	href_stats = []
@@ -151,16 +153,40 @@ def house_info_from_address(address): #format of address : {"country": ,"state":
 		house_info.append(process_remax_page_fast(link))
 	return house_info
 
+def house_info_from_address_filter(address, filters):
+	comp_address = get_complete_addr_link(address) if "state" not in address or "city" not in address or "zip" not in address else address
+	state = comp_address["state"].replace(" ", "+")
+	city = comp_address["city"].replace(" ", "+")
+	zip = comp_address["postcode"].replace(" ", "+") if "postcode" in comp_address else comp_address["zip"]
+	BASE_URL = "https://www.remax.com"
+	EXTENDED_URL = "/homes-for-sale/"+state+"/"+city+"/zip/"+zip
+	SEARCH_URL = BASE_URL+EXTENDED_URL
+	#print("Search Link: ", SEARCH_URL)
+	display_page_links = scrape_remax_fast_filter(SEARCH_URL, 15, filter)
+	print(display_page_links)
+	#print("Links Obtained: ", display_page_links)
+	house_info = []
+	for link in display_page_links:
+		house_info.append(process_remax_page_fast(link[0]))
+	return house_info
+
 #print("Arguments Given: ", sys.argv)
 my_args = sys.argv[1:]
 if(len(my_args) > 0):
-	split_address = my_args[0].split("|")
+	addr_filter = my_args[0].split("**")
+	addr = addr_filter[0]
+	filter = addr_filter[1] if len(addr_filter) > 1 else None
+	split_address = addr_filter[0].split("|")
 	state = split_address[0] if len(split_address) >= 1 else ""
 	city = split_address[1] if len(split_address) >= 2 else ""
 	zip = split_address[2] if len(split_address) >= 3 else ""
 	address = {"state":state, "city":city, "zip": zip}
 	#print("Address is: ", address, "\n")
-	house_info = house_info_from_address(address)
+	#house_info = house_info_from_address(address)
+	if(filter != None and len(filter) > 0):
+		house_info = house_info_from_address_filter(address, filter)
+	else:
+		house_info = house_info_from_address(address)
 
 
 
