@@ -17,18 +17,22 @@ import {
   useBoolean,
 } from '@chakra-ui/react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import Axios from 'axios';
 
 const Login = () => {
+  const navigate = useNavigate();
   const handleSubmit = values => {
     Axios.post('http://localhost:8000/login', {
       email: values.email,
       password: values.password,
-    })
+    }, { withCredentials: true, credentials: 'include' })
       .then(response => {
-        if (response.data.success) alert('Successfully logged in');
+        if (response.data.success) {
+          navigate('/Explore');
+        }
       })
       .catch(error => {
         alert(error.response.data.message);

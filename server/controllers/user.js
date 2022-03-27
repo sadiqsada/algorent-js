@@ -96,10 +96,12 @@ const login = async (req, res) => {
         'token',
         { expiresIn: '1h' }
       );
-      await res
+
+      return res
         .cookie('token', token, {
-          secure: true,
           sameSite: 'none',
+          secure: true,
+          expiresIn: '1h',
         })
         .status(200)
         .json({
@@ -107,10 +109,9 @@ const login = async (req, res) => {
           user: {
             firstName: existingUser.firstName,
             lastName: existingUser.lastName,
-            email: existingUser.email
+            email: existingUser.email,
           },
-        })
-        .send();
+        });
     }
   } catch (err) {
     console.error(err);
