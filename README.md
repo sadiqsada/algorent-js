@@ -48,3 +48,8 @@ Algorent is a platform for conducting real-estate transactions with crypto. We h
 
 * If you need to change the python scraper directory, make sure to delete the environment and remake it in the updated directory.
 * To install required libraries use : ```pip install -r requirements```
+* Fixing package-lock merge conflicts
+
+       don't resolve conflicts directly on package-lock.json
+       resolve conflicts on package.json
+       do npm install
