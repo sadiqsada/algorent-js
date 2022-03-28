@@ -20,8 +20,8 @@ import {
   Center,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { Logo } from './ui/Logo';
-import axios from 'axios';
+import { Logo } from '../ui/Logo';
+import Axios from 'axios';
 
 const Links = ['Explore', 'Shortlist', 'Wallet'];
 
@@ -49,7 +49,7 @@ const Nav = () => {
   const hoverColor = useColorModeValue('#61db8e', '#21944c');
 
   const handleLogout = async () => {
-    await axios.get('http://localhost:8000/logout', { withCredentials: true });
+    await Axios.get('http://localhost:8000/logout', { withCredentials: true });
   }
 
   return (

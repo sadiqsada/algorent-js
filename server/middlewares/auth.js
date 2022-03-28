@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-
 const auth = async (req, res, next) => {
   try {
     const token = req.cookies.token;
@@ -12,7 +11,7 @@ const auth = async (req, res, next) => {
       });
     }
 
-    const verified = jwt.verify(token, 'token');
+    const verified = await jwt.verify(token, 'token');
     req.userId = verified.userId;
 
     next();

@@ -77,7 +77,7 @@ const login = async (req, res) => {
     if (existingUser.status !== 'Active') {
       return res
         .status(400)
-        .json({ message: 'Please check your email for comfirmation' });
+        .json({ message: 'Please check your email for confirmation' });
     }
 
     const match = await bcrypt.compare(password, existingUser.passwordHash);
@@ -96,10 +96,12 @@ const login = async (req, res) => {
         'token',
         { expiresIn: '24h' }
       );
-      await res
+
+      return res
         .cookie('token', token, {
-          secure: true,
           sameSite: 'none',
+          secure: true,
+          expiresIn: '1h',
         })
         .status(200)
         .json({
@@ -109,8 +111,7 @@ const login = async (req, res) => {
             lastName: existingUser.lastName,
             email: existingUser.email,
           },
-        })
-        .send();
+        });
     }
   } catch (err) {
     console.error(err);
@@ -248,13 +249,13 @@ const resetPassword = async (req, res) => {
 
 const tokenIsValid = async (req, res) => {
   try {
-    const { token } = req.body;
+    const token = req.header('x-auth-token');
     if (!token) return res.json(false);
 
     const verified = jwt.verify(token, 'token');
     if (!verified) return res.json(false);
 
-    const user = await User.findById(verified.id);
+    const user = await User.findById(verified.userId);
     if (!user) return res.json(false);
 
     return res.json(true);

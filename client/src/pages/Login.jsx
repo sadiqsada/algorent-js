@@ -28,12 +28,14 @@ const Login = () => {
     Axios.post('http://localhost:8000/login', {
       email: values.email,
       password: values.password,
-    })
+    }, { withCredentials: true, credentials: 'include' })
       .then(response => {
-        navigate('../Explore', { replace: true });
+        if (response.data.success) {
+          navigate('/Explore');
+        }
       })
       .catch(error => {
-        alert(error);
+        alert(error.response.data.message);
       });
   };
 
