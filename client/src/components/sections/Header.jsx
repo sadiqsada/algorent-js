@@ -94,6 +94,9 @@ const Header = props => {
                     {isLoggedIn ? (
                       <NavLink key={'Shortlist'}>Shortlist</NavLink>
                     ) : null}
+                                        {isLoggedIn ? (
+                      <NavLink key={'RecentlyViewed'}>RecentlyViewed</NavLink>
+                    ) : null}
                     {isLoggedIn ? (
                       <NavLink key={'Wallet'}>Wallet</NavLink>
                     ) : null}
@@ -153,14 +156,33 @@ const Header = props => {
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
               <NavLink key={'Explore'}>
-                <Text align="center">{'Explore'}</Text>
+                <Text align="center">Explore</Text>
               </NavLink>
-              <NavLink key={'Login'}>
-                <Text align="center">{'Explore'}</Text>
-              </NavLink>
-              <NavLink key={'Register'}>
-                <Text align="center">{'Explore'}</Text>
-              </NavLink>
+              {!isLoggedIn ? (
+                <NavLink key={'Login'}>
+                  <Text align="center">Login</Text>
+                </NavLink>
+              ) : null}
+              {!isLoggedIn ? (
+                <NavLink key={'Register'}>
+                  <Text align="center">Register</Text>
+                </NavLink>
+              ) : null}
+              {isLoggedIn ? (
+                <NavLink key={'Shortlist'}>
+                  <Text align="center">Shortlist</Text>
+                </NavLink>
+              ) : null}
+              {isLoggedIn ? (
+                <NavLink key={'RecentlyViewed'}>
+                  <Text align="center">Recently Viewed</Text>
+                </NavLink>
+              ) : null}
+              {isLoggedIn ? (
+                <NavLink key={'Wallet'}>
+                  <Text align="center">Wallet</Text>
+                </NavLink>
+              ) : null}
             </Stack>
           </Box>
         ) : null}

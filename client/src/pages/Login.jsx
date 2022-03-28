@@ -27,10 +27,14 @@ const Login = () => {
   const { setIsLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const handleSubmit = values => {
-    Axios.post('http://localhost:8000/login', {
-      email: values.email,
-      password: values.password,
-    }, { withCredentials: true, credentials: 'include' })
+    Axios.post(
+      'http://localhost:8000/login',
+      {
+        email: values.email,
+        password: values.password,
+      },
+      { withCredentials: true, credentials: 'include' }
+    )
       .then(response => {
         if (response.data.success) {
           setIsLoggedIn(true);
