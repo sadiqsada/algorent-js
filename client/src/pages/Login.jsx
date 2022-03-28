@@ -17,12 +17,14 @@ import {
   useBoolean,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import Axios from 'axios';
+import AuthContext from '../context/AuthContext';
 
 const Login = () => {
+  const { setIsLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const handleSubmit = values => {
     Axios.post('http://localhost:8000/login', {
@@ -31,6 +33,7 @@ const Login = () => {
     }, { withCredentials: true, credentials: 'include' })
       .then(response => {
         if (response.data.success) {
+          setIsLoggedIn(true);
           navigate('/Explore');
         }
       })

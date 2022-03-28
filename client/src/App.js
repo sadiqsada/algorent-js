@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Header from './components/sections/Header';
-import LoggedInHeader from './components/sections/LoggedInHeader';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
@@ -10,13 +9,10 @@ import Register from './pages/Register';
 import Explore from './pages/Explore';
 import Axios from 'axios';
 import Cookies from 'js-cookie';
-import UserContext from './context/UserContext';
+import AuthContext from './context/AuthContext';
 
 const App = () => {
-  const [userData, setUserData] = useState({
-    token: undefined,
-    isLoggedIn: false
-  });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
     const checkLoggedIn = async () => {
       const token = Cookies.get('token');
@@ -30,15 +26,15 @@ const App = () => {
         }
       );
 
-      if (tokenRes.data) setUserData({ token, isLoggedIn: true });
+      if (tokenRes.data) setIsLoggedIn(true);
     };
     checkLoggedIn();
   }, []);
 
   return (
     <BrowserRouter>
-      <UserContext.Provider value={{ userData, setUserData }}>
-        {!userData.isLoggedIn ? <Header /> : <LoggedInHeader />}
+      <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+        <Header />
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/Login" element={<Login />} />
@@ -46,7 +42,7 @@ const App = () => {
           <Route path="/ForgotPassword" element={<ForgotPassword />} />
           <Route path="/Explore" element={<Explore />} />
         </Routes>
-      </UserContext.Provider>
+      </AuthContext.Provider>
     </BrowserRouter>
   );
 };

@@ -4,6 +4,13 @@ import {
   Link,
   IconButton,
   Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  Center,
+  Avatar,
+  MenuDivider,
+  MenuItem,
   useDisclosure,
   useColorModeValue,
   useBreakpointValue,
@@ -12,10 +19,12 @@ import {
   Text,
   useColorMode,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { Logo } from '../ui/Logo';
-
-const Links = ['Explore', 'Login', 'Register'];
+import { useContext } from 'react';
+import AuthContext from '../../context/AuthContext';
+import Axios from 'axios';
 
 const NavLink = ({ children }) => (
   <Link
@@ -39,7 +48,22 @@ const Header = props => {
   const showNavbarOptions = useBreakpointValue({ base: 'base', md: 'md' });
   const bgColor = useColorModeValue('#2eca6a', '#176534');
   const hoverColor = useColorModeValue('#61db8e', '#21944c');
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
   // bg=useColorModeValue('gray.100', 'gray.900')}
+
+  const handleLogout = async () => {
+    try {
+      await Axios.get('http://localhost:8000/logout', {
+        withCredentials: true,
+      });
+      setIsLoggedIn(false);
+      navigate('/');
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
   return (
     <>
       <Box bg={useColorModeValue('#2eca6a', '#176534')} px={4}>
@@ -60,10 +84,58 @@ const Header = props => {
                 </Button>
                 {showNavbarOptions !== 'base' ? (
                   <HStack>
-                    {Links.map(link => (
-                      <NavLink key={link}>{link}</NavLink>
-                    ))}
+                    <NavLink key={'Explore'}>Explore</NavLink>
+                    {!isLoggedIn ? (
+                      <NavLink key={'Login'}>Login</NavLink>
+                    ) : null}
+                    {!isLoggedIn ? (
+                      <NavLink key={'Register'}>Register</NavLink>
+                    ) : null}
+                    {isLoggedIn ? (
+                      <NavLink key={'Shortlist'}>Shortlist</NavLink>
+                    ) : null}
+                    {isLoggedIn ? (
+                      <NavLink key={'Wallet'}>Wallet</NavLink>
+                    ) : null}
                   </HStack>
+                ) : null}
+                {isLoggedIn ? (
+                  <Menu>
+                    <MenuButton
+                      as={Button}
+                      rounded={'full'}
+                      variant={'link'}
+                      cursor={'pointer'}
+                      minW={0}
+                      ml={2}
+                    >
+                      <Avatar
+                        size={'sm'}
+                        src={
+                          'https://avatars.dicebear.com/api/male/username.svg'
+                        }
+                      />
+                    </MenuButton>
+                    <MenuList alignItems={'center'}>
+                      <br />
+                      <Center>
+                        <Avatar
+                          size={'2xl'}
+                          src={
+                            'https://avatars.dicebear.com/api/male/username.svg'
+                          }
+                        />
+                      </Center>
+                      <br />
+                      <Center>
+                        <p>Username</p>
+                      </Center>
+                      <br />
+                      <MenuDivider />
+                      <MenuItem>Account Settings</MenuItem>
+                      <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
+                    </MenuList>
+                  </Menu>
                 ) : null}
               </Flex>
 
@@ -80,11 +152,15 @@ const Header = props => {
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
-              {Links.map(link => (
-                <NavLink key={link}>
-                  <Text align="center">{link}</Text>
-                </NavLink>
-              ))}
+              <NavLink key={'Explore'}>
+                <Text align="center">{'Explore'}</Text>
+              </NavLink>
+              <NavLink key={'Login'}>
+                <Text align="center">{'Explore'}</Text>
+              </NavLink>
+              <NavLink key={'Register'}>
+                <Text align="center">{'Explore'}</Text>
+              </NavLink>
             </Stack>
           </Box>
         ) : null}
