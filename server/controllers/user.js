@@ -247,6 +247,23 @@ const resetPassword = async (req, res) => {
     .catch((e) => console.log('error', e));
 };
 
+const tokenIsValid = async (req, res) => {
+  try {
+    const token = req.header('x-auth-token');
+    if (!token) return res.json(false);
+
+    const verified = jwt.verify(token, 'token');
+    if (!verified) return res.json(false);
+
+    const user = await User.findById(verified.userId);
+    if (!user) return res.json(false);
+
+    return res.json(true);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -254,4 +271,5 @@ module.exports = {
   verify,
   forgotPassword,
   resetPassword,
+  tokenIsValid,
 };

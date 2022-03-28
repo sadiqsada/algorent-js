@@ -20,7 +20,7 @@ import {
   Center,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
-import { Logo } from './ui/Logo';
+import { Logo } from '../ui/Logo';
 
 const Links = ['Explore', 'Shortlist', 'Wallet'];
 
