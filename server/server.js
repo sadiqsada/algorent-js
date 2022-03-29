@@ -18,7 +18,7 @@ app.use('/', router);
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
-    autoIndex: false
+    autoIndex: false,
   })
   .then(() => {
     app.listen(PORT, () => {
