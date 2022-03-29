@@ -16,7 +16,6 @@ import {
   useBreakpointValue,
   Stack,
   HStack,
-  Text,
   useColorMode,
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
@@ -84,22 +83,12 @@ const Header = props => {
                 </Button>
                 {showNavbarOptions !== 'base' ? (
                   <HStack>
-                    <NavLink key={'Explore'}>Explore</NavLink>
-                    {!isLoggedIn ? (
-                      <NavLink key={'Login'}>Login</NavLink>
-                    ) : null}
-                    {!isLoggedIn ? (
-                      <NavLink key={'Register'}>Register</NavLink>
-                    ) : null}
-                    {isLoggedIn ? (
-                      <NavLink key={'Shortlist'}>Shortlist</NavLink>
-                    ) : null}
-                                        {isLoggedIn ? (
-                      <NavLink key={'RecentlyViewed'}>RecentlyViewed</NavLink>
-                    ) : null}
-                    {isLoggedIn ? (
-                      <NavLink key={'Wallet'}>Wallet</NavLink>
-                    ) : null}
+                    <NavLink>Explore</NavLink>
+                    {!isLoggedIn ? <NavLink>Login</NavLink> : null}
+                    {!isLoggedIn ? <NavLink>Register</NavLink> : null}
+                    {isLoggedIn ? <NavLink>Shortlist</NavLink> : null}
+                    {isLoggedIn ? <NavLink>RecentlyViewed</NavLink> : null}
+                    {isLoggedIn ? <NavLink>Wallet</NavLink> : null}
                   </HStack>
                 ) : null}
                 {isLoggedIn ? (
@@ -155,34 +144,12 @@ const Header = props => {
         {isOpen ? (
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
-              <NavLink key={'Explore'}>
-                <Text align="center">Explore</Text>
-              </NavLink>
-              {!isLoggedIn ? (
-                <NavLink key={'Login'}>
-                  <Text align="center">Login</Text>
-                </NavLink>
-              ) : null}
-              {!isLoggedIn ? (
-                <NavLink key={'Register'}>
-                  <Text align="center">Register</Text>
-                </NavLink>
-              ) : null}
-              {isLoggedIn ? (
-                <NavLink key={'Shortlist'}>
-                  <Text align="center">Shortlist</Text>
-                </NavLink>
-              ) : null}
-              {isLoggedIn ? (
-                <NavLink key={'RecentlyViewed'}>
-                  <Text align="center">Recently Viewed</Text>
-                </NavLink>
-              ) : null}
-              {isLoggedIn ? (
-                <NavLink key={'Wallet'}>
-                  <Text align="center">Wallet</Text>
-                </NavLink>
-              ) : null}
+              <NavLink>Explore</NavLink>
+              {!isLoggedIn ? <NavLink>Login</NavLink> : null}
+              {!isLoggedIn ? <NavLink>Register</NavLink> : null}
+              {isLoggedIn ? <NavLink>Shortlist</NavLink> : null}
+              {isLoggedIn ? <NavLink>RecentlyViewed</NavLink> : null}
+              {isLoggedIn ? <NavLink>Wallet</NavLink> : null}
             </Stack>
           </Box>
         ) : null}
