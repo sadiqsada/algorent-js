@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const HouseSchema = new Schema(
   {
-    key: { type: String, required: true},
+    key: { type: String, required: true, index: true },
     address: { type: String, required: true },
     state: { type: String },
     city: { type: String },
