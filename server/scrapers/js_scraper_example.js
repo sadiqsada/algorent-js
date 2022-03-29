@@ -1,5 +1,5 @@
 const scraper = require('./scraper.js');
-// EXAMPLE FUNCTION ON HOW TO USE scrape_remax
+// EXAMPLE FUNCTION ON HOW TO USE scrapeRemax
 function useScraper(address) {
   // call first function and pass in a callback function which
   // first function runs when it has completed
