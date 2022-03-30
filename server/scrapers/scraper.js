@@ -1,10 +1,10 @@
 async function scrape_remax(address, filter, _callback)//Note: Address MUST be in form <state>|<city>|<zip>
 {
-    args =address+"**"+filter; //If one of the fields is not suppled, make it equal to 0
+    args = address+"**"+filter; //If one of the fields is not suppled, make it equal to 0
     output = []
     const { spawn } = require('child_process');
-    const pyProg = spawn('python', ['./scraper.py', args]); //For TEST ONLY
-    //const pyProg = spawn('python', ['./scrapers/scraper.py', args]); //WHEN ACTUAL PROJECT DEPLOY, USE THIS
+    //const pyProg = spawn('python', ['./scraper.py', args]); //For TEST ONLY
+    const pyProg = spawn('python', ['./scrapers/scraper.py', args]); //WHEN ACTUAL PROJECT DEPLOY, USE THIS
 
     pyProg.stdout.on('data', function(data) {
         //console.log(data.toString());

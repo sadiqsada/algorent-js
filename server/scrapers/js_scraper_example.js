@@ -13,6 +13,7 @@ function use_scraper(address, filter) {
 
 use_scraper("NY|Ozone Park|11417", '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}') // PLEASE GIVE ADDRESS IN FORM: "<state>|<city>|zip" 
                                     //Filter NEEDS to look like this: '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}'
+                                                                      //If any min fields aren't given by user, just make them 0
                                     
                                     //NOTE: Filter CAN be BLANK (Empty String)
                                     //use_scraper("NY|Jamaica|11432", "")
