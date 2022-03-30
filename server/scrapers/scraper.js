@@ -4,7 +4,7 @@ async function scrape_remax(address, filter, _callback)//Note: Address MUST be i
     output = []
     const { spawn } = require('child_process');
     //const pyProg = spawn('python', ['./scraper.py', args]); //For TEST ONLY
-    const pyProg = spawn('python', ['./scraper.py', args]); //WHEN ACTUAL PROJECT DEPLOY, USE THIS
+    const pyProg = spawn('python', ['./scrapers/scraper.py', args]); //WHEN ACTUAL PROJECT DEPLOY, USE THIS
 
     pyProg.stdout.on('data', function(data) {
         //console.log(data.toString());
