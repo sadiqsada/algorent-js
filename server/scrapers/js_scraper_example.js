@@ -4,8 +4,8 @@ function useScraper(address, filter) {
   // call first function and pass in a callback function which
   // first function runs when it has completed
   scraper.scrapeRemax(address, filter, (output) => {
-    // WOOHOO WE GOT THE INFO IN OUTPUT 
-    // Your Code Goes Here! 
+    // WOOHOO WE GOT THE INFO IN OUTPUT
+    // Your Code Goes Here!
     console.log(output);
   });
 }
