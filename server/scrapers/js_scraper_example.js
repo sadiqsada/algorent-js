@@ -1,4 +1,4 @@
-let scraper = require('./scraper.js');
+let scraper = require('./scrapers/scraper.js');
 /**EXAMPLE FUNCTION ON HOW TO USE scrape_remax */
 function use_scraper(address, filter) { 
     // call first function and pass in a callback function which

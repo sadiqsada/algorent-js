@@ -1,37 +1,29 @@
-const router = require('./routes/router');
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose')
-const cookieParser = require('cookie-parser')
-const dotenv = require('dotenv')
+const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
+const dotenv = require('dotenv');
 const app = express();
 const PORT = 8000;
-dotenv.config()
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
-app.use(cookieParser())
-
-app.use(express.json());
+dotenv.config();
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+
+const router = require('./routes/router');
+
 app.use('/', router);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-const top5listsRouter = require('./routes/router')
-app.use('/', top5listsRouter)
-
 mongoose
-  .connect('mongodb://127.0.0.1:27017/algorent', {
-    useNewUrlParser: true
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
   })
   .then(() => {
     app.listen(PORT, () => {
-      console.log(`Server running on port: ${PORT}`)
-    })
+      console.log(`Server running on port: ${PORT}`);
+    });
   })
   .catch((err) => {
-    console.log(err.message)
-  })
+    console.log(err.message);
+  });

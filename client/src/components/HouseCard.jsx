@@ -32,7 +32,9 @@ const HouseCard = props => {
           ml={2}
           w="70%"
         >
-          <Text align="center">Matches {props.data.numAmenities} Amenities</Text>
+          <Text align="center">
+            Matches {props.data.numAmenities} Amenities
+          </Text>
         </Box>
       </Flex>
     </Flex>

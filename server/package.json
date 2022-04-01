@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
-    "start2": "node server.js"
+    "start2": "node server.js",
+    "format": "npx prettier --write .",
+    "lint": "npx eslint ."
   },
   "keywords": [],
   "author": "",
@@ -21,7 +23,17 @@
     "jssoup": "^0.0.15",
     "mongoose": "^6.2.4",
     "node-mailjet": "^3.3.7",
-    "nodemailer": "^6.7.2",
+    "nodemailer": "^6.7.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.2.0",
+    "eslint-plugin-react": "^7.29.3",
+    "prettier": "2.5.1",
     "path": "^0.12.7",
     "request": "^2.88.2"
   }
