@@ -4,7 +4,8 @@ const House = require('../models/HouseModel');
 const explore = async (req, res) => {
   try {
     const { address } = req.body;
-    const results = await House.find({ key: address }, 'imgUrl address price');
+    const zipCode = address.split('|')[2];
+    const results = await House.find({ zipCode }, 'imgUrl address price');
 
     if (results.length > 0) {
       const houses = results.map((house) => [
@@ -18,10 +19,10 @@ const explore = async (req, res) => {
     scraper.scrapeRemax(address, (data) => {
       data.forEach(async (house) => {
         const newHouse = new House({
-          key: address,
           imgUrl: house[0],
           address: house[1],
           price: house[2],
+          zipCode
         });
 
         await newHouse.save();
