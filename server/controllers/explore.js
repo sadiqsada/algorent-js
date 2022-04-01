@@ -16,13 +16,13 @@ const explore = async (req, res) => {
       return res.json(houses);
     }
 
-    scraper.scrapeRemax(address, (data) => {
+    scraper.scrapeRemax(address, '', (data) => {
       data.forEach(async (house) => {
         const newHouse = new House({
           imgUrl: house[0],
           address: house[1],
           price: house[2],
-          zipCode
+          zipCode,
         });
 
         await newHouse.save();
