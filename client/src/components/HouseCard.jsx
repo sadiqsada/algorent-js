@@ -21,7 +21,7 @@ const HouseCard = props => {
         <Flex justifyContent="space-between">
           <Flex direction="column" justifyContent="center" ml={2}>
             <Text fontWeight="bold">{props.data.title}</Text>
-            <Text fontSize="sm">{props.data.address.split(',')[0]}</Text>
+            <Text fontSize="sm">{props.data.address.split(',')[0].slice(0, 25)}</Text>
           </Flex>
           <Text fontWeight="bold" mr={2}>
             {props.data.price}K Algo
