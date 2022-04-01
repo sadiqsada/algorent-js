@@ -16,7 +16,7 @@ const explore = async (req, res) => {
       return res.json(houses);
     }
 
-    scraper.scrapeRemax(address, '', (data) => {
+    scraper.scrape_remax(address, '', (data) => {
       data.forEach(async (house) => {
         const newHouse = new House({
           imgUrl: house[0],
