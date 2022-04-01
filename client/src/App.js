@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import Explore from './pages/Explore';
 import Shortlist from './pages/Shortlist';
 import RecentlyViewed from './pages/RecentlyViewed';
+import PropertyDetails from './pages/PropertyDetails';
 import Wallet from './pages/Wallet';
 import Axios from 'axios';
 import Cookies from 'js-cookie';
@@ -50,6 +51,7 @@ const App = () => {
           <Route path="/Register" element={<Register />} />
           <Route path="/ForgotPassword" element={<ForgotPassword />} />
           <Route path="/Explore" element={<Explore />} />
+          <Route path="/PropertyDetails" element={<PropertyDetails />} />
           <Route
             path="/Shortlist"
             element={
