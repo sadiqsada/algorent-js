@@ -1,5 +1,5 @@
 import { ArrowRightIcon, Icon } from '@chakra-ui/icons';
-import { Box, Flex, Image, Text, Link, useColorModeValue, Spacer, Center } from '@chakra-ui/react';
+import { Box, Flex, Image, Text, Link, useColorModeValue } from '@chakra-ui/react';
 
 const HouseCard = props => {
   const cardBackground = useColorModeValue('gray.100', 'gray.900');
