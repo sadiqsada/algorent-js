@@ -1,15 +1,18 @@
-import { Box, Flex, Image, Text, useColorModeValue } from '@chakra-ui/react';
+import { ArrowRightIcon, Icon } from '@chakra-ui/icons';
+import { Box, Flex, Image, Text, Link, useColorModeValue, Spacer, Center } from '@chakra-ui/react';
 
 const HouseCard = props => {
   const cardBackground = useColorModeValue('gray.100', 'gray.900');
   const amenitiesBackground = useColorModeValue('purple.200', 'purple.900');
+  const arrowColor = useColorModeValue('purple.200', 'purple.900'); // useColorModeValue('#61db8e', '#21944c');
   return (
-    <Flex bg={cardBackground} borderRadius="md" cursor="pointer">
+    <Flex bg={cardBackground} borderRadius="md" minW={'450px'} maxW={'500px'}>
       <Box>
         <Image
-          w="120px"
-          h="120px"
+          w="140px"
+          h="140px"
           src={props.data.imgUrl}
+          objectFit={'cover'}
           alt="imgUrl"
           borderRadius="md"
         />
@@ -24,13 +27,16 @@ const HouseCard = props => {
             {props.data.price}K Algo
           </Text>
         </Flex>
+        <Flex justify={'right'} mb={2} mt={2} mr={2}>
+          <Link rounded={'md'} p={1} href='PropertyDetails'><Icon as={ArrowRightIcon} w={8} h={8} color={arrowColor} /></Link>
+        </Flex>
         <Box
           bg={amenitiesBackground}
           size="sm"
           borderRadius="md"
-          mt={8}
-          ml={2}
-          w="70%"
+          mt={0}
+          ml={5}
+          mr={20}
         >
           <Text align="center">
             Matches {props.data.numAmenities} Amenities
