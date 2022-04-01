@@ -259,7 +259,7 @@ print("list: \n", list)
 #scrape_remax("https://www.remax.com/ny/jamaica/home-details/84-50-169th-st-102-jamaica-ny-11432/9637000322339336887/M00000489/3378032")
 #Value: KEY WORD: value:"$
 #Address: <title> tag -> |
-process_remax_page_fast("https://www.remax.com/ny/jamaica/home-details/84-50-169th-st-102-jamaica-ny-11432/9637000322339336887/M00000489/3378032")
+#process_remax_page_fast("https://www.remax.com/ny/jamaica/home-details/84-50-169th-st-102-jamaica-ny-11432/9637000322339336887/M00000489/3378032")
 #scrape_remax_full("https://www.remax.com/homes-for-sale/ny/Ozone+Park/zip/11417", 15)
 #test = json.loads('{"@context":"http://schema.org","@type":"Event","startDate":"2022-03-27T13:00:00","endDate":"2022-03-27T14:30:00","name":"Open House: 1:00PM - 2:30PM","description":"Come check out 8429 153RD AVE APT 2E, Howard Beach, NY 11414 on 2022-03-27","url":"https://www.remax.com/ny/howard-beach/home-details/8429-153rd-ave-apt-2e-howard-beach-ny-11414/103119237366100466","offers":{"@type":"Offer","priceCurrency":"USD","price":458000,"availability":"http://schema.org/InStock","url":"https://www.remax.com/ny/howard-beach/home-details/8429-153rd-ave-apt-2e-howard-beach-ny-11414/103119237366100466","validFrom":"2022-03-27T13:00:00"},"image":"https://s3.amazonaws.com/rets-images-matrix-hgar/639e6f09cbbbd29fb31d6800d864ae96563847d5-1-medium.jpeg","performer":{"@type":"Thing","name":"Chuan Wang Chen"},"location":{"@type":"Place","name":"8429 153RD AVE APT 2E","address":{"@type":"PostalAddress","streetAddress":"8429 153RD AVE APT 2E","addressLocality":"Howard Beach","addressRegion":"NY","postalCode":"11414","addressCountry":"USA"}}}')
 #print("Test is: \n", test)
