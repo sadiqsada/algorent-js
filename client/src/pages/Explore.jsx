@@ -155,6 +155,7 @@ const Explore = () => {
         <Grid templateColumns="repeat(2, 1fr)" gap={4}>
           {houses.map(item => (
             <HouseCard
+              key={item[1]}
               data={{
                 imgUrl: item[0],
                 title: 'Heritage Park',

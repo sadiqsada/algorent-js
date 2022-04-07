@@ -1,5 +1,6 @@
 const scraper = require('../scrapers/scraper.js');
 const House = require('../models/HouseModel');
+const User = require('../models/userModel');
 
 const explore = async (req, res) => {
   try {
@@ -12,6 +13,7 @@ const explore = async (req, res) => {
         house.imgUrl,
         house.address,
         house.price,
+        zipCode
       ]);
       return res.json(houses);
     }
@@ -34,4 +36,17 @@ const explore = async (req, res) => {
   }
 };
 
-module.exports = { explore };
+const shortlist = async (req, res) => {
+  try {
+    const { address, zipCode } = req.body;
+    const house = await House.find({ address, zipCode });
+    const user = await User.findById(req.userId);
+    user.shortlistedHouses.push(house[0]);
+    await user.save();
+    return res.json('House shortlisted');
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+module.exports = { explore, shortlist };
