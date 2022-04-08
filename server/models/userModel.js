@@ -9,7 +9,7 @@ const UserSchema = new Schema(
     status: { type: String, enum: ['Pending', 'Active'], default: 'Pending' },
     confirmationCode: { type: String, unique: true },
     resetCode: { type: String, unique: false },
-    shortlistedHouses: [{ type: Schema.Types.ObjectId, ref: 'House' }]
+    shortlistedHouses: [{ type: Schema.Types.ObjectId, ref: 'House' }],
   },
   { timestamps: true }
 );

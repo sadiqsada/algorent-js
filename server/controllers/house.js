@@ -2,7 +2,7 @@ const scraper = require('../scrapers/scraper.js');
 const House = require('../models/HouseModel');
 const User = require('../models/userModel');
 
-const explore = (req, res) => {
+const explore = async (req, res) => {
   try {
     const { address } = req.body;
     const zipCode = address.split('|')[2];
@@ -13,12 +13,12 @@ const explore = (req, res) => {
         house.imgUrl,
         house.address,
         house.price,
-        zipCode
+        zipCode,
       ]);
       return res.json(houses);
     }
 
-    scraper.scrape_remax(address, '', (data) => {
+    scraper.scrapeRemax(address, '', (data) => {
       data.forEach(async (house) => {
         const newHouse = new House({
           imgUrl: house[0],
