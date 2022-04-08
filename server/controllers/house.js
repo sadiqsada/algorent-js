@@ -41,9 +41,15 @@ const shortlist = async (req, res) => {
     const { address, zipCode } = req.body;
     const house = await House.find({ address, zipCode });
     const user = await User.findById(req.userId);
+    for (let i = 0; i < user.shortlistedHouses.length; i++) {
+      const item = user.shortlistedHouses[i];
+      if (item.equals(house[0]._id)) {
+        return res.status(400).json('House already shortlisted');
+      }
+    }
     user.shortlistedHouses.push(house[0]);
     await user.save();
-    return res.json('House shortlisted');
+    return res.status(200).json('House shortlisted');
   } catch (error) {
     console.error(error);
   }

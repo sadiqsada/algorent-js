@@ -46,11 +46,19 @@ const PropertyDetails = () => {
     const { address } = props.data;
     const stateZip = address.split(', ')[2];
     const zipCode = stateZip.split(' ')[1];
-    await Axios.post('http://localhost:8000/shortlist', { zipCode, address }, {
-      withCredentials: true,
-      credentials: 'include',
-    });
-    alert('House Shortlisted');
+    try {
+      const response = await Axios.post(
+        'http://localhost:8000/shortlist',
+        { zipCode, address },
+        {
+          withCredentials: true,
+          credentials: 'include',
+        }
+      );
+      alert(response.data);
+    } catch (error) {
+      alert(error.response.data);
+    }
   };
 
   return (
