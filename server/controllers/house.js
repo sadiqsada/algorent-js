@@ -2,7 +2,7 @@ const scraper = require('../scrapers/scraper.js');
 const House = require('../models/HouseModel');
 const User = require('../models/userModel');
 
-const explore = async (req, res) => {
+const explore = (req, res) => {
   try {
     const { address } = req.body;
     const zipCode = address.split('|')[2];
