@@ -152,7 +152,7 @@ const Explore = () => {
             icon={<SearchIcon />}
           />
         </Flex>
-        <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+        <Grid templateColumns={{base: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)'}} gap={4}>
           {houses.map(item => (
             <HouseCard
               data={{
