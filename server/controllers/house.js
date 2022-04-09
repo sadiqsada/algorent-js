@@ -55,4 +55,15 @@ const shortlist = async (req, res) => {
   }
 };
 
-module.exports = { explore, shortlist };
+const getShortlist = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    const houses = await House.find().where('_id').in(user.shortlistedHouses).exec();
+    return res.status(200).json(houses);
+  }
+  catch(error) {
+    console.error(error);
+  }
+}
+
+module.exports = { explore, shortlist, getShortlist };

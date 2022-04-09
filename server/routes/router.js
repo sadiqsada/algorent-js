@@ -14,5 +14,6 @@ router.post('/tokenIsValid', UserController.tokenIsValid);
 
 router.post('/explore', HouseController.explore);
 router.post('/shortlist', auth, HouseController.shortlist);
+router.get('/getShortlist', auth, HouseController.getShortlist);
 
 module.exports = router;
