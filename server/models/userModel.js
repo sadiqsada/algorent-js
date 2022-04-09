@@ -10,6 +10,7 @@ const UserSchema = new Schema(
     confirmationCode: { type: String, unique: true },
     resetCode: { type: String, unique: false },
     shortlistedHouses: [{ type: Schema.Types.ObjectId, ref: 'House' }],
+    recentlyViewed: [{ type: Schema.Types.ObjectId, ref: 'House' }],
   },
   { timestamps: true }
 );

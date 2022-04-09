@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import { Icon } from '@chakra-ui/icons';
 import {
   Flex,
@@ -24,7 +25,7 @@ import {
 import { MdBalcony, MdLocationOn } from 'react-icons/md';
 import { CgGym, CgSmartHomeWashMachine } from 'react-icons/cg';
 import { BsCartPlusFill } from 'react-icons/bs';
-import Axios from 'axios';
+import axios from 'axios';
 
 const PropertyDetails = () => {
   const location = useLocation();
@@ -47,7 +48,7 @@ const PropertyDetails = () => {
     const stateZip = address.split(', ')[2];
     const zipCode = stateZip.split(' ')[1];
     try {
-      const response = await Axios.post(
+      const response = await axios.post(
         'http://localhost:8000/shortlist',
         { zipCode, address },
         {
@@ -60,6 +61,18 @@ const PropertyDetails = () => {
       alert(error.response.data);
     }
   };
+
+  useEffect(() => {
+    const updateRecentlyViewed = async (props) => {
+    const { address } = props.data;
+    await axios
+      .post('http://localhost:8000/recentlyViewed', { address }, {
+        withCredentials: true,
+        credentials: 'include',
+      });
+    }
+    updateRecentlyViewed(props);
+  }, []);
 
   return (
     <Flex direction={'row'} w={'100%'} h={'93vh'} overflow={'hidden'}>

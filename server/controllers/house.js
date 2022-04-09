@@ -58,12 +58,58 @@ const shortlist = async (req, res) => {
 const getShortlist = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
-    const houses = await House.find().where('_id').in(user.shortlistedHouses).exec();
+    const houses = await House.find()
+      .where('_id')
+      .in(user.shortlistedHouses)
+      .exec();
     return res.status(200).json(houses);
-  }
-  catch(error) {
+  } catch (error) {
     console.error(error);
   }
-}
+};
 
-module.exports = { explore, shortlist, getShortlist };
+const recentlyViewed = async (req, res) => {
+  try {
+    const { address } = req.body;
+    const stateZip = address.split(', ')[2];
+    const zipCode = stateZip.split(' ');
+    const house = await House.find({ zipCode, address });
+    const user = await User.findById(req.userId);
+    if (user.recentlyViewed.length === 0) {
+      user.recentlyViewed.push(house[0]);
+      await user.save();
+      return res.status(200).json('House Recently Viewed');
+    }
+    const previousHouse = user.recentlyViewed[user.recentlyViewed.length - 1];
+    if (!previousHouse.equals(house[0]._id)) {
+      user.recentlyViewed.push(house[0]);
+      await user.save();
+      return res.status(200).json('House Recently Viewed');
+    } else {
+      return res.status(200).json('House Previously Viewed');
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const getRecentlyViewed = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    const houses = await House.find()
+      .where('_id')
+      .in(user.recentlyViewed)
+      .exec();
+    return res.status(200).json(houses);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+module.exports = {
+  explore,
+  shortlist,
+  getShortlist,
+  recentlyViewed,
+  getRecentlyViewed,
+};
