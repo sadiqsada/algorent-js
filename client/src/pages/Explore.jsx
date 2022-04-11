@@ -18,13 +18,9 @@ import { SearchIcon } from '@chakra-ui/icons';
 import HouseCard from '../components/HouseCard';
 import listAmenities from '../utils/listAmenities';
 import getTimeOfDay from '../utils/getTimeOfDay';
+import formatPrice from '../utils/formatPrice';
 import axios from 'axios';
-import { useContext } from 'react';
-import AuthContext from '../context/AuthContext';
 const Explore = () => {
-  const { isLoggedIn } = useContext(AuthContext);
-  console.log('isLoggedIn');
-  console.log(isLoggedIn);
   const [searchField, setSearchField] = useState('NY|Kew Gardens|11415');
   const [numBeds, setNumBeds] = useState('Studio');
   const [numBaths, setNumBaths] = useState('1 Bath');
@@ -156,14 +152,14 @@ const Explore = () => {
             icon={<SearchIcon />}
           />
         </Flex>
-        <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+        <Grid templateColumns={{base: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)'}} gap={4}>
           {houses.map(item => (
             <HouseCard
               data={{
                 imgUrl: item[0],
                 title: 'Heritage Park',
                 address: item[1],
-                price: 275,
+                price: formatPrice(item[2]),
                 numAmenities: 3,
               }}
             />
