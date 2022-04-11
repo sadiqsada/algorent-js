@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import Register from './pages/Register';
 import Explore from './pages/Explore';
+import CreateListing from './pages/CreateListing';
 import Shortlist from './pages/Shortlist';
 import RecentlyViewed from './pages/RecentlyViewed';
 import Wallet from './pages/Wallet';
@@ -50,6 +51,14 @@ const App = () => {
           <Route path="/Register" element={<Register />} />
           <Route path="/ForgotPassword" element={<ForgotPassword />} />
           <Route path="/Explore" element={<Explore />} />
+          <Route
+            path="/CreateListing"
+            element={
+              <ProtectedRoute>
+                <CreateListing />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/Shortlist"
             element={

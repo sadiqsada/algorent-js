@@ -92,9 +92,12 @@ const Header = props => {
                       <NavLink key={'Register'}>Register</NavLink>
                     ) : null}
                     {isLoggedIn ? (
+                      <NavLink key={'CreateListing'}>CreateListing</NavLink>
+                    ) : null}
+                    {isLoggedIn ? (
                       <NavLink key={'Shortlist'}>Shortlist</NavLink>
                     ) : null}
-                                        {isLoggedIn ? (
+                    {isLoggedIn ? (
                       <NavLink key={'RecentlyViewed'}>RecentlyViewed</NavLink>
                     ) : null}
                     {isLoggedIn ? (
@@ -166,6 +169,11 @@ const Header = props => {
               {!isLoggedIn ? (
                 <NavLink key={'Register'}>
                   <Text align="center">Register</Text>
+                </NavLink>
+              ) : null}
+              {isLoggedIn ? (
+                <NavLink key={'CreateListing'}>
+                  <Text align="center">CreateListing</Text>
                 </NavLink>
               ) : null}
               {isLoggedIn ? (
