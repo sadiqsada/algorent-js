@@ -83,7 +83,7 @@ def process_remax_page_fast(url):
 	address = url[url.rfind(ref_string) + len(ref_string):]
 	address = address[0:address.index("/")]
 	link = "https://maps.googleapis.com/maps/api/staticmap?center=" + address + "&zoom=13&scale=1&size=600x1000&maptype=roadmap&format=png&key=AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4"
-	dark_hex = "1A2113"
+	dark_hex = "0F1210"
 	night_link = "https://maps.googleapis.com/maps/api/staticmap?center=" + address + "&zoom=13&scale=1&size=600x1000&maptype=roadmap&format=png&key=AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4&style=element%3Ageometry%7Ccolor%3A0x"+dark_hex+"&style=element%3Alabels.text.stroke%7Ccolor%3A0x242f3e&style=element%3Alabels.text.fill%7Ccolor%3A0x746855&style=feature%3Aadministrative.locality%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Apoi%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Apoi.park%7Celement%3Ageometry%7Ccolor%3A0x263c3f&style=feature%3Apoi.park%7Celement%3Alabels.text.fill%7Ccolor%3A0x6b9a76&style=feature%3Aroad%7Celement%3Ageometry%7Ccolor%3A0x38414e&style=feature%3Aroad%7Celement%3Ageometry.stroke%7Ccolor%3A0x212a37&style=feature%3Aroad%7Celement%3Alabels.text.fill%7Ccolor%3A0x9ca5b3&style=feature%3Aroad.highway%7Celement%3Ageometry%7Ccolor%3A0x746855&style=feature%3Aroad.highway%7Celement%3Ageometry.stroke%7Ccolor%3A0x1f2835&style=feature%3Aroad.highway%7Celement%3Alabels.text.fill%7Ccolor%3A0xf3d19c&style=feature%3Atransit%7Celement%3Ageometry%7Ccolor%3A0x2f3948&style=feature%3Atransit.station%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Awater%7Celement%3Ageometry%7Ccolor%3A0x17263c&style=feature%3Awater%7Celement%3Alabels.text.fill%7Ccolor%3A0x515c6d&style=feature%3Awater%7Celement%3Alabels.text.stroke%7Ccolor%3A0x17263" #google maps api link
 
 	#print("address is: ", address) 
@@ -102,6 +102,8 @@ def process_remax_page_fast(url):
 	#print("amens: ", amens)
 	price = max([t.contents[0].replace('\n', ' ').replace(' ','') for t in divs if "$" in t.contents[0]])
 	#print("Prices?: ", price)
+	num_imgs = 5
+	counter = 0
 	for img in all_img:
 		img_url = None
 		try:
@@ -110,8 +112,10 @@ def process_remax_page_fast(url):
 			pass
 		if(img_url is not None and len(img_url) > 10):
 			image.append(img_url)#We only need the first
-			break
-	print(image[0], "|", address, "|", price, "|", amens[0], "|", amens[1], "|", link, "|", night_link, "**") # amens[0] -> numBathrooms
+		if(counter >= num_imgs):
+			break 
+		counter+=1
+	print(image, "|", address, "|", price, "|", amens[0], "|", amens[1], "|", link, "|", night_link, "**") # amens[0] -> numBathrooms
 																			  # amens[1] -> numBedrooms
 	return info_list
 

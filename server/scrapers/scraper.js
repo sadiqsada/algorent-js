@@ -14,7 +14,9 @@ async function scrape_remax(address, filter, _callback) {
     data_split.pop(); //Last value is useless
     //console.log(data_split.toString())
     for (const house of data_split) {
+      //output.push(house[0])
       output.push(house.split('|'));
+      //output[0].replace("[", "").replace("]","")
     }
     //_callback(data.toString()); For Test Only
     _callback(output);
