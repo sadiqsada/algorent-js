@@ -1,5 +1,5 @@
 import { Icon } from '@chakra-ui/icons';
-import { Flex, Image, Text, Box, Spacer, useColorModeValue, Center, Divider, Button, Stack, IconButton } from "@chakra-ui/react";
+import { Flex, Image, Text, Box, Spacer, useColorModeValue, Input, Center, Divider, Button, Stack, IconButton } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import SimpleImageSlider from "react-simple-image-slider";
 import { FaSwimmingPool, FaFan, FaFileContract, FaHeart } from "react-icons/fa";
@@ -8,6 +8,8 @@ import { GiWoodBeam, GiWashingMachine, GiHomeGarage, GiPathDistance } from "reac
 import { MdBalcony, MdLocationOn } from "react-icons/md";
 import { CgGym, CgSmartHomeWashMachine } from "react-icons/cg";
 import { BsCartPlusFill } from "react-icons/bs";
+import { useRef, useState } from 'react';
+import { useJsApiLoader, Autocomplete } from '@react-google-maps/api'
 
 const PropertyDetails = () => {   
     const location = useLocation();
@@ -19,8 +21,51 @@ const PropertyDetails = () => {
         { url: 'https://s3.amazonaws.com/rets-images-matrix-hgar/e46a08206acfd864f7cfdc45d885c122cc523198-1-large.jpeg' },
     ];
 
+    const popupModal = useRef(null);
+    const popupModalImg = useRef(null);
+    function modalPopUp(idx) {
+        if (popupModal.current && popupModalImg.current) {
+            if (idx !== null) {
+                popupModalImg.current.src = images[idx].url;
+                popupModal.current.style.display = 'block';
+            }
+            else {
+                popupModal.current.style.display = 'none';
+            }
+        }
+    }
+
+    const { isLoaded } = useJsApiLoader({
+        //googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+        googleMapsApiKey: 'AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4',
+        libraries: ['places'],
+    });
+
+    const [routeText, setRouteText] = useState('');
+    const destinationRef = useRef();
+    const showDistanceRef = useRef();
+
+    if (!isLoaded) {
+        return (<></>);
+    }
+
+    async function calculateRoute() {
+        if (destinationRef.current.value === '') {
+          return
+        }
+        const directionsService = new google.maps.DirectionsService();
+        const results = await directionsService.route({
+          origin: props.data.address,
+          destination: destinationRef.current.value,
+          travelMode: google.maps.TravelMode.DRIVING,
+        });
+        const distance = results.routes[0].legs[0].distance.text;
+        const duration = results.routes[0].legs[0].duration.text;
+        setRouteText(`Driving to ${destinationRef.current.value} takes ${duration} (${distance})`);
+    }
+
     return (
-        <Flex direction={'row'} w={'100%'} h={'93vh'} overflow={'hidden'}>
+        <Flex direction={'row'} w={'100%'} h={'93vh'} overflow={'hidden'}>            
             <Flex direction={'column'} maxW={500} boxShadow={'dark-lg'} zIndex={1} wrap={'nowrap'}>
                 <Box><SimpleImageSlider
                     width={500}
@@ -33,6 +78,9 @@ const PropertyDetails = () => {
                     navSize={60}
                     navMargin={0}
                     style={{cursor: 'pointer'}}
+                    onClick={(idx, event) => {
+                        modalPopUp(idx);
+                    }}
                 /></Box>
                 <Flex direction={'column'} p={5} overflowY={'scroll'} overflowX={'hidden'} css={{'&::-webkit-scrollbar': {display: 'none'}}}>
                     <Flex direction={'row'} mb={5}>
@@ -55,8 +103,19 @@ const PropertyDetails = () => {
                         <Text fontSize={'sm'} fontWeight={600} pt={1}>6 Bedroom(s) - 9 Bathroom(s) - 727 sqft</Text>
                     </Flex>
                     <Flex direction={'row'} m={2} ml={0}>
-                        <Icon as={GiPathDistance} w={8} h={8} mr={3}/>
-                        <Text fontSize={'sm'} fontWeight={600} pt={1}>1 Hour, 51 Minutes Drive to Stony Brook University</Text>
+                        <Icon as={GiPathDistance} w={8} h={8} mr={3}/>                        
+                        <Flex direction={'column'}>
+                            <Flex direction={'row'}>
+                                <Text ref={showDistanceRef} fontSize={'sm'} fontWeight={600} pt={1} mb={2}>Find distance from an address</Text>
+                            </Flex>
+                            <Autocomplete>
+                                <Input type={'text'} placeholder={'Destination'} ref={destinationRef} fontSize={'sm'} fontWeight={600} size={'sm'}/>
+                            </Autocomplete>
+                            <Button colorScheme={'purple'} type={'submit'} size={'xs'} fontSize={'sm'} fontWeight={600} onClick={calculateRoute}>
+                                Find distance
+                            </Button>
+                            <Text fontSize={'sm'} fontWeight={600} mt={2}>{routeText}</Text>
+                        </Flex>
                     </Flex>
                     <Flex direction={'row'} m={2} ml={0}>
                         <Icon as={FaFileContract} w={7} h={7} mr={4}/>
@@ -125,7 +184,7 @@ const PropertyDetails = () => {
                                 isRound
                                 onClick={() => {alert("BUY!");}}
                             />
-                            <Center mt={1}><Text fontSize={'md'} color={useColorModeValue('purple.500', 'purple.200')} fontWeight={600}>Buy</Text></Center>
+                            <Center mt={1}><Text fontSize={'md'} color={useColorModeValue('purple.500', 'purple.200')} fontWeight={600}>Cart</Text></Center>
                             </Flex>
                         </Stack>
                     </Center>
@@ -142,6 +201,14 @@ const PropertyDetails = () => {
                 borderRadius={'md'}
                 zIndex={0}
             />
+
+            <Box ref={popupModal} pos={'absolute'} w={'100%'} h={'94vh'} zIndex={10} display={'none'} overflow={'hidden'}>
+                <Box pos={'absolute'} w={'100%'} h={'100%'} opacity={0.5} backgroundColor={useColorModeValue('gray.900', 'gray.400')}
+                onClick={() => {modalPopUp(null)}} cursor={'pointer'}></Box>
+                <Center pos={'absolute'} w={'100%'} h={'100%'} pointerEvents={'none'}>
+                    <Image pointerEvents={'auto'} ref={popupModalImg} objectFit={'cover'} minW={600} minH={400} w={'60vw'} h={'auto'} maxW={'90vw'} maxH={'85vh'}/>
+                </Center>
+            </Box>
         </Flex>
     );
 };
