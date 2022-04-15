@@ -25,4 +25,4 @@ async function scrapeRemax(address, filter, _callback) {
     _callback(output);
   });
 }
-module.exports.scrape_remax = scrapeRemax;
+module.exports.scrapeRemax = scrapeRemax;

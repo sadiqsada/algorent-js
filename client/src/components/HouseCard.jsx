@@ -22,7 +22,7 @@ const HouseCard = props => {
         <Flex direction={'column'} justifyContent={'space-between'} flexGrow={1} p={2}>
           <Flex direction={'row'} justifyContent={'space-between'}>
             <Flex direction={'column'}>
-              <Text fontSize={'md'} fontWeight={'bold'}>{props.data.title}</Text>
+              <Text fontSize={'md'} fontWeight={'bold'}>{props.data.numBedrooms} beds, {props.data.numBathrooms} baths</Text>
               <Text fontSize={'sm'}>{props.data.address.split(',')[0].slice(0, 25)}</Text>
             </Flex>
             <Text fontSize={'md'} fontWeight={'bold'}>{props.data.price}K Algo</Text>

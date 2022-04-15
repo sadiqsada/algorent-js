@@ -22,8 +22,8 @@ import formatPrice from '../utils/formatPrice';
 import axios from 'axios';
 const Explore = () => {
   const [searchField, setSearchField] = useState('NY|Kew Gardens|11415');
-  const [numBeds, setNumBeds] = useState('Studio');
-  const [numBaths, setNumBaths] = useState('1 Bath');
+  const [numBeds, setNumBeds] = useState('1');
+  const [numBaths, setNumBaths] = useState('1');
   const [priceMax, setPriceMax] = useState('');
   const [priceMin, setPriceMin] = useState('');
   const [amenities, setAmenities] = useState([]);
@@ -46,6 +46,7 @@ const Explore = () => {
     axios
       .post('http://localhost:8000/explore', {
         address: searchField,
+        filter: { 'minBeds': numBeds, 'minBaths': numBaths, 'minPrice': priceMin, 'maxPrice': priceMax }
       })
       .then(response => {
         setHouses(response.data);
@@ -76,10 +77,9 @@ const Explore = () => {
             size="xs"
             ml={2}
           >
-            <option value="Studio">Studio</option>
-            <option value="1 Bed">1 Bed</option>
-            <option value="2 Beds">2 Beds</option>
-            <option value="3 Beds+">3 Beds+</option>
+            <option value="1">1 Bed</option>
+            <option value="2">2 Beds</option>
+            <option value="3">3 Beds</option>
           </Select>
           <Select
             value={numBaths}
@@ -88,9 +88,9 @@ const Explore = () => {
             size="xs"
             ml={2}
           >
-            <option value="1 Bath">1 Bath</option>
-            <option value="2 Baths">2 Baths</option>
-            <option value="3 Baths+">3 Baths+</option>
+            <option value="1">1 Bath</option>
+            <option value="2">2 Baths</option>
+            <option value="3">3 Baths</option>
           </Select>
           <Menu>
             <MenuButton>
@@ -158,9 +158,10 @@ const Explore = () => {
               key={item[1]}
               data={{
                 imgUrl: item[0],
-                title: 'Heritage Park',
                 address: item[1],
                 price: formatPrice(item[2]),
+                numBedrooms: Number(item[4]) === 0 ? 1 : item[4],
+                numBathrooms: Number(item[3]) === 0 ? 1 : item[3],
                 numAmenities: 3,
               }}
             />

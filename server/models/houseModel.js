@@ -8,8 +8,8 @@ const HouseSchema = new Schema(
     zipCode: { type: String, required: true, index: true },
     price: { type: String, required: true },
     imgUrl: { type: String, required: true },
-    numBedrooms: { type: Number },
-    numBathrooms: { type: Number },
+    numBedrooms: { type: String, required: true },
+    numBathrooms: { type: String, required: true },
   },
   { timestamps: true }
 );
