@@ -42,12 +42,15 @@ const CreateListing =  () =>{
     };
 
     const amenitiesOptions = [
-      {label: "Air Conditioner", value: "ac"},
+      {label: "Air Conditioning", value: "ac"},
       {label: "Balcony", value: "balcony"},
+      {label: "Dishwasher", value: "dishwasher"},
+      {label: "Garage", value: "garage"},
       {label: "Gym", value: "gym"},
       {label: "Hardwood Floor", value: "hardwood"},
-      {label: "In-Unit Laundry", value: "laundry"},
+      {label: "On-Site Laundry", value: "laundry"},
       {label: "Pool", value: "pool"},
+
     ];
 
     const term = " I agree to, acknowledge and understand the following: (i) I am (or I have authority to act on behalf of) the owner of this home; (ii) I will not provide incorrect information; (iii) I will be posting my property 'for sale by owner' on algorent.com and other affiliated websites and that I will solely be responsible for maintaining and updating the posting and responding to and negotiating potential offers to purchase the property;" 
