@@ -139,6 +139,7 @@ def process_remax_page(url):
 	info_list["image"] = image
 	info_list["address"] =  address
 	return info_list
+	
 '''
 def get_coords(address):
 	#address = "32-22 204TH ST BAYSIDE, NY 11361"
