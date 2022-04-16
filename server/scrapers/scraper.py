@@ -72,7 +72,7 @@ def scrape_remax_full(url, limit):
 def process_remax_page_fast(url):
 	page = requests.get(url)
 	soup = bs(page.content, "lxml")
-	info_list = {}
+	info_list = ""
 	image = [] #kept like this in case we want more images in the future
 	title = str(soup.find("title"))
 	address = title[7:title.find(" |")]
@@ -100,7 +100,8 @@ def process_remax_page_fast(url):
 				break
 	amens = amens[1:] #first 2 are the same
 	#print("amens: ", amens)
-	price = max([t.contents[0].replace('\n', ' ').replace(' ','') for t in divs if "$" in t.contents[0]])
+	prices = [t.contents[0].replace('\n', ' ').replace(' ','') for t in divs if "$" in t.contents[0]]
+	price = max(prices if len(prices) > 0 else [300000, 0])
 	#print("Prices?: ", price)
 	num_imgs = 5
 	counter = 0
@@ -115,7 +116,7 @@ def process_remax_page_fast(url):
 		if(counter >= num_imgs):
 			break 
 		counter+=1
-	print(image, "|", address, "|", price, "|", amens[0], "|", amens[1], "|", link, "|", night_link, "**") # amens[0] -> numBathrooms
+	info_list = str(image) + "|" + address + "|" + str(price) + "|" + str(amens[0]) + "|" + str(amens[1]) + "|" + link + "|" + night_link + "**" # amens[0] -> numBathrooms
 																			  # amens[1] -> numBedrooms
 	return info_list
 
@@ -173,9 +174,9 @@ def house_info_from_address(address): #format of address : {"country": ,"state":
 	#print("Search Link: ", SEARCH_URL)
 	display_page_links = scrape_remax_fast(SEARCH_URL, 15)
 	#print("Links Obtained: ", display_page_links)
-	house_info = []
+	house_info = ""
 	for link in display_page_links:
-		house_info.append(process_remax_page_fast(link))
+		house_info += process_remax_page_fast(link)
 	return house_info
 
 def house_info_from_address_filter(address, filters):
@@ -190,9 +191,9 @@ def house_info_from_address_filter(address, filters):
 	display_page_links = scrape_remax_fast_filter(SEARCH_URL, 15, filter)
 	#print(display_page_links)
 	#print("Links Obtained: ", display_page_links)
-	house_info = []
+	house_info = ""
 	for link in display_page_links:
-		house_info.append(process_remax_page_fast(link[0]))
+		house_info += process_remax_page_fast(link[0])
 	return house_info
 
 #print("Arguments Given: ", sys.argv)
@@ -210,8 +211,10 @@ if(len(my_args) > 0):
 	#house_info = house_info_from_address(address)
 	if(filter != None and len(filter) > 0):
 		house_info = house_info_from_address_filter(address, filter)
+		print(house_info)
 	else:
 		house_info = house_info_from_address(address)
+		print(house_info)
 
 
 
