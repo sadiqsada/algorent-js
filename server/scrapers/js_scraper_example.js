@@ -7,6 +7,7 @@ function use_scraper(address, filter) {
     /*** WOOHOO WE GOT THE INFO IN OUTPUT */
     /** Your Code Goes Here! */
     console.log(output);
+
   });
 }
 

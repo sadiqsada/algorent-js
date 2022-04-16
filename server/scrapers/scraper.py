@@ -4,7 +4,7 @@ import sys
 from warnings import filters
 from webbrowser import get
 import requests
-from geopy.geocoders import Nominatim
+#from geopy.geocoders import Nominatim
 from bs4 import BeautifulSoup as bs
 import time
 import ast
@@ -139,7 +139,7 @@ def process_remax_page(url):
 	info_list["image"] = image
 	info_list["address"] =  address
 	return info_list
-
+'''
 def get_coords(address):
 	#address = "32-22 204TH ST BAYSIDE, NY 11361"
 	address.replace(" ", "+")
@@ -147,6 +147,7 @@ def get_coords(address):
 	location = geolocator.geocode("175 5th Avenue NYC")
 	resp_json_payload = (location.latitude, location.longitude)
 	return resp_json_payload
+'''
 
 def get_complete_addr_link(address): #format of address : {"country": ,"state": , "city": , "zip": }
 	try:
