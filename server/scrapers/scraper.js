@@ -18,8 +18,10 @@ async function scrape_remax(address, filter, _callback) {
       output.push(house.split('|'));
       //output[0].replace("[", "").replace("]","")
     }
-    //_callback(data.toString()); For Test Only
-    _callback(output);
+    if(output.length > 0)
+    {
+      _callback(output);
+    }
   });
   pyProg.stderr.on('data', (data) => {
     //console.log(data.toString());

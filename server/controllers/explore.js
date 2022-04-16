@@ -5,7 +5,7 @@ const explore = (req, res) => {
     const { address } = req.body;
     scraper.scrape_remax(
       address,
-      '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}',
+      "",
       (data) => {
         return res.json(data);
       }
