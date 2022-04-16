@@ -5,7 +5,7 @@ async function scrape_remax(address, filter, _callback) {
   const { spawn } = require('child_process');
   //const pyProg = spawn('python', ['./scraper.py', args]); //For TEST ONLY
   const pyProg = spawn('python', ['./scrapers/scraper.py', args]); //WHEN ACTUAL PROJECT DEPLOY, USE THIS
-
+  callback_called = false
   pyProg.stdout.on('data', function (data) {
     //console.log(data.toString());
     output = [];
@@ -18,8 +18,11 @@ async function scrape_remax(address, filter, _callback) {
       output.push(house.split('|'));
       //output[0].replace("[", "").replace("]","")
     }
-    if(output.length > 0)
+  
+    if(!callback_called)
     {
+      //console.log("Returning output here: ")
+      callback_called = true
       _callback(output);
     }
   });
