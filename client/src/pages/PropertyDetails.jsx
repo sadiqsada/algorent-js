@@ -14,12 +14,7 @@ import { useJsApiLoader, Autocomplete } from '@react-google-maps/api'
 const PropertyDetails = () => {   
     const location = useLocation();
     const { props } = location.state
-    const images = [
-        { url: props.data.imgUrl },
-        { url: 'https://s3.amazonaws.com/rets-images-matrix-hgar/fc15f037229a6ca45d06845f5c728b2131c6777d-1-large.jpeg' },
-        { url: 'https://s3.amazonaws.com/rets-images-matrix-hgar/f3da7f5e5404cc1328c3f1e3e8c6bab69f94b1bf-1-large.jpeg' },
-        { url: 'https://s3.amazonaws.com/rets-images-matrix-hgar/e46a08206acfd864f7cfdc45d885c122cc523198-1-large.jpeg' },
-    ];
+    const images = props.data.imgUrl;
 
     const popupModal = useRef(null);
     const popupModalImg = useRef(null);
@@ -64,6 +59,43 @@ const PropertyDetails = () => {
         setRouteText(`Driving to ${destinationRef.current.value} takes ${duration} (${distance})`);
     }
 
+    const calculateAptSize = () => {
+        let size = 500;
+        if (props.data.numBeds > 3) size = size * 2;
+        else if (props.data.numBeds > 2) size = size * 1.5;
+        else if (props.data.numBeds > 1) size = size * 1.25;
+        if (props.data.numBaths > 2) size = size * 1.8;
+        else if (props.data.numBaths > 1) size = size * 1.4;
+        if (props.data.price > 800) size = size * 2;
+        else if (props.data.price > 600) size = size * 1.8;
+        else if (props.data.price > 400) size = size * 1.4;
+        else if (props.data.price > 200) size = size * 1.2;
+        return Math.round(size);
+    }
+
+    const getAmenities = (amenity) => {
+        if (amenity === 'pool') {
+            if (props.data.numBeds > 3) return 'green.500';
+            else return 'red.500';
+        }
+        else if (amenity === 'balcony') {
+            if (props.data.numBeds > 1) return 'green.500';
+            else return 'red.500';
+        }
+        else if (amenity === 'gym') {
+            if (props.data.numBeds > 3 && props.data.numBaths > 2) return 'green.500';
+            else return 'red.500';
+        }
+        else if (amenity === 'on-site laundry') {
+            if (props.data.numBeds > 2) return 'green.500';
+            else return 'red.500';
+        }
+        else if (amenity === 'garage') {
+            if (props.data.numBeds > 2) return 'green.500';
+            else return 'red.500';
+        }
+    }
+
     return (
         <Flex direction={'row'} w={'100%'} h={'93vh'} overflow={'hidden'}>            
             <Flex direction={'column'} maxW={500} boxShadow={'dark-lg'} zIndex={1} wrap={'nowrap'}>
@@ -90,8 +122,8 @@ const PropertyDetails = () => {
                         </Flex>
                         <Spacer/>
                         <Flex direction={'column'}>
-                            <Text fontSize={'xl'} fontWeight={600} alt={'Price'}>{props.data.price}000 ALGO</Text>
-                            <Center mt={0}><Text fontSize={'md'} fontWeight={300} alt={'USPrice'}>{props.data.price * 0.78 * 1000} USD</Text></Center>
+                            <Text fontSize={'xl'} fontWeight={600} alt={'Price'}>{Math.round(props.data.price * 1000)} ALGO</Text>
+                            <Center mt={0}><Text fontSize={'md'} fontWeight={300} alt={'USPrice'}>{Math.round(props.data.price * 0.78 * 1000)} USD</Text></Center>
                         </Flex>
                     </Flex>
                     <Flex direction={'row'} m={2} ml={0}>
@@ -100,7 +132,7 @@ const PropertyDetails = () => {
                     </Flex>
                     <Flex direction={'row'} m={2} ml={0}>
                         <Icon as={BiBuildingHouse} w={7} h={7} mr={4}/>
-                        <Text fontSize={'sm'} fontWeight={600} pt={1}>6 Bedroom(s) - 9 Bathroom(s) - 727 sqft</Text>
+                        <Text fontSize={'sm'} fontWeight={600} pt={1}>{props.data.numBeds} Bedroom(s) - {props.data.numBaths} Bathroom(s) - {calculateAptSize()} sqft</Text>
                     </Flex>
                     <Flex direction={'row'} m={2} ml={0}>
                         <Icon as={GiPathDistance} w={8} h={8} mr={3}/>                        
@@ -127,8 +159,8 @@ const PropertyDetails = () => {
                     <Center><Text fontSize={'lg'} fontWeight={600}>Amenities</Text></Center>
                     <Flex direction={'row'} wrap={'wrap'} mt={3}>
                         <Flex direction={'column'} m={3}>
-                            <Center><Icon as={FaSwimmingPool} color={'red.500'} w={8} h={8} /></Center>
-                            <Center><Text fontSize={'xs'} color={'red.500'} fontWeight={600}>Pool</Text></Center>
+                            <Center><Icon as={FaSwimmingPool} color={getAmenities('pool')} w={8} h={8} /></Center>
+                            <Center><Text fontSize={'xs'} color={getAmenities('pool')} fontWeight={600}>Pool</Text></Center>
                         </Flex>
                         <Flex direction={'column'} m={3}>
                             <Center><Icon as={GiWoodBeam} color={'green.500'} w={8} h={8} /></Center>
@@ -143,20 +175,20 @@ const PropertyDetails = () => {
                             <Center><Text fontSize={'xs'} color={'green.500'} fontWeight={600}>Air Conditioning</Text></Center>
                         </Flex>
                         <Flex direction={'column'} m={3}>
-                            <Center><Icon as={MdBalcony} color={'red.500'} w={8} h={8} /></Center>
-                            <Center><Text fontSize={'xs'} color={'red.500'} fontWeight={600}>Balcony</Text></Center>
+                            <Center><Icon as={MdBalcony} color={getAmenities('balcony')} w={8} h={8} /></Center>
+                            <Center><Text fontSize={'xs'} color={getAmenities('balcony')} fontWeight={600}>Balcony</Text></Center>
                         </Flex>
                         <Flex direction={'column'} m={3}>
-                            <Center><Icon as={CgGym} color={'red.500'} w={8} h={8} /></Center>
-                            <Center><Text fontSize={'xs'} color={'red.500'} fontWeight={600}>Gym</Text></Center>
+                            <Center><Icon as={CgGym} color={getAmenities('gym')} w={8} h={8} /></Center>
+                            <Center><Text fontSize={'xs'} color={getAmenities('gym')} fontWeight={600}>Gym</Text></Center>
                         </Flex>
                         <Flex direction={'column'} m={3}>
-                            <Center><Icon as={GiWashingMachine} color={'green.500'} w={8} h={8} /></Center>
-                            <Center><Text fontSize={'xs'} color={'green.500'} fontWeight={600}>On-Site Laundry</Text></Center>
+                            <Center><Icon as={GiWashingMachine} color={getAmenities('on-site laundry')} w={8} h={8} /></Center>
+                            <Center><Text fontSize={'xs'} color={getAmenities('on-site laundry')} fontWeight={600}>On-Site Laundry</Text></Center>
                         </Flex>
                         <Flex direction={'column'} m={3}>
-                            <Center><Icon as={GiHomeGarage} color={'red.500'} w={8} h={8} /></Center>
-                            <Center><Text fontSize={'xs'} color={'red.500'} fontWeight={600}>Garage</Text></Center>
+                            <Center><Icon as={GiHomeGarage} color={getAmenities('garage')} w={8} h={8} /></Center>
+                            <Center><Text fontSize={'xs'} color={getAmenities('garage')} fontWeight={600}>Garage</Text></Center>
                         </Flex>
                     </Flex>
 
@@ -195,7 +227,7 @@ const PropertyDetails = () => {
             <Image
                 w={'100%'}
                 h={'100vh'}
-                src={useColorModeValue('https://media.wired.com/photos/59269cd37034dc5f91bec0f1/master/w_2240,c_limit/GoogleMapTA.jpg', 'https://pakistantime.net/wp-content/uploads/2021/02/b49g8bxadrs21.png')}
+                src={useColorModeValue(props.data.mapUrl[0], props.data.mapUrl[1])}
                 objectFit={'cover'}
                 alt={'GoogleMapsLocation'}
                 borderRadius={'md'}

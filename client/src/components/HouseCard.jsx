@@ -14,7 +14,7 @@ const HouseCard = props => {
         <Image
             w={{base: 'auto', lg: 140}}
             h={{base: 200, lg: 140}}
-            src={props.data.imgUrl}
+            src={props.data.imgUrl[0].url}
             objectFit={'cover'}
             alt={'imgURL'}
             borderRadius={'md'}
@@ -23,7 +23,7 @@ const HouseCard = props => {
           <Flex direction={'row'} justifyContent={'space-between'}>
             <Flex direction={'column'}>
               <Text fontSize={'md'} fontWeight={'bold'}>{props.data.title}</Text>
-              <Text fontSize={'sm'}>{props.data.address.split(',')[0].slice(0, 25)}</Text>
+              <Text fontSize={'sm'}>{props.data.address}</Text>
             </Flex>
             <Text fontSize={'md'} fontWeight={'bold'}>{props.data.price}K Algo</Text>
           </Flex>
