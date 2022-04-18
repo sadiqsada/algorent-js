@@ -55,6 +55,28 @@ const Explore = () => {
       });
   };
 
+  const handleImages = (imgUrls) => {
+    let imgUrlsArray = imgUrls.slice(1, -1).split(", ");
+    let formattedImgUrls = [];
+    imgUrlsArray.forEach(img => formattedImgUrls.push({url: img.slice(1, -1)}));
+    return formattedImgUrls;
+  }
+
+  function capitalize(s) {
+    return s[0].toUpperCase() + s.slice(1);
+  }
+
+  const getTitle = (address) => {
+    let title = address.split('-');
+    title = (capitalize(title[title.length-4])+' '+capitalize(title[title.length-3]));
+    return title;
+  };
+
+  const formatAddress = (address) => {
+    return address.split('-').map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+    .join(' ');
+  }
+
   return (
     <Flex justifyContent="center" mt={8}>
       <Box w="60%">
@@ -152,14 +174,17 @@ const Explore = () => {
             icon={<SearchIcon />}
           />
         </Flex>
-        <Grid templateColumns={{base: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)'}} gap={4}>
-          {houses.map(item => (
-            <HouseCard
+        <Grid templateColumns={{base: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)'}} gap={4} mb={5}>
+          {houses.map((item, i) => (
+            <HouseCard key={i}
               data={{
-                imgUrl: item[0],
-                title: 'Heritage Park',
-                address: item[1],
+                imgUrl: handleImages(item[0]),
+                title: getTitle(item[1]),
+                address: formatAddress(item[1]),
                 price: formatPrice(item[2]),
+                numBaths: item[3],
+                numBeds: item[4],
+                mapUrl: [item[5],item[6]],
                 numAmenities: 3,
               }}
             />
