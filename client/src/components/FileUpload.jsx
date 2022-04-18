@@ -24,8 +24,8 @@ export default function Uploader(props) {
     display: 'inline-flex',
     marginBottom: 8,
     marginRight: 8,
-    width: 250,
-    height: 250,
+    maxWidth: 250,
+    maxHeight: 250,
     padding: 4,
     boxSizing: 'border-box'
   };
@@ -38,7 +38,11 @@ export default function Uploader(props) {
 
   const onDrop = useCallback((acceptedFiles) => {
     acceptedFiles.forEach(file =>{
-      setFiles(prevArray => [...prevArray,URL.createObjectURL(file)])
+      const reader = new FileReader()
+      reader.onload = () => {
+        setFiles(prevArray => [...prevArray, reader.result])
+      }
+      reader.readAsDataURL(file)
     })
     setFiles(prevArray => prevArray.slice(0,5))
   }, [files]);
@@ -58,7 +62,7 @@ export default function Uploader(props) {
       isDragActive ? 'teal.500' : 'gray.500',
   );
 
-  const thumbs = files.slice(0,5).map((file) => (
+  const thumbs = files.slice(0,5).map((file,index) => (
     <div style={thumb}>
       <Center style={thumbInner}>
         <Zoom>
@@ -68,19 +72,20 @@ export default function Uploader(props) {
           />
         </Zoom>
       </Center>
-      <CloseIcon onClick={() => removeImage(file)}/>
+      <CloseIcon onClick={() => removeImage(index)}/>
     </div>
   ));
 
   useEffect(() => {
+    console.log(files)
     if (props.onChange) {
       props.onChange(files)
     }
-    files.forEach(file => URL.revokeObjectURL(file.preview));
   }, [files]);
 
-  const removeImage = (item) => {
-    setFiles((oldState) => oldState.filter((file) => file !== item));
+  const removeImage = (index) => {
+    var newArray = files.slice(0,index).concat(files.slice(index+1))
+    setFiles(newArray);
   };
 
   return (
