@@ -18,14 +18,13 @@ import { SearchIcon } from '@chakra-ui/icons';
 import HouseCard from '../components/HouseCard';
 import listAmenities from '../utils/listAmenities';
 import getTimeOfDay from '../utils/getTimeOfDay';
-import formatPrice from '../utils/formatPrice';
 import axios from 'axios';
 const Explore = () => {
   const [searchField, setSearchField] = useState('NY|Kew Gardens|11415');
   const [numBeds, setNumBeds] = useState('1');
   const [numBaths, setNumBaths] = useState('1');
-  const [priceMax, setPriceMax] = useState('0');
-  const [priceMin, setPriceMin] = useState('100000000');
+  const [priceMax, setPriceMax] = useState('10000');
+  const [priceMin, setPriceMin] = useState('0');
   const [amenities, setAmenities] = useState([]);
   const [houses, setHouses] = useState([]);
 
@@ -159,9 +158,9 @@ const Explore = () => {
               data={{
                 imgUrl: item[0],
                 address: item[1],
-                price: formatPrice(item[2]),
-                numBedrooms: Number(item[4]) === 0 ? 1 : item[4],
-                numBathrooms: Number(item[3]) === 0 ? 1 : item[3],
+                price: item[2],
+                numBedrooms: item[4] <= 0 ? 1 : item[4],
+                numBathrooms: item[3] <= 0 ? 1 : item[3],
                 numAmenities: 3,
               }}
             />

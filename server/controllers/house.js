@@ -36,6 +36,7 @@ const explore = async (req, res) => {
       return res.json(houses);
     }
 
+    const houses = [];
     scraper.scrapeRemax(address, filter, (data) => {
       data.forEach(async (house) => {
         const newHouse = new House({
@@ -46,9 +47,10 @@ const explore = async (req, res) => {
           numBedrooms: Number(house[4]) === 0 ? 1 : Number(house[4]),
           numBathrooms: Number(house[3]) === 0 ? 1 : Number(house[3]),
         });
+        houses.push(newHouse);
         await newHouse.save();
       });
-      return res.json(data);
+      return res.json(houses);
     });
   } catch (error) {
     console.error(error);

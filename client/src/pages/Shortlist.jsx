@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Box, Flex, Grid, Text, Divider } from '@chakra-ui/react';
 import HouseCard from '../components/HouseCard';
-import formatPrice from '../utils/formatPrice';
 import axios from 'axios';
 
 const Shortlist = () => {
@@ -38,7 +37,7 @@ const Shortlist = () => {
                 imgUrl: item.imgUrl,
                 title: 'Heritage Park',
                 address: item.address,
-                price: formatPrice(item.price),
+                price: item.price,
                 numAmenities: 3,
               }}
             />
