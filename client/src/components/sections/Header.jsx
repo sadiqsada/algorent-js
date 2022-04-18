@@ -35,6 +35,9 @@ const NavLink = ({ children }) => (
       textDecoration: 'none',
       bg: useColorModeValue('#61db8e', '#21944c'), // useColorModeValue('gray.200', 'gray.700')
     }}
+    _active={{
+      backgroundColor: useColorModeValue('#29b45c', '#21944c')
+    }}
     href={children}
   >
     {children}

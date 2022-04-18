@@ -13,7 +13,7 @@ const HouseCard = props => {
         <Image
             w={{base: 'auto', lg: 140}}
             h={{base: 200, lg: 140}}
-            src={props.data.imgUrl}
+            src={props.data.imgUrl[0].url}
             objectFit={'cover'}
             alt={'imgURL'}
             borderRadius={'md'}
