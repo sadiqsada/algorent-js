@@ -5,7 +5,7 @@ async function scrapeRemax(address, filter, _callback) {
   const { spawnSync } = require('child_process');
   // const pyProg = spawnSync('python3', ['./scraper.py', args]); // For TEST ONLY
   const pyProg = spawnSync('python3', ['./scrapers/scraper.py', args]); // WHEN ACTUAL PROJECT DEPLOY, USE THIS
-  
+
   /*
   pyProg.stdout.on('data', function (data) {
     //console.log(data.toString());
@@ -31,12 +31,10 @@ async function scrapeRemax(address, filter, _callback) {
     output.push(['Error: ' + data.toString()]);
     _callback(output);
   }); */
-  
-
 
   // SpawnSYNC Code
   output = [];
-  const data = pyProg.stdout
+  const data = pyProg.stdout;
   const strData = data.toString().replace(/(\r\n|\n|\r)/gm, '');
   const dataSplit = strData.split('**');
   dataSplit.pop(); // Last value is useless
@@ -47,8 +45,7 @@ async function scrapeRemax(address, filter, _callback) {
     // output[0].replace("[", "").replace("]","")
   }
 
-  if(output.length > 0)
-  {
+  if (output.length > 0) {
     _callback(output);
   }
 }

@@ -6,6 +6,6 @@ const usePyShell = (args, filepath) => {
     // Your Code Goes Here!
     console.log(output);
   });
-}
+};
 
 usePyShell('Hello There!', './example_pyProg.py');
