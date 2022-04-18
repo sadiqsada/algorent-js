@@ -38,6 +38,8 @@ const RecentlyViewed = () => {
                 title: 'Heritage Park',
                 address: item.address,
                 price: item.price,
+                numBedrooms: item.numBedrooms,
+                numBathrooms: item.numBathrooms,
                 numAmenities: 3,
               }}
             />

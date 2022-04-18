@@ -2,6 +2,7 @@ const scraper = require('../scrapers/scraper.js');
 const House = require('../models/HouseModel');
 const User = require('../models/userModel');
 const formatPrice = require('../utils/formatPrice');
+// const formatAddress = require('../utils/formatAddress');
 
 const explore = async (req, res) => {
   try {
@@ -33,6 +34,7 @@ const explore = async (req, res) => {
         house.numBedrooms,
         zipCode,
       ]);
+      console.log(houses);
       return res.json(houses);
     }
 
@@ -47,7 +49,15 @@ const explore = async (req, res) => {
           numBedrooms: Number(house[4]) === 0 ? 1 : Number(house[4]),
           numBathrooms: Number(house[3]) === 0 ? 1 : Number(house[3]),
         });
-        houses.push(newHouse);
+        const newHouseArr = [
+          newHouse.imgUrl,
+          newHouse.address,
+          newHouse.price,
+          newHouse.numBathrooms,
+          newHouse.numBedrooms,
+          newHouse.zipCode,
+        ];
+        houses.push(newHouseArr);
         await newHouse.save();
       });
       return res.json(houses);
@@ -59,8 +69,8 @@ const explore = async (req, res) => {
 
 const shortlist = async (req, res) => {
   try {
-    const { address, zipCode } = req.body;
-    const house = await House.find({ address, zipCode });
+    const { address } = req.body;
+    const house = await House.find({ address });
     const user = await User.findById(req.userId);
     for (let i = 0; i < user.shortlistedHouses.length; i++) {
       const item = user.shortlistedHouses[i];
@@ -92,9 +102,9 @@ const getShortlist = async (req, res) => {
 const recentlyViewed = async (req, res) => {
   try {
     const { address } = req.body;
-    const stateZip = address.split(', ')[2];
-    const zipCode = stateZip.split(' ');
-    const house = await House.find({ zipCode, address });
+    // const stateZip = address.split(', ')[2];
+    // const zipCode = stateZip.split(' ');
+    const house = await House.find({ address });
     const user = await User.findById(req.userId);
     if (user.recentlyViewed.length === 0) {
       user.recentlyViewed.push(house[0]);

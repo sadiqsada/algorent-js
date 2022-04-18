@@ -45,15 +45,15 @@ const PropertyDetails = () => {
 
   const handleShortlist = async () => {
     const { address } = props.data;
-    console.log(address);
-    const stateZip = address.split(', ')[2];
-    console.log(stateZip);
-    const zipCode = stateZip.split(' ')[1];
-    console.log(zipCode);
+    // console.log(address);
+    // const stateZip = address.split(', ')[2];
+    // console.log(stateZip);
+    // const zipCode = stateZip.split(' ')[1];
+    // console.log(zipCode);
     try {
       const response = await axios.post(
         'http://localhost:8000/shortlist',
-        { zipCode, address },
+        { address },
         {
           withCredentials: true,
           credentials: 'include',

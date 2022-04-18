@@ -7,7 +7,6 @@ const HouseCard = props => {
   const cardBackground = useColorModeValue('gray.100', 'gray.900');
   const amenitiesBackground = useColorModeValue('purple.200', 'purple.900');
   const arrowColor = useColorModeValue('purple.200', 'purple.900'); // useColorModeValue('#61db8e', '#21944c');
-  
   return (
     <Flex bg={cardBackground} borderRadius={'md'}>
       <Flex direction={{base: 'column', lg: 'row'}} flexGrow={1}>
@@ -23,7 +22,7 @@ const HouseCard = props => {
           <Flex direction={'row'} justifyContent={'space-between'}>
             <Flex direction={'column'}>
               <Text fontSize={'md'} fontWeight={'bold'}>{props.data.numBedrooms} beds, {props.data.numBathrooms} baths</Text>
-              <Text fontSize={'sm'}>{props.data.address.split(',')[0].slice(0, 25)}</Text>
+              <Text fontSize={'sm'}>{props.data.address.slice(0, 15)}</Text>
             </Flex>
             <Text fontSize={'md'} fontWeight={'bold'}>{props.data.price}K Algo</Text>
           </Flex>

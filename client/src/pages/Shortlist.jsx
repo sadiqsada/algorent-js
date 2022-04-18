@@ -36,6 +36,8 @@ const Shortlist = () => {
               data={{
                 imgUrl: item.imgUrl,
                 address: item.address,
+                numBedrooms: item.numBedrooms,
+                numBathrooms: item.numBathrooms,
                 price: item.price,
                 numAmenities: 3,
               }}
