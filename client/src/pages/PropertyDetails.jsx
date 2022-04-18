@@ -48,11 +48,11 @@ const PropertyDetails = () => {
         if (destinationRef.current.value === '') {
           return
         }
-        const directionsService = new google.maps.DirectionsService();
+        const directionsService = new window.google.maps.DirectionsService();
         const results = await directionsService.route({
           origin: props.data.address,
           destination: destinationRef.current.value,
-          travelMode: google.maps.TravelMode.DRIVING,
+          travelMode: window.google.maps.TravelMode.DRIVING,
         });
         const distance = results.routes[0].legs[0].distance.text;
         const duration = results.routes[0].legs[0].duration.text;
@@ -118,7 +118,7 @@ const PropertyDetails = () => {
                     <Flex direction={'row'} mb={5}>
                         <Flex direction={'column'}>
                             <Text fontSize={'xl'} fontWeight={600} alt={'Title'}>{props.data.title}</Text>
-                            <Text mt={5} fontSize={'lg'} fontWeight={500} textColor={useColorModeValue('#2eca6a', '#176534')} alt={'Contact'} >(634)-777-****</Text>
+                            <Text mt={5} fontSize={'lg'} fontWeight={500} textColor={'#2eca6a'} alt={'Contact'} >(634)-777-****</Text>
                         </Flex>
                         <Spacer/>
                         <Flex direction={'column'}>
@@ -205,7 +205,7 @@ const PropertyDetails = () => {
                                 isRound
                                 onClick={() => {alert("FAVORITE!");}}
                             />
-                            <Center mt={1}><Text fontSize={'md'} color={useColorModeValue('red.500', 'red.200')} fontWeight={600}>Fav</Text></Center>
+                            <Center mt={1}><Text fontSize={'md'} color={'red.500'} fontWeight={600}>Fav</Text></Center>
                             </Flex>
                             <Flex direction={'column'}>
                             <IconButton
@@ -216,7 +216,7 @@ const PropertyDetails = () => {
                                 isRound
                                 onClick={() => {alert("BUY!");}}
                             />
-                            <Center mt={1}><Text fontSize={'md'} color={useColorModeValue('purple.500', 'purple.200')} fontWeight={600}>Cart</Text></Center>
+                            <Center mt={1}><Text fontSize={'md'} color={'purple.500'} fontWeight={600}>Cart</Text></Center>
                             </Flex>
                         </Stack>
                     </Center>
@@ -227,7 +227,7 @@ const PropertyDetails = () => {
             <Image
                 w={'100%'}
                 h={'100vh'}
-                src={useColorModeValue(props.data.mapUrl[0], props.data.mapUrl[1])}
+                src={props.data.mapUrl[0]}
                 objectFit={'cover'}
                 alt={'GoogleMapsLocation'}
                 borderRadius={'md'}
@@ -235,7 +235,7 @@ const PropertyDetails = () => {
             />
 
             <Box ref={popupModal} pos={'absolute'} w={'100%'} h={'94vh'} zIndex={10} display={'none'} overflow={'hidden'}>
-                <Box pos={'absolute'} w={'100%'} h={'100%'} opacity={0.5} backgroundColor={useColorModeValue('gray.900', 'gray.400')}
+                <Box pos={'absolute'} w={'100%'} h={'100%'} opacity={0.5} backgroundColor={'gray.900'}
                 onClick={() => {modalPopUp(null)}} cursor={'pointer'}></Box>
                 <Center pos={'absolute'} w={'100%'} h={'100%'} pointerEvents={'none'}>
                     <Image pointerEvents={'auto'} ref={popupModalImg} objectFit={'cover'} minW={600} minH={400} w={'60vw'} h={'auto'} maxW={'90vw'} maxH={'85vh'}/>
