@@ -1,6 +1,6 @@
 async function scrapeRemax(address, filter, _callback) {
   // Note: Address MUST be in form <state>|<city>|<zip>
-  const args = address + '**' + filter; //If one of the fields is not suppled, make it equal to 0
+  const args = address + '**' + filter; // If one of the fields is not suppled, make it equal to 0
   let output = [];
   const { spawnSync } = require('child_process');
   // const pyProg = spawnSync('python3', ['./scraper.py', args]); // For TEST ONLY
