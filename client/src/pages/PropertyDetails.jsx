@@ -33,6 +33,7 @@ const PropertyDetails = () => {
   const location = useLocation();
   const { props } = location.state;
   const images = props.data.imgUrl;
+  const mapColor = useColorModeValue(props.data.mapUrl[0], props.data.mapUrl[1]);
   console.log(props.data.mapUrl);
 
   const popupModal = useRef(null);
@@ -409,7 +410,7 @@ const PropertyDetails = () => {
         w={'100%'}
         h={'100vh'}
         objectFit={'cover'}
-        src={props.data.mapUrl[0]}
+        src={mapColor}
         alt={'GoogleMapsLocation'}
         borderRadius={'md'}
         zIndex={0}
