@@ -263,6 +263,11 @@ const tokenIsValid = async (req, res) => {
   }
 };
 
+const getUser = async (req, res) => {
+  const user = await User.findById(req.userId);
+  return res.json({ name: user.firstName });
+};
+
 module.exports = {
   register,
   login,
@@ -271,4 +276,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   tokenIsValid,
+  getUser,
 };

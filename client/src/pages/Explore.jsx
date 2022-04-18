@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Box,
   Divider,
@@ -18,8 +18,10 @@ import { SearchIcon } from '@chakra-ui/icons';
 import HouseCard from '../components/HouseCard';
 import listAmenities from '../utils/listAmenities';
 import getTimeOfDay from '../utils/getTimeOfDay';
+import capitalizeFirstLetter from '../utils/capitalizeFirstLetter';
 import axios from 'axios';
 const Explore = () => {
+  const [displayName, setDisplayName] = useState('');
   const [searchField, setSearchField] = useState('NY|Kew Gardens|11415');
   const [numBeds, setNumBeds] = useState('1');
   const [numBaths, setNumBaths] = useState('1');
@@ -45,7 +47,12 @@ const Explore = () => {
     axios
       .post('http://localhost:8000/explore', {
         address: searchField,
-        filter: { 'minBeds': numBeds, 'minBaths': numBaths, 'minPrice': priceMin, 'maxPrice': priceMax }
+        filter: {
+          minBeds: numBeds,
+          minBaths: numBaths,
+          minPrice: priceMin,
+          maxPrice: priceMax,
+        },
       })
       .then(response => {
         setHouses(response.data);
@@ -55,10 +62,22 @@ const Explore = () => {
       });
   };
 
+  useEffect(() => {
+    const getDisplayName = async () => {
+      const response = await axios.get('http://localhost:8000/getUser', {
+        withCredentials: true,
+        credentials: 'include',
+      });
+      const currentFirstname = capitalizeFirstLetter(response.data.name);
+      setDisplayName(currentFirstname);
+    };
+    getDisplayName();
+  }, []);
+
   return (
     <Flex justifyContent="center" mt={8}>
       <Box w="60%">
-        <Text fontSize="2xl">{getTimeOfDay()}, Sadiq</Text>
+        <Text fontSize="2xl">{getTimeOfDay()}, {displayName}</Text>
         <Divider />
         <Flex mt={4} mb={4}>
           <Input
@@ -151,7 +170,10 @@ const Explore = () => {
             icon={<SearchIcon />}
           />
         </Flex>
-        <Grid templateColumns={{base: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)'}} gap={4}>
+        <Grid
+          templateColumns={{ base: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)' }}
+          gap={4}
+        >
           {houses.map(item => (
             <HouseCard
               key={item[1]}

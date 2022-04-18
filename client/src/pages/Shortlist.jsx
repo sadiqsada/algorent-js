@@ -35,7 +35,6 @@ const Shortlist = () => {
               key={item.address}
               data={{
                 imgUrl: item.imgUrl,
-                title: 'Heritage Park',
                 address: item.address,
                 price: item.price,
                 numAmenities: 3,
