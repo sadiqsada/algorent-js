@@ -80,8 +80,9 @@ def process_remax_page_fast(url):
 	divs = soup.find_all("div", class_="data-value")
 	#print(str(divs))
 	ref_string = "home-details/"
-	address = url[url.rfind(ref_string) + len(ref_string):]
-	address = address[0:address.index("/")]
+	title = soup.find_all("title")[0]
+	address = title.contents[0]#
+	address = address[0:address.index('|')]
 	link = "https://maps.googleapis.com/maps/api/staticmap?center=" + address + "&zoom=13&scale=1&size=600x1000&maptype=roadmap&format=png&key=AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4"
 	dark_hex = "0F1210"
 	night_link = "https://maps.googleapis.com/maps/api/staticmap?center=" + address + "&zoom=13&scale=1&size=600x1000&maptype=roadmap&format=png&key=AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4&style=element%3Ageometry%7Ccolor%3A0x"+dark_hex+"&style=element%3Alabels.text.stroke%7Ccolor%3A0x242f3e&style=element%3Alabels.text.fill%7Ccolor%3A0x746855&style=feature%3Aadministrative.locality%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Apoi%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Apoi.park%7Celement%3Ageometry%7Ccolor%3A0x263c3f&style=feature%3Apoi.park%7Celement%3Alabels.text.fill%7Ccolor%3A0x6b9a76&style=feature%3Aroad%7Celement%3Ageometry%7Ccolor%3A0x38414e&style=feature%3Aroad%7Celement%3Ageometry.stroke%7Ccolor%3A0x212a37&style=feature%3Aroad%7Celement%3Alabels.text.fill%7Ccolor%3A0x9ca5b3&style=feature%3Aroad.highway%7Celement%3Ageometry%7Ccolor%3A0x746855&style=feature%3Aroad.highway%7Celement%3Ageometry.stroke%7Ccolor%3A0x1f2835&style=feature%3Aroad.highway%7Celement%3Alabels.text.fill%7Ccolor%3A0xf3d19c&style=feature%3Atransit%7Celement%3Ageometry%7Ccolor%3A0x2f3948&style=feature%3Atransit.station%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Awater%7Celement%3Ageometry%7Ccolor%3A0x17263c&style=feature%3Awater%7Celement%3Alabels.text.fill%7Ccolor%3A0x515c6d&style=feature%3Awater%7Celement%3Alabels.text.stroke%7Ccolor%3A0x17263" #google maps api link
@@ -275,4 +276,5 @@ print("list: \n", list)
 #scrape_remax_full("https://www.remax.com/homes-for-sale/ny/Ozone+Park/zip/11417", 15)
 #test = json.loads('{"@context":"http://schema.org","@type":"Event","startDate":"2022-03-27T13:00:00","endDate":"2022-03-27T14:30:00","name":"Open House: 1:00PM - 2:30PM","description":"Come check out 8429 153RD AVE APT 2E, Howard Beach, NY 11414 on 2022-03-27","url":"https://www.remax.com/ny/howard-beach/home-details/8429-153rd-ave-apt-2e-howard-beach-ny-11414/103119237366100466","offers":{"@type":"Offer","priceCurrency":"USD","price":458000,"availability":"http://schema.org/InStock","url":"https://www.remax.com/ny/howard-beach/home-details/8429-153rd-ave-apt-2e-howard-beach-ny-11414/103119237366100466","validFrom":"2022-03-27T13:00:00"},"image":"https://s3.amazonaws.com/rets-images-matrix-hgar/639e6f09cbbbd29fb31d6800d864ae96563847d5-1-medium.jpeg","performer":{"@type":"Thing","name":"Chuan Wang Chen"},"location":{"@type":"Place","name":"8429 153RD AVE APT 2E","address":{"@type":"PostalAddress","streetAddress":"8429 153RD AVE APT 2E","addressLocality":"Howard Beach","addressRegion":"NY","postalCode":"11414","addressCountry":"USA"}}}')
 #print("Test is: \n", test)
+#process_remax_page_fast("https://www.remax.com/ny/jamaica/home-details/84-50-169th-st-102-jamaica-ny-11432/9637000322339336887/M00000489/3378032")
 
