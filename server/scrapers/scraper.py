@@ -4,7 +4,7 @@ import sys
 from warnings import filters
 from webbrowser import get
 import requests
-from geopy.geocoders import Nominatim
+#from geopy.geocoders import Nominatim
 from bs4 import BeautifulSoup as bs
 import time
 import ast
@@ -72,7 +72,7 @@ def scrape_remax_full(url, limit):
 def process_remax_page_fast(url):
 	page = requests.get(url)
 	soup = bs(page.content, "lxml")
-	info_list = {}
+	info_list = ""
 	image = [] #kept like this in case we want more images in the future
 	title = str(soup.find("title"))
 	address = title[7:title.find(" |")]
@@ -82,7 +82,10 @@ def process_remax_page_fast(url):
 	ref_string = "home-details/"
 	address = url[url.rfind(ref_string) + len(ref_string):]
 	address = address[0:address.index("/")]
-	link = "https://maps.googleapis.com/maps/api/staticmap?center=" + address + "&zoom=13&scale=1&size=600x1000&maptype=roadmap&format=png&key=AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4" #google maps api link
+	link = "https://maps.googleapis.com/maps/api/staticmap?center=" + address + "&zoom=13&scale=1&size=600x1000&maptype=roadmap&format=png&key=AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4"
+	dark_hex = "0F1210"
+	night_link = "https://maps.googleapis.com/maps/api/staticmap?center=" + address + "&zoom=13&scale=1&size=600x1000&maptype=roadmap&format=png&key=AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4&style=element%3Ageometry%7Ccolor%3A0x"+dark_hex+"&style=element%3Alabels.text.stroke%7Ccolor%3A0x242f3e&style=element%3Alabels.text.fill%7Ccolor%3A0x746855&style=feature%3Aadministrative.locality%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Apoi%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Apoi.park%7Celement%3Ageometry%7Ccolor%3A0x263c3f&style=feature%3Apoi.park%7Celement%3Alabels.text.fill%7Ccolor%3A0x6b9a76&style=feature%3Aroad%7Celement%3Ageometry%7Ccolor%3A0x38414e&style=feature%3Aroad%7Celement%3Ageometry.stroke%7Ccolor%3A0x212a37&style=feature%3Aroad%7Celement%3Alabels.text.fill%7Ccolor%3A0x9ca5b3&style=feature%3Aroad.highway%7Celement%3Ageometry%7Ccolor%3A0x746855&style=feature%3Aroad.highway%7Celement%3Ageometry.stroke%7Ccolor%3A0x1f2835&style=feature%3Aroad.highway%7Celement%3Alabels.text.fill%7Ccolor%3A0xf3d19c&style=feature%3Atransit%7Celement%3Ageometry%7Ccolor%3A0x2f3948&style=feature%3Atransit.station%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Awater%7Celement%3Ageometry%7Ccolor%3A0x17263c&style=feature%3Awater%7Celement%3Alabels.text.fill%7Ccolor%3A0x515c6d&style=feature%3Awater%7Celement%3Alabels.text.stroke%7Ccolor%3A0x17263" #google maps api link
+
 	#print("address is: ", address) 
 	amens = [0,0,0]
 	counter = 0
@@ -97,8 +100,11 @@ def process_remax_page_fast(url):
 				break
 	amens = amens[1:] #first 2 are the same
 	#print("amens: ", amens)
-	price = max([t.contents[0].replace('\n', ' ').replace(' ','') for t in divs if "$" in t.contents[0]])
+	prices = [t.contents[0].replace('\n', ' ').replace(' ','') for t in divs if "$" in t.contents[0]]
+	price = max(prices if len(prices) > 0 else [300000, 0])
 	#print("Prices?: ", price)
+	num_imgs = 5
+	counter = 0
 	for img in all_img:
 		img_url = None
 		try:
@@ -107,8 +113,10 @@ def process_remax_page_fast(url):
 			pass
 		if(img_url is not None and len(img_url) > 10):
 			image.append(img_url)#We only need the first
-			break
-	print(image[0], "|", address, "|", price, "|", amens[0], "|", amens[1], "|", link, "**") # amens[0] -> numBathrooms
+		if(counter >= num_imgs):
+			break 
+		counter+=1
+	info_list = str(image) + "|" + address + "|" + str(price) + "|" + str(amens[0]) + "|" + str(amens[1]) + "|" + link + "|" + night_link + "**" # amens[0] -> numBathrooms
 																			  # amens[1] -> numBedrooms
 	return info_list
 
@@ -131,7 +139,8 @@ def process_remax_page(url):
 	info_list["image"] = image
 	info_list["address"] =  address
 	return info_list
-
+	
+'''
 def get_coords(address):
 	#address = "32-22 204TH ST BAYSIDE, NY 11361"
 	address.replace(" ", "+")
@@ -139,6 +148,7 @@ def get_coords(address):
 	location = geolocator.geocode("175 5th Avenue NYC")
 	resp_json_payload = (location.latitude, location.longitude)
 	return resp_json_payload
+'''
 
 def get_complete_addr_link(address): #format of address : {"country": ,"state": , "city": , "zip": }
 	try:
@@ -166,9 +176,9 @@ def house_info_from_address(address): #format of address : {"country": ,"state":
 	#print("Search Link: ", SEARCH_URL)
 	display_page_links = scrape_remax_fast(SEARCH_URL, 15)
 	#print("Links Obtained: ", display_page_links)
-	house_info = []
+	house_info = ""
 	for link in display_page_links:
-		house_info.append(process_remax_page_fast(link))
+		house_info += process_remax_page_fast(link)
 	return house_info
 
 def house_info_from_address_filter(address, filters):
@@ -183,9 +193,9 @@ def house_info_from_address_filter(address, filters):
 	display_page_links = scrape_remax_fast_filter(SEARCH_URL, 15, filter)
 	#print(display_page_links)
 	#print("Links Obtained: ", display_page_links)
-	house_info = []
+	house_info = ""
 	for link in display_page_links:
-		house_info.append(process_remax_page_fast(link[0]))
+		house_info += process_remax_page_fast(link[0])
 	return house_info
 
 #print("Arguments Given: ", sys.argv)
@@ -203,8 +213,10 @@ if(len(my_args) > 0):
 	#house_info = house_info_from_address(address)
 	if(filter != None and len(filter) > 0):
 		house_info = house_info_from_address_filter(address, filter)
+		print(house_info)
 	else:
 		house_info = house_info_from_address(address)
+		print(house_info)
 
 
 
