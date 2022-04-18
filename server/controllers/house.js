@@ -34,7 +34,6 @@ const explore = async (req, res) => {
         house.numBedrooms,
         zipCode,
       ]);
-      console.log(houses);
       return res.json(houses);
     }
 
