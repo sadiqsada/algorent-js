@@ -12,7 +12,7 @@ const HouseSchema = new Schema(
     numBathrooms: { type: Number },
     size: { type: Number },
     contact: { type: String },
-    amenities: { type:[String]},
+    amenities: { type: [String] },
   },
   { timestamps: true }
 );

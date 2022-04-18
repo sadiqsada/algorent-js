@@ -7,7 +7,7 @@ const app = express();
 const PORT = 8000;
 dotenv.config();
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json({limit:'20mb'}));
+app.use(express.json({ limit: '20mb' }));
 app.use(cookieParser());
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
