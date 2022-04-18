@@ -7,7 +7,7 @@ async function pythonShell(args, filePath, _callback) {
 
   pyProg.stdout.on('data', (data) => {
     data = data.toString();
-    // You can do anything fancy with the output (String) here 
+    // You can do anything fancy with the output (String) here
     output.push(data);
     _callback(output);
   });

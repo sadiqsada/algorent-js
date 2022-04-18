@@ -1,14 +1,14 @@
 const scraper = require('./scraper.js');
-// EXAMPLE FUNCTION ON HOW TO USE scrape_remax 
+// EXAMPLE FUNCTION ON HOW TO USE scrape_remax
 const useScraper = (address, filter) => {
   // call first function and pass in a callback function which
   // first function runs when it has completed
   scraper.scrapeRemax(address, filter, (output) => {
-    // WOOHOO WE GOT THE INFO IN OUTPUT 
-    // Your Code Goes Here! 
+    // WOOHOO WE GOT THE INFO IN OUTPUT
+    // Your Code Goes Here!
     console.log(output);
   });
-}
+};
 
 useScraper(
   'NY|Ozone Park|11417',
@@ -19,4 +19,4 @@ useScraper(
 
 // NOTE: Filter CAN be BLANK (Empty String)
 // use_scraper("NY|Jamaica|11432", "")
-// ------END OF EXAMPLE------------------------ 
+// ------END OF EXAMPLE------------------------
