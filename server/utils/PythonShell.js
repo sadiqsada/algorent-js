@@ -6,13 +6,13 @@ async function pythonShell(args, filePath, _callback) {
   const pyProg = spawn('python', [filePath, args]); //New PyProcess
 
   pyProg.stdout.on('data', function (data) {
-    data = data.toString()
+    data = data.toString();
     /**You can do anything fancy with the output (String) here */
     output.push(data);
     _callback(output);
   });
   pyProg.stderr.on('data', (data) => {
-    data = data.toString()
+    data = data.toString();
     output.push(['Error: ' + data.toString()]);
     _callback(output);
   });
