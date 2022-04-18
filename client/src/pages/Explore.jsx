@@ -24,8 +24,8 @@ const Explore = () => {
   const [searchField, setSearchField] = useState('NY|Kew Gardens|11415');
   const [numBeds, setNumBeds] = useState('1');
   const [numBaths, setNumBaths] = useState('1');
-  const [priceMax, setPriceMax] = useState('');
-  const [priceMin, setPriceMin] = useState('');
+  const [priceMax, setPriceMax] = useState('0');
+  const [priceMin, setPriceMin] = useState('100000000');
   const [amenities, setAmenities] = useState([]);
   const [houses, setHouses] = useState([]);
 

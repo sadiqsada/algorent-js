@@ -1,14 +1,30 @@
 const scraper = require('../scrapers/scraper.js');
 const House = require('../models/HouseModel');
 const User = require('../models/userModel');
+const formatPrice = require('../utils/formatPrice');
 
 const explore = async (req, res) => {
   try {
     const { address, filter } = req.body;
     const zipCode = address.split('|')[2];
-    const results = await House.find({ zipCode });
+    const { minBeds, minBaths, minPrice, maxPrice } = filter;
+    let filtersActive = false;
+    if (
+      Number(minBeds) > 1 ||
+      Number(minBaths) > 1 ||
+      Number(minPrice) !== 0 ||
+      Number(maxPrice !== 100000000)
+    ) {
+      filtersActive = true;
+    }
+    const results = await House.find({
+      zipCode,
+      numBedrooms: { $gte: minBeds },
+      numBathrooms: { $gte: minBaths },
+      price: { $gte: minPrice, $lte: maxPrice },
+    });
 
-    if (results.length > 0) {
+    if ((filtersActive && results.length > 0) || results.length > 8) {
       const houses = results.map((house) => [
         house.imgUrl,
         house.address,
@@ -21,16 +37,14 @@ const explore = async (req, res) => {
     }
 
     scraper.scrapeRemax(address, filter, (data) => {
-      console.log('data')
-      console.log(data)
       data.forEach(async (house) => {
         const newHouse = new House({
           imgUrl: house[0],
           address: house[1],
-          price: house[2],
+          price: Number(formatPrice(house[2])),
           zipCode,
-          numBedrooms: Number(house[4]) === 0 ? 1 : house[4],
-          numBathrooms: Number(house[3]) === 0 ? 1 : house[3],
+          numBedrooms: Number(house[4]) === 0 ? 1 : Number(house[4]),
+          numBathrooms: Number(house[3]) === 0 ? 1 : Number(house[3]),
         });
         await newHouse.save();
       });
