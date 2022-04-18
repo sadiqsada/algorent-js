@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Box, Flex, Grid, Text, Divider } from '@chakra-ui/react';
 import HouseCard from '../components/HouseCard';
 import axios from 'axios';
+import handleImages from '../utils/handleImages';
 
 const RecentlyViewed = () => {
   const [houses, setHouses] = useState([]);
@@ -34,7 +35,7 @@ const RecentlyViewed = () => {
             <HouseCard
               key={item.address}
               data={{
-                imgUrl: item.imgUrl,
+                imgUrl: handleImages(item.imgUrl),
                 title: 'Heritage Park',
                 address: item.address,
                 price: item.price,

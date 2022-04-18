@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Box, Flex, Grid, Text, Divider } from '@chakra-ui/react';
 import HouseCard from '../components/HouseCard';
 import axios from 'axios';
-
+import handleImages from '../utils/handleImages';
 const Shortlist = () => {
   const [houses, setHouses] = useState([]);
 
@@ -34,11 +34,12 @@ const Shortlist = () => {
             <HouseCard
               key={item.address}
               data={{
-                imgUrl: item.imgUrl,
+                imgUrl: handleImages(item.imgUrl),
                 address: item.address,
                 numBedrooms: item.numBedrooms,
                 numBathrooms: item.numBathrooms,
                 price: item.price,
+                mapUrls: item.mapUrls,
                 numAmenities: 3,
               }}
             />

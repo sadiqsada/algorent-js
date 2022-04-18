@@ -20,6 +20,8 @@ import listAmenities from '../utils/listAmenities';
 import getTimeOfDay from '../utils/getTimeOfDay';
 import capitalizeFirstLetter from '../utils/capitalizeFirstLetter';
 import axios from 'axios';
+import handleImages from '../utils/handleImages';
+
 const Explore = () => {
   const [displayName, setDisplayName] = useState('');
   const [searchField, setSearchField] = useState('NY|Kew Gardens|11415');
@@ -73,27 +75,6 @@ const Explore = () => {
     };
     getDisplayName();
   }, []);
-  const handleImages = (imgUrls) => {
-    let imgUrlsArray = imgUrls.slice(1, -1).split(", ");
-    let formattedImgUrls = [];
-    imgUrlsArray.forEach(img => formattedImgUrls.push({url: img.slice(1, -1)}));
-    return formattedImgUrls;
-  }
-
-  function capitalize(s) {
-    return s[0].toUpperCase() + s.slice(1);
-  }
-
-  // const getTitle = (address) => {
-  //   let title = address.split('-');
-  //   title = (capitalize(title[title.length-4])+' '+capitalize(title[title.length-3]));
-  //   return title;
-  // };
-
-  const formatAddress = (address) => {
-    return address.split('-').map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-    .join(' ');
-  }
 
   return (
     <Flex justifyContent="center" mt={8}>
@@ -196,10 +177,10 @@ const Explore = () => {
             <HouseCard key={i}
               data={{
                 imgUrl: handleImages(item[0]),
-                address: formatAddress(item[1]),
-                price: formatPrice(item[2]),
-                numBaths: item[3],
-                numBeds: item[4],
+                address: (item[1]),
+                price: (item[2]),
+                numBathrooms: item[3],
+                numBedrooms: item[4],
                 mapUrl: [item[5],item[6]],
                 numAmenities: 3,
               }}

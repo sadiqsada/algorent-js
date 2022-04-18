@@ -32,7 +32,8 @@ const explore = async (req, res) => {
         house.price,
         house.numBathrooms,
         house.numBedrooms,
-        zipCode,
+        house.mapUrls[0],
+        house.mapUrls[1],
       ]);
       return res.json(houses);
     }
@@ -47,6 +48,7 @@ const explore = async (req, res) => {
           zipCode,
           numBedrooms: Number(house[4]) === 0 ? 1 : Number(house[4]),
           numBathrooms: Number(house[3]) === 0 ? 1 : Number(house[3]),
+          mapUrls: [house[5], house[6]],
         });
         const newHouseArr = [
           newHouse.imgUrl,
@@ -54,7 +56,8 @@ const explore = async (req, res) => {
           newHouse.price,
           newHouse.numBathrooms,
           newHouse.numBedrooms,
-          newHouse.zipCode,
+          newHouse.mapUrls[0],
+          newHouse.mapUrls[1],
         ];
         houses.push(newHouseArr);
         await newHouse.save();
@@ -69,7 +72,9 @@ const explore = async (req, res) => {
 const shortlist = async (req, res) => {
   try {
     const { address } = req.body;
-    const house = await House.find({ address });
+    const stateZip = address.split(', ')[2];
+    const zipCode = stateZip.split(' ')[1];
+    const house = await House.find({ zipCode, address });
     const user = await User.findById(req.userId);
     for (let i = 0; i < user.shortlistedHouses.length; i++) {
       const item = user.shortlistedHouses[i];
@@ -101,9 +106,9 @@ const getShortlist = async (req, res) => {
 const recentlyViewed = async (req, res) => {
   try {
     const { address } = req.body;
-    // const stateZip = address.split(', ')[2];
-    // const zipCode = stateZip.split(' ');
-    const house = await House.find({ address });
+    const stateZip = address.split(', ')[2];
+    const zipCode = stateZip.split(' ')[1];
+    const house = await House.find({ zipCode, address });
     const user = await User.findById(req.userId);
     if (user.recentlyViewed.length === 0) {
       user.recentlyViewed.push(house[0]);

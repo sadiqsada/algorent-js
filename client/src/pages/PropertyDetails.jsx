@@ -29,22 +29,21 @@ import { CgGym, CgSmartHomeWashMachine } from 'react-icons/cg';
 import { BsCartPlusFill } from 'react-icons/bs';
 import { useRef, useState } from 'react';
 import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
+import axios from 'axios';
 
 const PropertyDetails = () => {
   const location = useLocation();
   const { props } = location.state;
+  const shortlistColor = useColorModeValue('red.500', 'red.200');
 
   const handleShortlist = async () => {
     const { address } = props.data;
-    // console.log(address);
-    // const stateZip = address.split(', ')[2];
-    // console.log(stateZip);
-    // const zipCode = stateZip.split(' ')[1];
-    // console.log(zipCode);
+    const stateZip = address.split(', ')[2];
+    const zipCode = stateZip.split(' ')[1];
     try {
       const response = await axios.post(
         'http://localhost:8000/shortlist',
-        { address },
+        { address, zipCode },
         {
           withCredentials: true,
           credentials: 'include',
@@ -75,7 +74,6 @@ const PropertyDetails = () => {
     props.data.mapUrl[0],
     props.data.mapUrl[1]
   );
-  console.log(props.data.mapUrl);
 
   const popupModal = useRef(null);
   const popupModalImg = useRef(null);
@@ -419,7 +417,7 @@ const PropertyDetails = () => {
                 <Center mt={1}>
                   <Text
                     fontSize={'md'}
-                    color={useColorModeValue('red.500', 'red.200')}
+                    color={shortlistColor}
                     fontWeight={600}
                   >
                     Fav

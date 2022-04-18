@@ -10,6 +10,7 @@ const HouseSchema = new Schema(
     imgUrl: { type: String, required: true },
     numBedrooms: { type: Number, required: true },
     numBathrooms: { type: Number, required: true },
+    mapUrls: { type: [String] },
   },
   { timestamps: true }
 );
