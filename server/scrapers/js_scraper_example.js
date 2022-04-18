@@ -7,14 +7,10 @@ function use_scraper(address, filter) {
     /*** WOOHOO WE GOT THE INFO IN OUTPUT */
     /** Your Code Goes Here! */
     console.log(output);
-
   });
 }
 
-use_scraper(
-  'NY|Kew Gardens|11415',
-  ''
-); // PLEASE GIVE ADDRESS IN FORM: "<state>|<city>|zip"
+use_scraper('NY|Kew Gardens|11415', ''); // PLEASE GIVE ADDRESS IN FORM: "<state>|<city>|zip"
 //Filter NEEDS to look like this: '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}'
 //If any min fields aren't given by user, just make them 0
 

@@ -66,11 +66,11 @@ const Explore = () => {
     return s[0].toUpperCase() + s.slice(1);
   }
 
-  const getTitle = (address) => {
-    let title = address.split('-');
-    title = (capitalize(title[title.length-4])+' '+capitalize(title[title.length-3]));
-    return title;
-  };
+  // const getTitle = (address) => {
+  //   let title = address.split('-');
+  //   title = (capitalize(title[title.length-4])+' '+capitalize(title[title.length-3]));
+  //   return title;
+  // };
 
   const formatAddress = (address) => {
     return address.split('-').map((s) => s.charAt(0).toUpperCase() + s.substring(1))
@@ -179,7 +179,7 @@ const Explore = () => {
             <HouseCard key={i}
               data={{
                 imgUrl: handleImages(item[0]),
-                title: getTitle(item[1]),
+                // title: getTitle(item[1]),
                 address: formatAddress(item[1]),
                 price: formatPrice(item[2]),
                 numBaths: item[3],
