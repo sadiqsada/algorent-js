@@ -21,7 +21,7 @@ import handleImages from '../utils/handleImages';
 
 const Explore = () => {
   const [displayName, setDisplayName] = useState('');
-  const [searchField, setSearchField] = useState('NY|Kew Gardens|11415');
+  const [searchField, setSearchField] = useState('NY|Jamaica|11432');
   const [numBeds, setNumBeds] = useState('1');
   const [numBaths, setNumBaths] = useState('1');
   const [priceMax, setPriceMax] = useState('10000');
@@ -66,12 +66,11 @@ const Explore = () => {
 
   return (
     <Flex justifyContent="center" mt={8}>
-      <Box w="60%">
+      <Box w={{ base: '90%', xl: '70%' }}>
         <Text fontSize="2xl">{getTimeOfDay()}{displayName ? `, ${displayName}` : null}</Text>
         <Divider />
         <Flex mt={4} mb={4}>
           <Input
-            placeholder="NY, Kew Gardens, 11415"
             value={searchField}
             onChange={handleSearchField}
             size="xs"
@@ -147,7 +146,7 @@ const Explore = () => {
                 price: (item[2]),
                 numBathrooms: item[3],
                 numBedrooms: item[4],
-                mapUrl: [item[5],item[6]],
+                mapUrls: [item[5],item[6]],
                 numAmenities: 3,
               }}
             />

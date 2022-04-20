@@ -134,7 +134,7 @@ const getRecentlyViewed = async (req, res) => {
       .where('_id')
       .in(user.recentlyViewed)
       .exec();
-    return res.status(200).json(houses);
+    return res.status(200).json(houses.reverse());
   } catch (error) {
     console.error(error);
   }
