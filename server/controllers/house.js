@@ -2,7 +2,6 @@ const scraper = require('../scrapers/scraper.js');
 const House = require('../models/HouseModel');
 const User = require('../models/userModel');
 const formatPrice = require('../utils/formatPrice');
-// const formatAddress = require('../utils/formatAddress');
 
 const explore = async (req, res) => {
   try {
@@ -135,7 +134,7 @@ const getRecentlyViewed = async (req, res) => {
       .where('_id')
       .in(user.recentlyViewed)
       .exec();
-    return res.status(200).json(houses);
+    return res.status(200).json(houses.reverse());
   } catch (error) {
     console.error(error);
   }

@@ -9,6 +9,42 @@ from bs4 import BeautifulSoup as bs
 import time
 import ast
 
+def guessLoc(address):
+	g_api = "https://maps.googleapis.com/maps/api/"
+	place_api = g_api + "place/"
+	auto_c = "autocomplete/json?input="
+	details_url = "details/json?place_id="
+	details_api = place_api + details_url
+	req = address 
+	api_key = "&key=AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4"
+
+	auto_crequest = requests.get(place_api + auto_c + req + api_key)
+	auto_cresponse = auto_crequest.json()
+	#print(auto_cresponse)
+	pred = auto_cresponse['predictions'][0]
+	address = pred['description']
+	place_id = pred['place_id']
+	#print("Address: ", address)
+	#print("Place ID: ", place_id, "\n")
+	details_req = requests.get(details_api + place_id + api_key)
+	details = details_req.json()['result']
+	address_formatted = details['formatted_address']
+
+	address_component = details['address_components']
+	city = None
+	state = None
+	zip = None 
+	for address_c in address_component:
+		if('postal_code' in address_c['types']):
+			zip = address_c['short_name']
+		if('neighborhood' in address_c['types']):
+			city = address_c['short_name']
+		if('administrative_area_level_1' in address_c['types']):
+			state = address_c['short_name']
+	output_addr = {"state":state, "city":city, "zip": zip}
+	#print(output_addr)
+	return output_addr
+
 def scrape_remax(url):
 	base_url = "https://www.remax.com"
 	page = requests.get(url)
@@ -201,17 +237,23 @@ def house_info_from_address_filter(address, filters):
 		house_info += process_remax_page_fast(link[0])
 	return house_info
 
-#print("Arguments Given: ", sys.argv)
 my_args = sys.argv[1:]
 if(len(my_args) > 0):
 	addr_filter = my_args[0].split("**")
 	addr = addr_filter[0]
 	filter = addr_filter[1] if len(addr_filter) > 1 else None
-	split_address = addr_filter[0].split("|")
-	state = split_address[0] if len(split_address) >= 1 else ""
-	city = split_address[1] if len(split_address) >= 2 else ""
-	zip = split_address[2] if len(split_address) >= 3 else ""
-	address = {"state":state, "city":city, "zip": zip}
+	address = None
+	if("|" in addr):
+		#print("Given |")
+		split_address = addr.split("|")
+		state = split_address[0] if len(split_address) >= 1 else ""
+		city = split_address[1] if len(split_address) >= 2 else ""
+		zip = split_address[2] if len(split_address) >= 3 else ""
+		address = {"state":state, "city":city, "zip": zip}
+	else:
+		#print("Given Random Address")
+		address = guessLoc(addr)
+		#print("Complete Address is: ", address)
 	#print("Address is: ", address, "\n")
 	#house_info = house_info_from_address(address)
 	if(filter != None and len(filter) > 0):

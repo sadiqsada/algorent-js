@@ -10,13 +10,10 @@ import {
   Text,
   Menu,
   MenuButton,
-  MenuItemOption,
-  MenuOptionGroup,
   MenuList,
 } from '@chakra-ui/react';
 import { SearchIcon } from '@chakra-ui/icons';
 import HouseCard from '../components/HouseCard';
-import listAmenities from '../utils/listAmenities';
 import getTimeOfDay from '../utils/getTimeOfDay';
 import capitalizeFirstLetter from '../utils/capitalizeFirstLetter';
 import axios from 'axios';
@@ -24,12 +21,11 @@ import handleImages from '../utils/handleImages';
 
 const Explore = () => {
   const [displayName, setDisplayName] = useState('');
-  const [searchField, setSearchField] = useState('NY|Kew Gardens|11415');
+  const [searchField, setSearchField] = useState('NY|Jamaica|11432');
   const [numBeds, setNumBeds] = useState('1');
   const [numBaths, setNumBaths] = useState('1');
   const [priceMax, setPriceMax] = useState('10000');
   const [priceMin, setPriceMin] = useState('0');
-  const [amenities, setAmenities] = useState([]);
   const [houses, setHouses] = useState([]);
 
   const handleSearchField = event => setSearchField(event.target.value);
@@ -37,14 +33,6 @@ const Explore = () => {
   const handleNumBaths = event => setNumBaths(event.target.value);
   const handlePriceMin = event => setPriceMin(event.target.value);
   const handlePriceMax = event => setPriceMax(event.target.value);
-  const handleAmenities = arrState => {
-    let updatedAmenities = [false, false, false, false];
-    for (let i = 0; i < arrState.length; i++) {
-      updatedAmenities[arrState[i]] = true;
-    }
-
-    setAmenities(updatedAmenities);
-  };
   const handleSubmit = () => {
     axios
       .post('http://localhost:8000/explore', {
@@ -78,12 +66,11 @@ const Explore = () => {
 
   return (
     <Flex justifyContent="center" mt={8}>
-      <Box w="60%">
-        <Text fontSize="2xl">{getTimeOfDay()}, {displayName}</Text>
+      <Box w={{ base: '90%', xl: '70%' }}>
+        <Text fontSize="2xl">{getTimeOfDay()}{displayName ? `, ${displayName}` : null}</Text>
         <Divider />
         <Flex mt={4} mb={4}>
           <Input
-            placeholder="NY, Kew Gardens, 11415"
             value={searchField}
             onChange={handleSearchField}
             size="xs"
@@ -139,33 +126,11 @@ const Explore = () => {
               />
             </MenuList>
           </Menu>
-          <Menu>
-            <MenuButton>
-              <Box w="100px" borderWidth="1px" ml={2} mt={0.5}>
-                <Text fontSize="sm">Amenities</Text>
-              </Box>
-            </MenuButton>
-            <MenuList>
-              <MenuOptionGroup
-                type="checkbox"
-                onChange={event => handleAmenities(event)}
-              >
-                {listAmenities.map((name, index) => (
-                  <MenuItemOption
-                    value={index}
-                    key={index}
-                    closeOnSelect={false}
-                  >
-                    {name}
-                  </MenuItemOption>
-                ))}
-              </MenuOptionGroup>
-            </MenuList>
-          </Menu>
           <IconButton
-            ml={2}
+            ml={4}
             mt={0.5}
             size="xs"
+            width='10%'
             colorScheme="purple"
             aria-label="Search database"
             onClick={handleSubmit}
@@ -181,7 +146,7 @@ const Explore = () => {
                 price: (item[2]),
                 numBathrooms: item[3],
                 numBedrooms: item[4],
-                mapUrl: [item[5],item[6]],
+                mapUrls: [item[5],item[6]],
                 numAmenities: 3,
               }}
             />
