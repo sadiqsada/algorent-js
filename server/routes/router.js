@@ -2,6 +2,8 @@ const express = require('express');
 const UserController = require('../controllers/user');
 const HouseController = require('../controllers/house');
 const auth = require('../middlewares/auth');
+const ExploreController = require('../controllers/explore');
+const ListingController = require('../controllers/listing');
 const router = express.Router();
 
 router.post('/register', UserController.register);
@@ -18,5 +20,6 @@ router.post('/shortlist', auth, HouseController.shortlist);
 router.get('/getShortlist', auth, HouseController.getShortlist);
 router.post('/recentlyViewed', auth, HouseController.recentlyViewed);
 router.get('/getRecentlyViewed', auth, HouseController.getRecentlyViewed);
+router.post('/createlisting', ListingController.create);
 
 module.exports = router;

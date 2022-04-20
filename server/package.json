@@ -16,6 +16,7 @@
     "ast": "^1.0.7",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.0.0-rc.10",
+    "cloudinary": "^1.29.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
