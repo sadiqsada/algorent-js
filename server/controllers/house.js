@@ -2,7 +2,6 @@ const scraper = require('../scrapers/scraper.js');
 const House = require('../models/HouseModel');
 const User = require('../models/userModel');
 const formatPrice = require('../utils/formatPrice');
-// const formatAddress = require('../utils/formatAddress');
 
 const explore = async (req, res) => {
   try {

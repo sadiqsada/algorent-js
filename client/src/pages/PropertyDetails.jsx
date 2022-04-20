@@ -56,18 +56,17 @@ const PropertyDetails = () => {
   };
 
   useEffect(() => {
-    const updateRecentlyViewed = async props => {
-      const { address } = props.data;
+    const updateRecentlyViewed = async () => {
       await axios.post(
         'http://localhost:8000/recentlyViewed',
-        { address },
+        { address: props.data.address },
         {
           withCredentials: true,
           credentials: 'include',
         }
       );
     };
-    updateRecentlyViewed(props);
+    updateRecentlyViewed();
   }, []);
   const images = props.data.imgUrl;
   const mapColor = useColorModeValue(
