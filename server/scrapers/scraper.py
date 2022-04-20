@@ -242,26 +242,32 @@ if(len(my_args) > 0):
 	addr_filter = my_args[0].split("**")
 	addr = addr_filter[0]
 	filter = addr_filter[1] if len(addr_filter) > 1 else None
-	address = None
-	if("|" in addr):
-		#print("Given |")
-		split_address = addr.split("|")
-		state = split_address[0] if len(split_address) >= 1 else ""
-		city = split_address[1] if len(split_address) >= 2 else ""
-		zip = split_address[2] if len(split_address) >= 3 else ""
-		address = {"state":state, "city":city, "zip": zip}
+	if(filter == 'G'):
+		addr = guessLoc(addr)
+		print(addr["state"], ",",addr["city"], ",", addr["zip"])
+		sys.exit()
 	else:
-		#print("Given Random Address")
-		address = guessLoc(addr)
-		#print("Complete Address is: ", address)
-	#print("Address is: ", address, "\n")
-	#house_info = house_info_from_address(address)
-	if(filter != None and len(filter) > 0):
-		house_info = house_info_from_address_filter(address, filter)
-		print(house_info)
-	else:
-		house_info = house_info_from_address(address)
-		print(house_info)
+		address = None
+		if("|" in addr):
+			#print("Given |")
+			split_address = addr.split("|")
+			state = split_address[0] if len(split_address) >= 1 else ""
+			city = split_address[1] if len(split_address) >= 2 else ""
+			zip = split_address[2] if len(split_address) >= 3 else ""
+			address = {"state":state, "city":city, "zip": zip}
+		else:
+			#print("Given Random Address")
+			address = guessLoc(addr)
+			
+			#print("Complete Address is: ", address)
+		#print("Address is: ", address, "\n")
+		#house_info = house_info_from_address(address)
+		if(filter != None and len(filter) > 0):
+			house_info = house_info_from_address_filter(address, filter)
+			print(house_info)
+		else:
+			house_info = house_info_from_address(address)
+			print(house_info)
 
 
 

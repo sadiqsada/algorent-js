@@ -51,3 +51,17 @@ async function scrapeRemax(address, filter, _callback) {
   }
 }
 module.exports.scrapeRemax = scrapeRemax;
+
+async function guessAddress(address, _callback) {
+  const args = address + '**' + 'G'; // If one of the fields is not suppled, make it equal to 0
+  const { spawnSync } = require('child_process');
+  const pyProg = spawnSync('python', ['./scraper.py', args]); // For TEST ONLY
+  //const pyProg = spawnSync('python', ['./scrapers/scraper.py', args]); // WHEN ACTUAL PROJECT DEPLOY, USE THIS
+
+
+  const data = pyProg.stdout;
+  const err = pyProg.stderr;
+  const strData = data.toString().replace(/(\r\n|\n|\r)/gm, '').split(" , ");
+  _callback(strData)
+}
+module.exports.guessAddress = guessAddress;
