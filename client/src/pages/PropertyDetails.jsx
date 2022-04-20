@@ -415,11 +415,7 @@ const PropertyDetails = () => {
                   onClick={handleShortlist}
                 />
                 <Center mt={1}>
-                  <Text
-                    fontSize={'md'}
-                    color={shortlistColor}
-                    fontWeight={600}
-                  >
+                  <Text fontSize={'md'} color={shortlistColor} fontWeight={600}>
                     Fav
                   </Text>
                 </Center>
@@ -466,13 +462,17 @@ const PropertyDetails = () => {
         display={'none'}
         overflow={'hidden'}
       >
-        <Box pos={'absolute'} w={'100%'} h={'100%'} opacity={0.5}>
-          onClick=
-          {() => {
+        <Box
+          pos={'absolute'}
+          w={'100%'}
+          h={'100%'}
+          opacity={0.5}
+          onClick={() => {
             modalPopUp(null);
-          }}{' '}
-          cursor={'pointer'}>
-        </Box>
+          }}
+          cursor={'pointer'}
+          backgroundColor={'gray.900'}
+        ></Box>
         <Center pos={'absolute'} w={'100%'} h={'100%'} pointerEvents={'none'}>
           <Image
             pointerEvents={'auto'}
