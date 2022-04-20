@@ -54,7 +54,7 @@ export default function Uploader(props) {
       maxFiles: 5,
   });
 
-  const dropText = isDragActive ? 'Drop the pictures here ...' : 'Drag and drop or click here to select pictures';
+  const dropText = isDragActive ? 'Drop the pictures here ...' : 'Drag \'n drop or click here to select pictures';
 
   const activeBg = useColorModeValue('gray.100', 'gray.600');
   const borderColor = useColorModeValue(
@@ -62,9 +62,48 @@ export default function Uploader(props) {
       isDragActive ? 'teal.500' : 'gray.500',
   );
 
+  useEffect(() => {
+    if (props.onChange) {
+      props.onChange(files)
+    }
+  }, [files]);
+
+  const removeImage = (event,index) => {
+    event.preventDefault()
+    var newArray = files.slice(0,index).concat(files.slice(index+1))
+    setFiles(newArray);
+  };
+
+  const handleDragStart = (event,targetId) => {
+    event.dataTransfer.setData("image", targetId);
+  }
+
+  const handleDragOver = (event) => {
+    event.preventDefault()
+  }
+
+  const handleDragEnd = (event) => {
+    event.preventDefault()
+  }
+
+  const handleDrop = (event, targetId) => {
+    event.preventDefault();
+    let sourceId = event.dataTransfer.getData("image");
+    sourceId = sourceId.substring(sourceId.indexOf("-") + 1);
+    let newArray = [...files]
+    newArray.splice(targetId, 0 ,newArray.splice(sourceId,1)[0])
+    setFiles(newArray)
+  }
   const thumbs = files.slice(0,5).map((file,index) => (
     <div style={thumb}>
-      <Center style={thumbInner}>
+      <Center style={thumbInner}     
+          id = {"image-" + index}        
+          draggable = 'true'
+          onDragStart = {(event) => handleDragStart(event,index)}
+          onDragOver = {(event) => handleDragOver(event)}
+          onDragEnd = {(event) => handleDragEnd(event)}
+          onDrop = {(event) => handleDrop(event,index)}
+          >
         <Zoom>
           <img
             src={file}
@@ -72,21 +111,9 @@ export default function Uploader(props) {
           />
         </Zoom>
       </Center>
-      <CloseIcon onClick={() => removeImage(index)}/>
+      <CloseIcon onClick={(event) => removeImage(event,index)}/>
     </div>
   ));
-
-  useEffect(() => {
-    console.log(files)
-    if (props.onChange) {
-      props.onChange(files)
-    }
-  }, [files]);
-
-  const removeImage = (index) => {
-    var newArray = files.slice(0,index).concat(files.slice(index+1))
-    setFiles(newArray);
-  };
 
   return (
     <div>
@@ -106,7 +133,15 @@ export default function Uploader(props) {
           >
           <input {...getInputProps()}/>
           <div>
-            {dropText} (At least one picture is required, at most five pictures)
+            <Center>
+              {dropText}
+            </Center>
+            <Center>
+              (At least one picture is required, at most five pictures)
+            </Center>
+            <Center>
+              Drag pictures to rearrange
+            </Center>
           </div>
       </Center>
     </div>

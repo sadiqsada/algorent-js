@@ -125,7 +125,9 @@ const Header = props => {
                       </Center>
                       <br />
                       <MenuDivider />
-                      <MenuItem>Account Settings</MenuItem>
+                      <Link href='/AccountSetting' style={{ textDecoration: 'none' }}>
+                        <MenuItem>Account Settings</MenuItem>
+                      </Link>
                       <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
                     </MenuList>
                   </Menu>

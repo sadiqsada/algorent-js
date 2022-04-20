@@ -1,4 +1,5 @@
 import { FieldProps } from "formik";
+import { useColorModeValue } from '@chakra-ui/react';
 import React from "react";
 import Select from "react-select";
 import { Options, OnChangeValue } from "react-select";
@@ -43,6 +44,7 @@ export const CustomSelect = ({
 
   const customStyles = {
     control: (styles) => ({ ...styles, backgroundColor: 'transparent' }),
+    menu: (styles) => ({ ...styles, backgroundColor: useColorModeValue('white', '#7393B3')}),
     option:(provided:any) => ({
       ...provided,
       height:'100%',
@@ -63,7 +65,6 @@ export const CustomSelect = ({
       ...styles,
       color: 'white',
       ':hover': {
-        backgroundColor: 'teal',
         color: 'black',
       },
     }),
