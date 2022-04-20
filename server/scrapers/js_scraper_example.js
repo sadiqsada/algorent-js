@@ -9,11 +9,18 @@ const useScraper = (address, filter) => {
     console.log(output);
   });
 };
-
+/*
 useScraper(
   'NY|Ozone Park|11417',
   '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}'
 ); // PLEASE GIVE ADDRESS IN FORM: "<state>|<city>|zip"
+*/
+
+/**Scraper With ANY Address String:  */
+useScraper(
+  'Ozone Park 11417',
+  '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}'
+);
 // Filter NEEDS to look like this: '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}'
 // If any min fields aren't given by user, just make them 0
 

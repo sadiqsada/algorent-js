@@ -471,7 +471,7 @@ const PropertyDetails = () => {
           {() => {
             modalPopUp(null);
           }}{' '}
-          cursor={'pointer'}>
+          cursor={'pointer'}
         </Box>
         <Center pos={'absolute'} w={'100%'} h={'100%'} pointerEvents={'none'}>
           <Image
