@@ -9,7 +9,7 @@ import cv2
 import numpy as np
 import copy 
 import matplotlib.pyplot as plt
-import addcopyfighandler
+from PIL import Image
 
 def guessLoc(address):
 	g_api = "https://maps.googleapis.com/maps/api/"
@@ -92,14 +92,23 @@ def sharpen_img_colored(img_path):
 	succeed, output_image_sharpened_hist = histogram_equalization(output_img_sharpened)
 	return output_image_sharpened_hist[..., ::-1]
 '''
-def sharpen_img_colored(img_path):
-  imgB = cv2.imread(img_path, cv2.IMREAD_COLOR)
-  img_hsv = cv2.cvtColor(imgB, cv2.COLOR_RGB2HSV) 
+def sharpen_img_colored(img):
+  img_hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV) 
   hsv_value_sharpened = sharpen_img(img_hsv[:,:,2])
   output_img_sharpened = img_hsv
   output_img_sharpened[:,:,2] = hsv_value_sharpened
   output_img_sharpened = cv2.cvtColor(output_img_sharpened, cv2.COLOR_HSV2RGB) 
-  return output_img_sharpened[..., ::-1]
+  #output_img_sharpened[..., ::-1]
+  return output_img_sharpened
+
+def convert_img(img_url):
+	#This should return a URL 
+	im = np.asarray(Image.open(requests.get(img_url, stream=True).raw))
+	#Part 1 - Get Image from URL
+	img = sharpen_img_colored(im)
+	filename = "sharpened_image.png"
+	cv2.imwrite(filename, img[..., ::-1])
+	return img
 
 def scrape_remax(url):
 	base_url = "https://www.remax.com"
@@ -377,22 +386,23 @@ print("list: \n", list)
 
 #addr = guessLoc("Jamaica US 11417")
 #print(addr)
-'''
-imgOrig = cv2.imread("./test_blurry_3.jpeg", cv2.IMREAD_COLOR)[..., ::-1]
-imgSharpened = sharpen_img_colored("./test_blurry_3.jpeg")
-
-fig = plt.figure(figsize=(20, 15))
-plt.subplot(1, 2, 1)
-plt.imshow(imgOrig)
-plt.title('original image')
-plt.axis("off")
 
 
-plt.subplot(1, 2, 2)
-plt.imshow(imgSharpened)
-plt.title('SHARPENED image')
-plt.axis("off")
+#imgOrig = cv2.imread("./test_blurry_3.jpeg", cv2.IMREAD_COLOR)
+#imgSharpened = sharpen_img_colored(imgOrig)
+#imgOrigLink = "https://s3.amazonaws.com/rets-images-matrix-hgar/58df3b138e3921eeeaf5a86b69303cc433096a4e-2-medium.jpeg"
+#imgSharpened = convert_img(imgOrigLink)
+# fig = plt.figure(figsize=(20, 15))
+# plt.subplot(1, 2, 1)
+# plt.imshow(imgOrig[..., ::-1])
+# plt.title('original image')
+# plt.axis("off")
 
-plt.show()
 
-'''
+#plt.subplot(1, 2, 2)
+#plt.imshow(imgSharpened)
+#plt.title('SHARPENED image')
+#plt.axis("off")
+
+#plt.show()
+

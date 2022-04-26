@@ -13,6 +13,14 @@ import {
   Button,
   Stack,
   IconButton,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 import SimpleImageSlider from 'react-simple-image-slider';
@@ -75,13 +83,16 @@ const PropertyDetails = () => {
     props.data.mapUrl[1]
   );
 
+
+
+
   const popupModal = useRef(null);
   const popupModalImg = useRef(null);
   function modalPopUp(idx) {
     if (popupModal.current && popupModalImg.current) {
       if (idx !== null) {
         popupModalImg.current.src = images[idx].url;
-        popupModal.current.style.display = 'block';
+        popupModal.current.style.display = 'flex';
       } else {
         popupModal.current.style.display = 'none';
       }
@@ -152,6 +163,32 @@ const PropertyDetails = () => {
     }
   };
 
+  function BasicUsage() {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    return (
+      <>
+        <Button onClick={onOpen}>Open Modal</Button>
+  
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Modal Title</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <p>This is the Modal Body</p>
+            </ModalBody>
+  
+            <ModalFooter>
+              <Button colorScheme='blue' mr={3} onClick={onClose}>
+                Close
+              </Button>
+              <Button variant='ghost'>Secondary Action</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    )
+  }
   return (
     <Flex direction={'row'} w={'100%'} h={'93vh'} overflow={'hidden'}>
       <Flex
@@ -173,9 +210,9 @@ const PropertyDetails = () => {
             navSize={60}
             navMargin={0}
             style={{ cursor: 'pointer' }}
-            onClick={(idx, event) => {
-              modalPopUp(idx);
-            }}
+            onClick={(idx, event) => {{
+              BasicUsage()
+            }}}
           />
         </Box>
         <Flex
@@ -191,7 +228,7 @@ const PropertyDetails = () => {
                 {props.data.title}
               </Text>
               <Text mt={5} fontSize={'lg'} fontWeight={500} alt={'Contact'}>
-                (634)-777-****
+                (634)-777  -****
               </Text>
             </Flex>
             <Spacer />

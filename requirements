@@ -10,4 +10,5 @@ soupsieve==2.3.1
 urllib3==1.26.8
 numpy==1.22.3
 opencv-python==4.5.5.64 
+Pillow==9.0.1
 addcopyfighandler==3.0.0
