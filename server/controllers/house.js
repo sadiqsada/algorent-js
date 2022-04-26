@@ -7,7 +7,17 @@ const formatPrice = require('../utils/formatPrice');
 const explore = async (req, res) => {
   try {
     const { address, filter } = req.body;
-    const zipCode = address.split('|')[2];
+    let zipCode = "11432"
+    if(address.includes("|")) {
+      zipCode = address.split('|')[2];
+    }
+    else {
+      scraper.guessAddress(address, (data) => {
+        address_full = data
+        zipCode = address_full[2]
+        //console.log(zipCode)
+      });
+    }
     const { minBeds, minBaths, minPrice, maxPrice } = filter;
     let filtersActive = false;
     if (
