@@ -3,9 +3,10 @@ async function scrapeRemax(address, filter, _callback) {
   const args = address + '**' + filter; // If one of the fields is not suppled, make it equal to 0
   let output = [];
   const { spawnSync } = require('child_process');
-  // const pyProg = spawnSync('python3', ['./scraper.py', args]); // For TEST ONLY
-  const pyProg = spawnSync('python3', ['./scrapers/scraper.py', args]); // WHEN ACTUAL PROJECT DEPLOY, USE THIS
+  //  const pyProg = spawnSync('python', ['./scraper.py', args]); // For TEST ONLY
+  const pyProg = spawnSync('python', ['./scrapers/scraper.py', args]); // WHEN ACTUAL PROJECT DEPLOY, USE THIS
   //
+  
   /*
   pyProg.stdout.on('data', function (data) {
     //console.log(data.toString());
