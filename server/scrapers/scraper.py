@@ -108,7 +108,7 @@ def convert_img(img_url):
 	img = sharpen_img_colored(im)
 	filename = "sharpened_image.png"
 	cv2.imwrite(filename, img[..., ::-1])
-	return img
+	return img, filename
 
 def scrape_remax(url):
 	base_url = "https://www.remax.com"
@@ -301,6 +301,11 @@ if(len(my_args) > 0):
 	if(filter == 'G'):
 		addr = guessLoc(addr)
 		print(addr["state"], ",",addr["city"], ",", addr["zip"])
+		sys.exit()
+	elif(filter == 'S'):
+		url = addr 
+		img, filename = convert_img(url)
+		print(filename)
 		sys.exit()
 	else:
 		address = None

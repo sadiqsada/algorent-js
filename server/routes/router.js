@@ -13,6 +13,7 @@ router.get('/logout', UserController.logout);
 router.post('/tokenIsValid', UserController.tokenIsValid);
 router.get('/getUser', auth, UserController.getUser);
 
+router.post('/sharpen', HouseController.sharpen)
 router.post('/explore', HouseController.explore);
 router.post('/shortlist', auth, HouseController.shortlist);
 router.get('/getShortlist', auth, HouseController.getShortlist);

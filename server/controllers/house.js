@@ -3,7 +3,18 @@ const House = require('../models/HouseModel');
 const User = require('../models/userModel');
 const formatPrice = require('../utils/formatPrice');
 // const formatAddress = require('../utils/formatAddress');
-
+const sharpen = async (req, res) => {
+  let file_link = './scrapers/sharpened_image.png'
+  try {
+    const { url } = req.body;
+    scraper.sharpenImage(url, (data) => {
+      file_link = './scrapers/' + data
+    });
+  } catch( error ) {
+    console.log(error)
+  }
+  return res.json(file_link)
+}
 const explore = async (req, res) => {
   try {
     const { address, filter } = req.body;
@@ -152,6 +163,7 @@ const getRecentlyViewed = async (req, res) => {
 };
 
 module.exports = {
+  sharpen,
   explore,
   shortlist,
   getShortlist,

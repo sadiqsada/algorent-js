@@ -38,12 +38,15 @@ import { BsCartPlusFill } from 'react-icons/bs';
 import { useRef, useState } from 'react';
 import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 import axios from 'axios';
-
+//import img_s from './sharpened_image.png'
 const PropertyDetails = () => {
   const location = useLocation();
   const { props } = location.state;
   const shortlistColor = useColorModeValue('red.500', 'red.200');
 
+  // const handleSharpen = async () => {
+  //   const
+  // }
   const handleShortlist = async () => {
     const { address } = props.data;
     const stateZip = address.split(', ')[2];
@@ -92,12 +95,36 @@ const PropertyDetails = () => {
     if (popupModal.current && popupModalImg.current) {
       if (idx !== null) {
         popupModalImg.current.src = images[idx].url;
-        popupModal.current.style.display = 'flex';
+        popupModal.current.style.display = 'block';
       } else {
         popupModal.current.style.display = 'none';
       }
     }
   }
+  // const modalPopUp = async (idx) => {
+  //   if (popupModal.current && popupModalImg.current) {
+  //     if (idx !== null) {
+  //       let image_url = images[idx].url
+  //       console.log(image_url)
+  //       let img = process.env.PUBLIC_URL + '/sharpened_image.png'
+  //       await axios
+  //       .post('http://localhost:8000/sharpen', {
+  //         url: image_url
+  //       })
+  //       .then(response => {
+  //         console.log(process.env.PUBLIC_URL + '')
+  //       })
+  //       .catch(error => {
+  //         console.error(error);
+  //       });
+        
+  //       popupModalImg.current.src = require('./sharpened_image.png')//img_s;//images[idx].url;
+  //       popupModal.current.style.display = 'flex';
+  //     } else {
+  //       popupModal.current.style.display = 'none';
+  //     }
+  //   }
+  // }
 
   const { isLoaded } = useJsApiLoader({
     //googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -211,7 +238,7 @@ const PropertyDetails = () => {
             navMargin={0}
             style={{ cursor: 'pointer' }}
             onClick={(idx, event) => {{
-              BasicUsage()
+              modalPopUp(idx)
             }}}
           />
         </Box>
