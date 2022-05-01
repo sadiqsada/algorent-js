@@ -471,10 +471,9 @@ const PropertyDetails = () => {
           onClick=
           {() => {
             modalPopUp(null);
-          }}
+          }}{' '}
           cursor={'pointer'}
-          backgroundColor={'gray.900'}
-        ></Box>
+        </Box>
         <Center pos={'absolute'} w={'100%'} h={'100%'} pointerEvents={'none'}>
           <Image
             pointerEvents={'auto'}

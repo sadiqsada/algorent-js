@@ -7,10 +7,12 @@ import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import Register from './pages/Register';
 import Explore from './pages/Explore';
+import CreateListing from './pages/CreateListing';
 import Shortlist from './pages/Shortlist';
 import RecentlyViewed from './pages/RecentlyViewed';
 import PropertyDetails from './pages/PropertyDetails';
 import Wallet from './pages/Wallet';
+import AccountSetting from './pages/AccountSetting'
 import Axios from 'axios';
 import Cookies from 'js-cookie';
 import AuthContext from './context/AuthContext';
@@ -53,6 +55,14 @@ const App = () => {
           <Route path="/Explore" element={<Explore />} />
           <Route path="/PropertyDetails" element={<PropertyDetails />} />
           <Route
+            path="/CreateListing"
+            element={
+              <ProtectedRoute>
+                <CreateListing />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/Shortlist"
             element={
               <ProtectedRoute>
@@ -73,6 +83,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Wallet />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/AccountSetting"
+            element={
+              <ProtectedRoute>
+                <AccountSetting />
               </ProtectedRoute>
             }
           />
