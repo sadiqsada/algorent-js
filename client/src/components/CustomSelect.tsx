@@ -41,10 +41,12 @@ export const CustomSelect = ({
       return isMulti ? [] : ("" as any);
     }
   };
+  
+  const menuColor = useColorModeValue('white', '#7393B3');
 
   const customStyles = {
     control: (styles) => ({ ...styles, backgroundColor: 'transparent' }),
-    menu: (styles) => ({ ...styles, backgroundColor: useColorModeValue('white', '#7393B3')}),
+    menu: (styles) => ({ ...styles, backgroundColor: menuColor }),
     option:(provided:any) => ({
       ...provided,
       height:'100%',

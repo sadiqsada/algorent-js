@@ -2,7 +2,6 @@ const express = require('express');
 const UserController = require('../controllers/user');
 const HouseController = require('../controllers/house');
 const auth = require('../middlewares/auth');
-const ExploreController = require('../controllers/explore');
 const ListingController = require('../controllers/listing');
 const router = express.Router();
 

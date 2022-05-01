@@ -1,5 +1,5 @@
 const scraper = require('../scrapers/scraper.js');
-const House = require('../models/HouseModel');
+const House = require('../models/houseModel');
 const User = require('../models/userModel');
 const formatPrice = require('../utils/formatPrice');
 
