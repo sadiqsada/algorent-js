@@ -5,15 +5,9 @@ async function pythonShell(args, filePath, _callback) {
   const { spawn } = require('child_process');
   const pyProg = spawn('python', [filePath, args]); // New PyProcess
 
-<<<<<<< HEAD
   pyProg.stdout.on('data', (data) => {
     data = data.toString();
     // You can do anything fancy with the output (String) here
-=======
-  pyProg.stdout.on('data', function (data) {
-    data = data.toString();
-    /**You can do anything fancy with the output (String) here */
->>>>>>> jiayi
     output.push(data);
     _callback(output);
   });

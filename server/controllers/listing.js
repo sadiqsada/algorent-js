@@ -22,7 +22,7 @@ const create = async (req, res) => {
   } = req.body;
 
   try {
-    let promises = [];
+    const promises = [];
     image.forEach(async (image) => {
       promises.push(
         cloudinary.uploader.upload(image, {
@@ -32,7 +32,7 @@ const create = async (req, res) => {
     });
     await Promise.all(promises)
       .then((response) => {
-        let imgUrl = [];
+        const imgUrl = [];
         response.forEach((info) => {
           imgUrl.push(info.url);
         });

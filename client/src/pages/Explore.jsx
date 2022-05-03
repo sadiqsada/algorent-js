@@ -45,6 +45,8 @@ const Explore = () => {
         },
       })
       .then(response => {
+        console.log('response.data');
+        console.log(response.data);
         setHouses(response.data);
       })
       .catch(error => {
