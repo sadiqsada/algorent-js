@@ -43,6 +43,21 @@ Algorent is a platform for conducting real-estate transactions with crypto. We h
 
        linting: npm run lint
        formatting: npm format
+
+* To setup Algorand TestNet Environment.
+       Download and install Docker Compose 
+       https://docs.docker.com/compose/install/
+
+       Clone the Algorand Docker Node Instance
+       git clone https://github.com/algorand/sandbox.git
+
+       cd into the sandbox directory and run the command: ./sandbox up testnet
+
+       Install the Python SDK 
+       pip3 install py-algorand-sdk
+
+       Comments on the scripts will explain how it works so you can make your own wallets and fund them on your own.
+       
 ### Notes
 * Nodemon keeps the server running as changes are made to the files so that the server doesn't have to be restarted. -g flag stands for global. Installing it globally will allow you to use it for other projects.
 
