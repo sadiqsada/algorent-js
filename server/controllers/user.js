@@ -2,6 +2,10 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const mail = require('../utils/sendEmails');
+const ShortUniqueId = require('short-unique-id');
+const uid = new ShortUniqueId({ length: 4 });
+const multer = require('multer');
+ 
 
 const register = async (req, res) => {
   try {
@@ -54,8 +58,7 @@ const register = async (req, res) => {
       'Email Confirmation',
       `<h1>Email Confirmation</h1>
             <p>Thank you for registering with AlgoRent. Please confirm your email by clicking on the following link</p>
-            <a href=http://localhost:8000/verify/${confirmationCode}> Click here</a>
-            </div>`
+            <a href=http://localhost:8000/verify/${confirmationCode}> Click here</a>`
     );
   } catch (err) {
     console.error(err);
@@ -193,8 +196,7 @@ const forgotPassword = async (req, res) => {
       'Forgot Password',
       `<h1>Forgot Password</h1>
             <p>Please rest your password by clicking on the following link</p>
-            <a href=http://localhost:8000/password-reset/${resetCode}> Click here</a>
-            </div>`
+            <a href=http://localhost:8000/password-reset/${resetCode}> Click here</a>`
     );
   });
 };
@@ -263,6 +265,81 @@ const tokenIsValid = async (req, res) => {
   }
 };
 
+const getCurrentUser = async (req,res) => {
+  const user = await User.findById(req.userId);
+  return res.json({ user });
+}
+
+const changeUsername = async (req,res) =>{
+  const { firstName, lastName, user } = req.body
+  if (user.firstName == firstName && user.lastName == lastName){
+    return res.json({success:false,message:"Please change a different username"})
+  }
+  const updatedUser = await User.findOneAndUpdate({_id:user._id},{firstName,lastName})
+  return res.json({success:true,message:"Your username has been successfully changed"})
+}
+
+const sendVerification = async (req,res) =>{
+  const { email, user } = req.body
+  if (user.email == email){
+    return res.json({success:false, message: "Please change a different email"})
+  }
+  let code = uid()
+  mail(
+    email,
+    'Email Verification',
+    `<h1>Change Password Comfirmation</h1>
+        <p>Please use this code to verify your email: ${code}</p>`
+  );
+  console.log(code)
+  return res.json({success:true,code:code})
+}
+
+const changeEmail = async (req,res) => {
+  const { email, user } = req.body
+  if (user.email == email){
+    return res.json({success:false, message: "Please change a different email"})
+  }
+  await User.findOneAndUpdate({_id:user._id},{email})
+  return res.json({success:true})
+}
+
+const changePassword = async (req, res) => {
+  const { oldPass, user, newPass} = req.body
+
+  const match = await bcrypt.compare(oldPass, user.passwordHash);
+  if( match ){
+   const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const passwordHash = await bcrypt.hash(newPass, salt);
+    await User.findOneAndUpdate({_id:user._id}, {passwordHash:passwordHash})
+    return res.json({ success: true, message: "Password successfully changed"})
+  }else{
+    return res.json({ success: false, message: "Incorrect password"})
+  }
+
+}
+
+const upload = multer({ storage: multer.memoryStorage() }).single('photo')
+
+const uploadAvatar = async(req,res) =>{
+  let buffer
+  await upload (req, res, (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      if (req.file == undefined) {
+        return res.json({success:false,message:"Invalid Picture"})
+      } else {
+        buffer = req.file.buffer
+        User.findOneAndUpdate({_id:req.body.user},{avatar:buffer}).exec()
+        return res.json({success:true,message:"Photo changed successfully"})
+      }
+    }
+  })
+}
+
+
 module.exports = {
   register,
   login,
@@ -271,4 +348,10 @@ module.exports = {
   forgotPassword,
   resetPassword,
   tokenIsValid,
+  getCurrentUser,
+  changeUsername,
+  sendVerification,
+  changeEmail,
+  changePassword,
+  uploadAvatar
 };
