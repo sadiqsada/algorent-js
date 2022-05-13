@@ -39,7 +39,7 @@ const PropertyDetails = () => {
   const shortlistColor = useColorModeValue('red.500', 'red.200');
   const cartColor = useColorModeValue('purple.500', 'purple.200');
   const popupModalColor = useColorModeValue('gray.900', 'gray.400');
-
+  const web_url = 'http://localhost:8000'
 
   const handleShortlist = async () => {
     const { address } = props.data;
@@ -47,7 +47,7 @@ const PropertyDetails = () => {
     const zipCode = stateZip.split(' ')[1];
     try {
       const response = await axios.post(
-        'http://localhost:8000/shortlist',
+        web_url + '/shortlist',
         { address, zipCode },
         {
           withCredentials: true,
@@ -63,7 +63,7 @@ const PropertyDetails = () => {
   useEffect(() => {
     const updateRecentlyViewed = async () => {
       await axios.post(
-        'http://localhost:8000/recentlyViewed',
+        web_url + '/recentlyViewed',
         { address },
         {
           withCredentials: true,

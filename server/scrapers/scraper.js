@@ -1,9 +1,10 @@
 async function scrapeRemax(address, filter, _callback) {
   // Note: Address MUST be in form <state>|<city>|<zip>
+  //console.log("ADDRESS IS: " +  address + " AND FILTER IS: " + filter);
   const args = address + '**' + filter; // If one of the fields is not suppled, make it equal to 0
   let output = [];
   const { spawnSync } = require('child_process');
-  //  const pyProg = spawnSync('python', ['./scraper.py', args]); // For TEST ONLY
+  //const pyProg = spawnSync('python', ['./scraper.py', args]); // For TEST ONLY
   const pyProg = spawnSync('python', ['./scrapers/scraper.py', args]); // WHEN ACTUAL PROJECT DEPLOY, USE THIS
   //
   
@@ -57,7 +58,7 @@ async function guessAddress(address, _callback) {
   const args = address + '**' + 'G'; // If one of the fields is not suppled, make it equal to 0
   const { spawnSync } = require('child_process');
   // const pyProg = spawnSync('python', ['./scraper.py', args]); // For TEST ONLY
-  const pyProg = spawnSync('python3', ['./scrapers/scraper.py', args]); // WHEN ACTUAL PROJECT DEPLOY, USE THIS
+  const pyProg = spawnSync('python', ['./scrapers/scraper.py', args]); // WHEN ACTUAL PROJECT DEPLOY, USE THIS
 
   const data = pyProg.stdout;
   // const err = pyProg.stderr;

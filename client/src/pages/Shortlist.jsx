@@ -5,10 +5,10 @@ import axios from 'axios';
 import handleImages from '../utils/handleImages';
 const Shortlist = () => {
   const [houses, setHouses] = useState([]);
-
+  const web_url = 'http://localhost:8000'
   useEffect(() => {
     axios
-      .get('http://localhost:8000/getShortlist', {
+      .get(web_url + '/getShortlist', {
         withCredentials: true,
         credentials: 'include',
       })

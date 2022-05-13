@@ -5,8 +5,11 @@ const formatPrice = require('../utils/formatPrice');
 
 const explore = (req, res) => {
   try {
-    const { address, filter } = req.body;
+    let { address, filter } = req.body;
+    let address_scraper = address;
+    let filter_scraper = filter;
     scraper.guessAddress(address, async (stateCityZip) => {
+      //console.log("Searching DB!");
       const zipCode = stateCityZip[2];
       const { minBeds, minBaths, minPrice, maxPrice } = filter;
       let filtersActive = false;
@@ -37,9 +40,18 @@ const explore = (req, res) => {
           house.mapUrls[1],
         ]);
         return res.json(houses);
-      }
+      } 
       const houses = [];
-      scraper.scrapeRemax(address, filter, (data) => {
+      if (
+        Number(minBeds) == 1 &&
+        Number(minBaths) == 1 &&
+        Number(minPrice) == 0
+      ) {
+        filter_scraper = ''
+      }
+      //console.log("USING SCRAPER");
+      //console.log("Looking for Address: " + address_scraper + " With Filter: " + filter_scraper);
+      scraper.scrapeRemax(address_scraper, filter_scraper, (data) => {
         data.forEach(async (house) => {
           const scraperZipCode = house[1].split(', ')[2].split(' ')[1];
           const newHouse = new House({

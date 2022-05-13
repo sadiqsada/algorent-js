@@ -299,10 +299,13 @@ if(len(my_args) > 0):
 	addr_filter = my_args[0].split("**")
 	addr = addr_filter[0]
 	filter = addr_filter[1] if len(addr_filter) > 1 else None
+	#print("Addr: ", addr, "Filter: ", filter)
+	#print("My Args: ", my_args)
+	#sys.exit()
 	if(filter == 'G'):
 		addr = guessLoc(addr)
 		print(addr["state"], ",",addr["city"], ",", addr["zip"])
-		sys.exit()
+		#sys.exit()
 	else:
 		address = None
 		if("|" in addr):
