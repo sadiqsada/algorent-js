@@ -7,10 +7,13 @@ const HouseSchema = new Schema(
     city: { type: String },
     zipCode: { type: String, required: true, index: true },
     price: { type: Number, required: true },
-    imgUrl: { type: String, required: true },
-    numBedrooms: { type: Number, required: true },
-    numBathrooms: { type: Number, required: true },
     mapUrls: { type: [String] },
+    imgUrl: { type: [String], required: true },
+    numBedrooms: { type: Number },
+    numBathrooms: { type: Number },
+    size: { type: Number },
+    contact: { type: String },
+    amenities: { type: [String] },
   },
   { timestamps: true }
 );

@@ -6,10 +6,10 @@ import handleImages from '../utils/handleImages';
 
 const RecentlyViewed = () => {
   const [houses, setHouses] = useState([]);
-
+  const web_url = 'http://localhost:8000'
   useEffect(() => {
     axios
-      .get('http://localhost:8000/getRecentlyViewed', {
+      .get(web_url + '/getRecentlyViewed', {
         withCredentials: true,
         credentials: 'include',
       })
@@ -23,7 +23,7 @@ const RecentlyViewed = () => {
 
   return (
     <Flex justifyContent="center" mt={8}>
-      <Box w="60%">
+      <Box w={{ base: '90%', xl: '70%' }}>
         <Text fontSize="2xl">Recently Viewed</Text>
         <Divider />
         <Grid
@@ -31,16 +31,16 @@ const RecentlyViewed = () => {
           gap={4}
           mt={4}
         >
-          {houses.map(item => (
+          {houses.map((item, i)=> (
             <HouseCard
-              key={item.address}
+              key={i}
               data={{
                 imgUrl: handleImages(item.imgUrl),
-                title: 'Heritage Park',
                 address: item.address,
                 price: item.price,
                 numBedrooms: item.numBedrooms,
                 numBathrooms: item.numBathrooms,
+                mapUrls: item.mapUrls,
                 numAmenities: 3,
               }}
             />

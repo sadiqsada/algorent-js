@@ -89,6 +89,7 @@ const Header = props => {
                     <NavLink>Explore</NavLink>
                     {!isLoggedIn ? <NavLink>Login</NavLink> : null}
                     {!isLoggedIn ? <NavLink>Register</NavLink> : null}
+                    {isLoggedIn ? <NavLink>CreateListing</NavLink> : null}
                     {isLoggedIn ? <NavLink>Shortlist</NavLink> : null}
                     {isLoggedIn ? <NavLink>RecentlyViewed</NavLink> : null}
                     {isLoggedIn ? <NavLink>Wallet</NavLink> : null}
@@ -127,7 +128,9 @@ const Header = props => {
                       </Center>
                       <br />
                       <MenuDivider />
-                      <MenuItem>Account Settings</MenuItem>
+                      <Link href='/AccountSetting' style={{ textDecoration: 'none' }}>
+                        <MenuItem>Account Settings</MenuItem>
+                      </Link>
                       <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
                     </MenuList>
                   </Menu>
@@ -150,6 +153,7 @@ const Header = props => {
               <NavLink>Explore</NavLink>
               {!isLoggedIn ? <NavLink>Login</NavLink> : null}
               {!isLoggedIn ? <NavLink>Register</NavLink> : null}
+              {isLoggedIn ? <NavLink>CreateListing</NavLink> : null}
               {isLoggedIn ? <NavLink>Shortlist</NavLink> : null}
               {isLoggedIn ? <NavLink>RecentlyViewed</NavLink> : null}
               {isLoggedIn ? <NavLink>Wallet</NavLink> : null}

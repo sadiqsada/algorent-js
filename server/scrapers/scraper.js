@@ -1,9 +1,14 @@
 async function scrapeRemax(address, filter, _callback) {
   // Note: Address MUST be in form <state>|<city>|<zip>
+  //console.log("ADDRESS IS: " +  address + " AND FILTER IS: " + filter);
   const args = address + '**' + filter; // If one of the fields is not suppled, make it equal to 0
   let output = [];
   const { spawnSync } = require('child_process');
+<<<<<<< HEAD
   //  const pyProg = spawnSync('python', ['./scraper.py', args]); // For TEST ONLY
+=======
+  //const pyProg = spawnSync('python', ['./scraper.py', args]); // For TEST ONLY
+>>>>>>> master
   const pyProg = spawnSync('python', ['./scrapers/scraper.py', args]); // WHEN ACTUAL PROJECT DEPLOY, USE THIS
   //
   
@@ -36,7 +41,7 @@ async function scrapeRemax(address, filter, _callback) {
   // SpawnSYNC Code
   output = [];
   const data = pyProg.stdout;
-  const err = pyProg.stderr;
+  // const err = pyProg.stderr;
   const strData = data.toString().replace(/(\r\n|\n|\r)/gm, '');
   const dataSplit = strData.split('**');
   dataSplit.pop(); // Last value is useless
@@ -56,16 +61,19 @@ module.exports.scrapeRemax = scrapeRemax;
 async function guessAddress(address, _callback) {
   const args = address + '**' + 'G'; // If one of the fields is not suppled, make it equal to 0
   const { spawnSync } = require('child_process');
-  //const pyProg = spawnSync('python', ['./scraper.py', args]); // For TEST ONLY
+  // const pyProg = spawnSync('python', ['./scraper.py', args]); // For TEST ONLY
   const pyProg = spawnSync('python', ['./scrapers/scraper.py', args]); // WHEN ACTUAL PROJECT DEPLOY, USE THIS
 
-
   const data = pyProg.stdout;
-  const err = pyProg.stderr;
-  const strData = data.toString().replace(/(\r\n|\n|\r)/gm, '').split(" , ");
-  _callback(strData)
+  // const err = pyProg.stderr;
+  const strData = data
+    .toString()
+    .replace(/(\r\n|\n|\r)/gm, '')
+    .split(' , ');
+  _callback(strData);
 }
 module.exports.guessAddress = guessAddress;
+<<<<<<< HEAD
 
 async function sharpenImage(url, _callback) {
   const args = url + '**' + 'S'; // If one of the fields is not suppled, make it equal to 0
@@ -80,3 +88,5 @@ async function sharpenImage(url, _callback) {
   _callback(img_name[0])
 }
 module.exports.sharpenImage = sharpenImage;
+=======
+>>>>>>> master

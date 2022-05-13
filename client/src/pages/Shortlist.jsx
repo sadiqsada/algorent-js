@@ -5,10 +5,10 @@ import axios from 'axios';
 import handleImages from '../utils/handleImages';
 const Shortlist = () => {
   const [houses, setHouses] = useState([]);
-
+  const web_url = 'http://localhost:8000'
   useEffect(() => {
     axios
-      .get('http://localhost:8000/getShortlist', {
+      .get(web_url + '/getShortlist', {
         withCredentials: true,
         credentials: 'include',
       })
@@ -22,7 +22,7 @@ const Shortlist = () => {
 
   return (
     <Flex justifyContent="center" mt={8}>
-      <Box w="60%">
+      <Box w={{ base: '90%', xl: '70%' }}>
         <Text fontSize="2xl">Shortlist</Text>
         <Divider />
         <Grid
@@ -30,9 +30,9 @@ const Shortlist = () => {
           gap={4}
           mt={4}
         >
-          {houses.map(item => (
+          {houses.map((item, i) => (
             <HouseCard
-              key={item.address}
+              key={i}
               data={{
                 imgUrl: handleImages(item.imgUrl),
                 address: item.address,

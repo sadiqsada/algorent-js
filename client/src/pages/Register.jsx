@@ -19,10 +19,10 @@ import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { Formik, Form, Field } from 'formik';
 import Axios from 'axios';
-
+const web_url = 'http://localhost:8000'
 const SignUp = () => {
   const handleSubmit = values => {
-    Axios.post('http://localhost:8000/register', {
+    Axios.post(web_url + '/register', {
       firstName: values.firstname,
       lastName: values.lastname,
       email: values.email,

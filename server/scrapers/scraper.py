@@ -9,6 +9,7 @@ import cv2
 import numpy as np
 import copy 
 import matplotlib.pyplot as plt
+<<<<<<< HEAD
 from PIL import Image
 
 def guessLoc(address):
@@ -46,6 +47,8 @@ def guessLoc(address):
 	output_addr = {"state":state, "city":city, "zip": zip}
 	#print(output_addr)
 	return output_addr
+=======
+>>>>>>> master
 
 def histogram_equalization(img_in):
     # Write histogram equalization here
@@ -98,6 +101,7 @@ def sharpen_img_colored(img):
   output_img_sharpened = img_hsv
   output_img_sharpened[:,:,2] = hsv_value_sharpened
   output_img_sharpened = cv2.cvtColor(output_img_sharpened, cv2.COLOR_HSV2RGB) 
+<<<<<<< HEAD
   #output_img_sharpened[..., ::-1]
   return output_img_sharpened
 
@@ -109,6 +113,46 @@ def convert_img(img_url):
 	filename = "sharpened_image.png"
 	cv2.imwrite(filename, img[..., ::-1])
 	return img, filename
+=======
+  return output_img_sharpened[..., ::-1]
+import smtplib
+
+def guessLoc(address):
+	g_api = "https://maps.googleapis.com/maps/api/"
+	place_api = g_api + "place/"
+	auto_c = "autocomplete/json?input="
+	details_url = "details/json?place_id="
+	details_api = place_api + details_url
+	req = address 
+	api_key = "&key=AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4"
+
+	auto_crequest = requests.get(place_api + auto_c + req + api_key)
+	auto_cresponse = auto_crequest.json()
+	#print(auto_cresponse)
+	pred = auto_cresponse['predictions'][0]
+	address = pred['description']
+	place_id = pred['place_id']
+	#print("Address: ", address)
+	#print("Place ID: ", place_id, "\n")
+	details_req = requests.get(details_api + place_id + api_key)
+	details = details_req.json()['result']
+	address_formatted = details['formatted_address']
+
+	address_component = details['address_components']
+	city = None
+	state = None
+	zip = None 
+	for address_c in address_component:
+		if('postal_code' in address_c['types']):
+			zip = address_c['short_name']
+		if('neighborhood' in address_c['types']):
+			city = address_c['short_name']
+		if('administrative_area_level_1' in address_c['types']):
+			state = address_c['short_name']
+	output_addr = {"state":state, "city":city, "zip": zip}
+	#print(output_addr)
+	return output_addr
+>>>>>>> master
 
 def scrape_remax(url):
 	base_url = "https://www.remax.com"
@@ -292,21 +336,27 @@ def house_info_from_address_filter(address, filters):
 		house_info += process_remax_page_fast(link[0])
 	return house_info
 
-#print("Arguments Given: ", sys.argv)
 my_args = sys.argv[1:]
 if(len(my_args) > 0):
 	addr_filter = my_args[0].split("**")
 	addr = addr_filter[0]
 	filter = addr_filter[1] if len(addr_filter) > 1 else None
+	#print("Addr: ", addr, "Filter: ", filter)
+	#print("My Args: ", my_args)
+	#sys.exit()
 	if(filter == 'G'):
 		addr = guessLoc(addr)
 		print(addr["state"], ",",addr["city"], ",", addr["zip"])
+<<<<<<< HEAD
 		sys.exit()
 	elif(filter == 'S'):
 		url = addr 
 		img, filename = convert_img(url)
 		print(filename)
 		sys.exit()
+=======
+		#sys.exit()
+>>>>>>> master
 	else:
 		address = None
 		if("|" in addr):
@@ -329,9 +379,6 @@ if(len(my_args) > 0):
 		else:
 			house_info = house_info_from_address(address)
 			print(house_info)
-
-
-
 
 
 
@@ -389,6 +436,7 @@ print("list: \n", list)
 #print("Test is: \n", test)
 #process_remax_page_fast("https://www.remax.com/ny/jamaica/home-details/84-50-169th-st-102-jamaica-ny-11432/9637000322339336887/M00000489/3378032")
 
+<<<<<<< HEAD
 #addr = guessLoc("Jamaica US 11417")
 #print(addr)
 
@@ -411,3 +459,26 @@ print("list: \n", list)
 
 #plt.show()
 
+=======
+'''
+imgOrig = cv2.imread("./test_blurry_3.jpeg", cv2.IMREAD_COLOR)[..., ::-1]
+imgSharpened = sharpen_img_colored("./test_blurry_3.jpeg")
+
+fig = plt.figure(figsize=(20, 15))
+plt.subplot(1, 2, 1)
+plt.imshow(imgOrig)
+plt.title('original image')
+plt.axis("off")
+'''
+
+'''
+plt.subplot(1, 2, 2)
+plt.imshow(imgSharpened)
+plt.title('SHARPENED image')
+plt.axis("off")
+
+plt.show()
+#addr = guessLoc("Jamaica US 11417")
+#print(addr)
+'''
+>>>>>>> master

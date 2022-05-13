@@ -27,6 +27,7 @@ const useGuesser = (address) => {
     console.log(output);
   });
 };
+<<<<<<< HEAD
 
 
 // useScraper(
@@ -34,14 +35,26 @@ const useGuesser = (address) => {
 //   '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}'
 // ); // PLEASE GIVE ADDRESS IN FORM: "<state>|<city>|zip"
 
+=======
+>>>>>>> master
 
-/**Scraper With ANY Address String:  
+// useScraper(
+//   'NY|Ozone Park|11417',
+//   '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}'
+// ); // PLEASE GIVE ADDRESS IN FORM: "<state>|<city>|zip"
+
+// useScraper('NY|Staten Island|10311', '')
+/** Scraper With ANY Address String:  
 useScraper(
   'Ozone Park 11417',
   '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}'
 );
 */
+<<<<<<< HEAD
 //useGuesser('Jamaica 11432');
+=======
+// useGuesser('Jamaica 11432');
+>>>>>>> master
 // Filter NEEDS to look like this: '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}'
 // If any min fields aren't given by user, just make them 0
 
