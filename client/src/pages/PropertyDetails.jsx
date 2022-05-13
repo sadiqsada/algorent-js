@@ -34,7 +34,12 @@ import axios from 'axios';
 const PropertyDetails = () => {
   const location = useLocation();
   const { props } = location.state;
+  const { address } = props.data;
+  const contactColor = useColorModeValue('#2eca6a', '#176534');
   const shortlistColor = useColorModeValue('red.500', 'red.200');
+  const cartColor = useColorModeValue('purple.500', 'purple.200');
+  const popupModalColor = useColorModeValue('gray.900', 'gray.400');
+
 
   const handleShortlist = async () => {
     const { address } = props.data;
@@ -56,8 +61,7 @@ const PropertyDetails = () => {
   };
 
   useEffect(() => {
-    const updateRecentlyViewed = async props => {
-      const { address } = props.data;
+    const updateRecentlyViewed = async () => {
       await axios.post(
         'http://localhost:8000/recentlyViewed',
         { address },
@@ -67,17 +71,17 @@ const PropertyDetails = () => {
         }
       );
     };
-    updateRecentlyViewed(props);
-  }, []);
+    updateRecentlyViewed();
+  }, [address]);
   const images = props.data.imgUrl;
   const mapColor = useColorModeValue(
-    props.data.mapUrl[0],
-    props.data.mapUrl[1]
+    props.data.mapUrls[0],
+    props.data.mapUrls[1]
   );
 
   const popupModal = useRef(null);
   const popupModalImg = useRef(null);
-  function modalPopUp(idx) {
+  const modalPopUp = (idx) => {
     if (popupModal.current && popupModalImg.current) {
       if (idx !== null) {
         popupModalImg.current.src = images[idx].url;
@@ -121,11 +125,11 @@ const PropertyDetails = () => {
 
   const calculateAptSize = () => {
     let size = 500;
-    if (props.data.numBeds > 3) size = size * 2;
-    else if (props.data.numBeds > 2) size = size * 1.5;
-    else if (props.data.numBeds > 1) size = size * 1.25;
-    if (props.data.numBaths > 2) size = size * 1.8;
-    else if (props.data.numBaths > 1) size = size * 1.4;
+    if (props.data.numBedrooms > 3) size = size * 2;
+    else if (props.data.numBedrooms > 2) size = size * 1.5;
+    else if (props.data.numBedrooms > 1) size = size * 1.25;
+    if (props.data.numBathrooms > 2) size = size * 1.8;
+    else if (props.data.numBathrooms > 1) size = size * 1.4;
     if (props.data.price > 800) size = size * 2;
     else if (props.data.price > 600) size = size * 1.8;
     else if (props.data.price > 400) size = size * 1.4;
@@ -135,19 +139,19 @@ const PropertyDetails = () => {
 
   const getAmenities = amenity => {
     if (amenity === 'pool') {
-      if (props.data.numBeds > 3) return 'green.500';
+      if (props.data.numBedrooms > 3) return 'green.500';
       else return 'red.500';
     } else if (amenity === 'balcony') {
-      if (props.data.numBeds > 1) return 'green.500';
+      if (props.data.numBedrooms > 1) return 'green.500';
       else return 'red.500';
     } else if (amenity === 'gym') {
-      if (props.data.numBeds > 3 && props.data.numBaths > 2) return 'green.500';
+      if (props.data.numBedrooms > 3 && props.data.numBathrooms > 2) return 'green.500';
       else return 'red.500';
     } else if (amenity === 'on-site laundry') {
-      if (props.data.numBeds > 2) return 'green.500';
+      if (props.data.numBedrooms > 2) return 'green.500';
       else return 'red.500';
     } else if (amenity === 'garage') {
-      if (props.data.numBeds > 2) return 'green.500';
+      if (props.data.numBedrooms > 2) return 'green.500';
       else return 'red.500';
     }
   };
@@ -190,7 +194,7 @@ const PropertyDetails = () => {
               <Text fontSize={'xl'} fontWeight={600} alt={'Title'}>
                 {props.data.title}
               </Text>
-              <Text mt={5} fontSize={'lg'} fontWeight={500} alt={'Contact'}>
+              <Text mt={5} fontSize={'lg'} textColor={contactColor} fontWeight={500} alt={'Contact'}>
                 (634)-777-****
               </Text>
             </Flex>
@@ -215,7 +219,7 @@ const PropertyDetails = () => {
           <Flex direction={'row'} m={2} ml={0}>
             <Icon as={BiBuildingHouse} w={7} h={7} mr={4} />
             <Text fontSize={'sm'} fontWeight={600} pt={1}>
-              {props.data.numBeds} Bedroom(s) - {props.data.numBaths}{' '}
+              {props.data.numBedrooms} Bedroom(s) - {props.data.numBathrooms}{' '}
               Bathroom(s) - {calculateAptSize()} sqft
             </Text>
           </Flex>
@@ -250,6 +254,7 @@ const PropertyDetails = () => {
                 fontSize={'sm'}
                 fontWeight={600}
                 onClick={calculateRoute}
+                mt={1}
               >
                 Find distance
               </Button>
@@ -415,11 +420,7 @@ const PropertyDetails = () => {
                   onClick={handleShortlist}
                 />
                 <Center mt={1}>
-                  <Text
-                    fontSize={'md'}
-                    color={shortlistColor}
-                    fontWeight={600}
-                  >
+                  <Text fontSize={'md'} color={shortlistColor} fontWeight={600}>
                     Fav
                   </Text>
                 </Center>
@@ -437,7 +438,7 @@ const PropertyDetails = () => {
                   }}
                 />
                 <Center mt={1}>
-                  <Text fontSize={'md'} fontWeight={600}>
+                  <Text color={cartColor} fontSize={'md'} fontWeight={600}>
                     Cart
                   </Text>
                 </Center>
@@ -466,12 +467,12 @@ const PropertyDetails = () => {
         display={'none'}
         overflow={'hidden'}
       >
-        <Box pos={'absolute'} w={'100%'} h={'100%'} opacity={0.5}>
+        <Box pos={'absolute'} w={'100%'} h={'100%'} bg={popupModalColor} opacity={0.5}>
           onClick=
           {() => {
             modalPopUp(null);
           }}{' '}
-          cursor={'pointer'}>
+          cursor={'pointer'}
         </Box>
         <Center pos={'absolute'} w={'100%'} h={'100%'} pointerEvents={'none'}>
           <Image

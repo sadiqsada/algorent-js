@@ -1,68 +1,70 @@
 const scraper = require('../scrapers/scraper.js');
-const House = require('../models/HouseModel');
+const House = require('../models/houseModel');
 const User = require('../models/userModel');
 const formatPrice = require('../utils/formatPrice');
-// const formatAddress = require('../utils/formatAddress');
 
-const explore = async (req, res) => {
+const explore = (req, res) => {
   try {
     const { address, filter } = req.body;
-    const zipCode = address.split('|')[2];
-    const { minBeds, minBaths, minPrice, maxPrice } = filter;
-    let filtersActive = false;
-    if (
-      Number(minBeds) > 1 ||
-      Number(minBaths) > 1 ||
-      Number(minPrice) !== 0 ||
-      Number(maxPrice !== 100000000)
-    ) {
-      filtersActive = true;
-    }
-    const results = await House.find({
-      zipCode,
-      numBedrooms: { $gte: minBeds },
-      numBathrooms: { $gte: minBaths },
-      price: { $gte: minPrice, $lte: maxPrice },
-    });
+    scraper.guessAddress(address, async (stateCityZip) => {
+      const zipCode = stateCityZip[2];
+      const { minBeds, minBaths, minPrice, maxPrice } = filter;
+      let filtersActive = false;
+      if (
+        Number(minBeds) > 1 ||
+        Number(minBaths) > 1 ||
+        Number(minPrice) !== 0 ||
+        Number(maxPrice !== 100000000)
+      ) {
+        filtersActive = true;
+      }
 
-    if ((filtersActive && results.length > 0) || results.length > 8) {
-      const houses = results.map((house) => [
-        house.imgUrl,
-        house.address,
-        house.price,
-        house.numBathrooms,
-        house.numBedrooms,
-        house.mapUrls[0],
-        house.mapUrls[1],
-      ]);
-      return res.json(houses);
-    }
-
-    const houses = [];
-    scraper.scrapeRemax(address, filter, (data) => {
-      data.forEach(async (house) => {
-        const newHouse = new House({
-          imgUrl: house[0],
-          address: house[1],
-          price: Number(formatPrice(house[2])),
-          zipCode,
-          numBedrooms: Number(house[4]) === 0 ? 1 : Number(house[4]),
-          numBathrooms: Number(house[3]) === 0 ? 1 : Number(house[3]),
-          mapUrls: [house[5], house[6]],
-        });
-        const newHouseArr = [
-          newHouse.imgUrl,
-          newHouse.address,
-          newHouse.price,
-          newHouse.numBathrooms,
-          newHouse.numBedrooms,
-          newHouse.mapUrls[0],
-          newHouse.mapUrls[1],
-        ];
-        houses.push(newHouseArr);
-        await newHouse.save();
+      const results = await House.find({
+        zipCode,
+        numBedrooms: { $gte: minBeds },
+        numBathrooms: { $gte: minBaths },
+        price: { $gte: minPrice, $lte: maxPrice },
       });
-      return res.json(houses);
+
+      if ((filtersActive && results.length > 0) || results.length > 8) {
+        const houses = results.map((house) => [
+          house.imgUrl,
+          house.address,
+          house.price,
+          house.numBathrooms,
+          house.numBedrooms,
+          house.mapUrls[0],
+          house.mapUrls[1],
+        ]);
+        return res.json(houses);
+      }
+      const houses = [];
+      scraper.scrapeRemax(address, filter, (data) => {
+        data.forEach(async (house) => {
+          const scraperZipCode = house[1].split(', ')[2].split(' ')[1];
+          const newHouse = new House({
+            imgUrl: house[0],
+            address: house[1],
+            price: Number(formatPrice(house[2])),
+            zipCode: scraperZipCode,
+            numBedrooms: Number(house[4]) === 0 ? 1 : Number(house[4]),
+            numBathrooms: Number(house[3]) === 0 ? 1 : Number(house[3]),
+            mapUrls: [house[5], house[6]],
+          });
+          const newHouseArr = [
+            newHouse.imgUrl,
+            newHouse.address,
+            newHouse.price,
+            newHouse.numBathrooms,
+            newHouse.numBedrooms,
+            newHouse.mapUrls[0],
+            newHouse.mapUrls[1],
+          ];
+          houses.push(newHouseArr);
+          await newHouse.save();
+        });
+        return res.json(houses);
+      });
     });
   } catch (error) {
     console.error(error);
@@ -135,7 +137,7 @@ const getRecentlyViewed = async (req, res) => {
       .where('_id')
       .in(user.recentlyViewed)
       .exec();
-    return res.status(200).json(houses);
+    return res.status(200).json(houses.reverse());
   } catch (error) {
     console.error(error);
   }

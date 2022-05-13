@@ -7,7 +7,7 @@ const app = express();
 const PORT = 8000;
 dotenv.config();
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.json({ limit: '20mb' }));
 app.use(cookieParser());
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
@@ -17,9 +17,7 @@ app.use('/', router);
 
 mongoose
   .connect(process.env.MONGODB_URI, {
-    // 'mongodb://127.0.0.1:27017/algorent'
     useNewUrlParser: true,
-    autoIndex: false,
   })
   .then(() => {
     app.listen(PORT, () => {
