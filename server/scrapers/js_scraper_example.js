@@ -27,16 +27,6 @@ const useGuesser = (address) => {
     console.log(output);
   });
 };
-<<<<<<< HEAD
-
-
-// useScraper(
-//   'NY|Ozone Park|11417',
-//   '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}'
-// ); // PLEASE GIVE ADDRESS IN FORM: "<state>|<city>|zip"
-
-=======
->>>>>>> master
 
 // useScraper(
 //   'NY|Ozone Park|11417',
@@ -50,11 +40,7 @@ useScraper(
   '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}'
 );
 */
-<<<<<<< HEAD
-//useGuesser('Jamaica 11432');
-=======
 // useGuesser('Jamaica 11432');
->>>>>>> master
 // Filter NEEDS to look like this: '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}'
 // If any min fields aren't given by user, just make them 0
 

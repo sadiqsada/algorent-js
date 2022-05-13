@@ -17,7 +17,7 @@ import { useState } from 'react';
 const CreateListing =  () =>{
     const [checked, setChecked] = useState(false)
     const [images, setImages] = useState([])
-    const web_url = 'http://localhost:8000'
+    const web_url = 'https://algorent-proj.herokuapp.com'
     const handleSubmit = (values) => {
         Axios
           .post(web_url + '/createListing', {

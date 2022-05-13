@@ -2,51 +2,6 @@ const scraper = require('../scrapers/scraper.js');
 const House = require('../models/houseModel');
 const User = require('../models/userModel');
 const formatPrice = require('../utils/formatPrice');
-<<<<<<< HEAD
-// const formatAddress = require('../utils/formatAddress');
-const sharpen = async (req, res) => {
-  let file_link = './scrapers/sharpened_image.png'
-  try {
-    const { url } = req.body;
-    scraper.sharpenImage(url, (data) => {
-      file_link = './scrapers/' + data
-    });
-  } catch( error ) {
-    console.log(error)
-  }
-  return res.json(file_link)
-}
-const explore = async (req, res) => {
-  try {
-    const { address, filter } = req.body;
-    let zipCode = "11432"
-    if(address.includes("|")) {
-      zipCode = address.split('|')[2];
-    }
-    else {
-      scraper.guessAddress(address, (data) => {
-        address_full = data
-        zipCode = address_full[2]
-        //console.log(zipCode)
-      });
-    }
-    const { minBeds, minBaths, minPrice, maxPrice } = filter;
-    let filtersActive = false;
-    if (
-      Number(minBeds) > 1 ||
-      Number(minBaths) > 1 ||
-      Number(minPrice) !== 0 ||
-      Number(maxPrice !== 100000000)
-    ) {
-      filtersActive = true;
-    }
-    const results = await House.find({
-      zipCode,
-      numBedrooms: { $gte: minBeds },
-      numBathrooms: { $gte: minBaths },
-      price: { $gte: minPrice, $lte: maxPrice },
-    });
-=======
 
 const explore = (req, res) => {
   try {
@@ -66,7 +21,6 @@ const explore = (req, res) => {
       ) {
         filtersActive = true;
       }
->>>>>>> master
 
       const results = await House.find({
         zipCode,

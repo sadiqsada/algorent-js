@@ -19,7 +19,7 @@ import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { Formik, Form, Field } from 'formik';
 import Axios from 'axios';
-const web_url = 'http://localhost:8000'
+const web_url = 'https://algorent-proj.herokuapp.com'
 const SignUp = () => {
   const handleSubmit = values => {
     Axios.post(web_url + '/register', {
