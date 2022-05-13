@@ -3,7 +3,6 @@ import sys
 from warnings import filters
 from webbrowser import get
 import requests
-#from geopy.geocoders import Nominatim
 from bs4 import BeautifulSoup as bs
 import ast
 import cv2
@@ -56,9 +55,8 @@ def sharpen_img_colored(img_path):
 	succeed, output_image_sharpened_hist = histogram_equalization(output_img_sharpened)
 	return output_image_sharpened_hist[..., ::-1]
 '''
-def sharpen_img_colored(img_path):
-  imgB = cv2.imread(img_path, cv2.IMREAD_COLOR)
-  img_hsv = cv2.cvtColor(imgB, cv2.COLOR_RGB2HSV) 
+def sharpen_img_colored(img):
+  img_hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV) 
   hsv_value_sharpened = sharpen_img(img_hsv[:,:,2])
   output_img_sharpened = img_hsv
   output_img_sharpened[:,:,2] = hsv_value_sharpened
@@ -235,16 +233,6 @@ def process_remax_page(url):
 	info_list["image"] = image
 	info_list["address"] =  address
 	return info_list
-	
-'''
-def get_coords(address):
-	#address = "32-22 204TH ST BAYSIDE, NY 11361"
-	address.replace(" ", "+")
-	geolocator = Nominatim(user_agent="html")
-	location = geolocator.geocode("175 5th Avenue NYC")
-	resp_json_payload = (location.latitude, location.longitude)
-	return resp_json_payload
-'''
 
 def get_complete_addr_link(address): #format of address : {"country": ,"state": , "city": , "zip": }
 	try:

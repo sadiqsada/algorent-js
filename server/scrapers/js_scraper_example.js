@@ -11,6 +11,13 @@ const useScraper = (address, filter) => {
   });
 };
 
+
+const useSharpen = (url) => {
+  scraper.sharpenImage(url, (output) => {
+    console.log("Filename: ", output)
+  });
+}
+
 const useGuesser = (address) => {
   // call first function and pass in a callback function which
   // first function runs when it has completed
@@ -40,3 +47,5 @@ useScraper(
 // NOTE: Filter CAN be BLANK (Empty String)
 // use_scraper("NY|Jamaica|11432", "")
 // ------END OF EXAMPLE------------------------
+
+useSharpen('https://s3.amazonaws.com/rets-images-matrix-hgar/9db17eba12c81cd49afd283784fbc436d6e2155e-1-large.jpeg')

@@ -13,6 +13,14 @@ import {
   Button,
   Stack,
   IconButton,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 import SimpleImageSlider from 'react-simple-image-slider';
@@ -30,7 +38,7 @@ import { BsCartPlusFill } from 'react-icons/bs';
 import { useRef, useState } from 'react';
 import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 import axios from 'axios';
-
+//import img_s from './sharpened_image.png'
 const PropertyDetails = () => {
   const location = useLocation();
   const { props } = location.state;
@@ -39,8 +47,11 @@ const PropertyDetails = () => {
   const shortlistColor = useColorModeValue('red.500', 'red.200');
   const cartColor = useColorModeValue('purple.500', 'purple.200');
   const popupModalColor = useColorModeValue('gray.900', 'gray.400');
-  const web_url = 'http://localhost:8000'
+  const web_url = 'https://algorent-proj.herokuapp.com'
 
+  // const handleSharpen = async () => {
+  //   const
+  // }
   const handleShortlist = async () => {
     const { address } = props.data;
     const stateZip = address.split(', ')[2];
@@ -79,6 +90,9 @@ const PropertyDetails = () => {
     props.data.mapUrls[1]
   );
 
+
+
+
   const popupModal = useRef(null);
   const popupModalImg = useRef(null);
   const modalPopUp = (idx) => {
@@ -91,6 +105,30 @@ const PropertyDetails = () => {
       }
     }
   }
+  // const modalPopUp = async (idx) => {
+  //   if (popupModal.current && popupModalImg.current) {
+  //     if (idx !== null) {
+  //       let image_url = images[idx].url
+  //       console.log(image_url)
+  //       let img = process.env.PUBLIC_URL + '/sharpened_image.png'
+  //       await axios
+  //       .post(web_url + '/sharpen', {
+  //         url: image_url
+  //       })
+  //       .then(response => {
+  //         console.log(process.env.PUBLIC_URL + '')
+  //       })
+  //       .catch(error => {
+  //         console.error(error);
+  //       });
+        
+  //       popupModalImg.current.src = require('./sharpened_image.png')//img_s;//images[idx].url;
+  //       popupModal.current.style.display = 'flex';
+  //     } else {
+  //       popupModal.current.style.display = 'none';
+  //     }
+  //   }
+  // }
 
   const { isLoaded } = useJsApiLoader({
     //googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -156,6 +194,32 @@ const PropertyDetails = () => {
     }
   };
 
+  function BasicUsage() {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    return (
+      <>
+        <Button onClick={onOpen}>Open Modal</Button>
+  
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Modal Title</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <p>This is the Modal Body</p>
+            </ModalBody>
+  
+            <ModalFooter>
+              <Button colorScheme='blue' mr={3} onClick={onClose}>
+                Close
+              </Button>
+              <Button variant='ghost'>Secondary Action</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    )
+  }
   return (
     <Flex direction={'row'} w={'100%'} h={'93vh'} overflow={'hidden'}>
       <Flex
@@ -177,9 +241,9 @@ const PropertyDetails = () => {
             navSize={60}
             navMargin={0}
             style={{ cursor: 'pointer' }}
-            onClick={(idx, event) => {
-              modalPopUp(idx);
-            }}
+            onClick={(idx, event) => {{
+              modalPopUp(idx)
+            }}}
           />
         </Box>
         <Flex

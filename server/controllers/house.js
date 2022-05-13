@@ -9,7 +9,7 @@ const explore = (req, res) => {
     let address_scraper = address;
     let filter_scraper = filter;
     scraper.guessAddress(address, async (stateCityZip) => {
-      //console.log("Searching DB!");
+      console.log("Searching DB!");
       const zipCode = stateCityZip[2];
       const { minBeds, minBaths, minPrice, maxPrice } = filter;
       let filtersActive = false;
@@ -49,8 +49,8 @@ const explore = (req, res) => {
       ) {
         filter_scraper = ''
       }
-      //console.log("USING SCRAPER");
-      //console.log("Looking for Address: " + address_scraper + " With Filter: " + filter_scraper);
+      console.log("USING SCRAPER");
+      console.log("Looking for Address: " + address_scraper + " With Filter: " + filter_scraper);
       scraper.scrapeRemax(address_scraper, filter_scraper, (data) => {
         data.forEach(async (house) => {
           const scraperZipCode = house[1].split(', ')[2].split(' ')[1];
