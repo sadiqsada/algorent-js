@@ -47,7 +47,7 @@ const PropertyDetails = () => {
   const shortlistColor = useColorModeValue('red.500', 'red.200');
   const cartColor = useColorModeValue('purple.500', 'purple.200');
   const popupModalColor = useColorModeValue('gray.900', 'gray.400');
-  const web_url = 'https://algorent-proj.herokuapp.com'
+  const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
 
   // const handleSharpen = async () => {
   //   const
@@ -112,7 +112,7 @@ const PropertyDetails = () => {
   //       console.log(image_url)
   //       let img = process.env.PUBLIC_URL + '/sharpened_image.png'
   //       await axios
-  //       .post('http://localhost:8000/sharpen', {
+  //       .post(web_url + '/sharpen', {
   //         url: image_url
   //       })
   //       .then(response => {
@@ -258,13 +258,8 @@ const PropertyDetails = () => {
               <Text fontSize={'xl'} fontWeight={600} alt={'Title'}>
                 {props.data.title}
               </Text>
-<<<<<<< HEAD
-              <Text mt={5} fontSize={'lg'} fontWeight={500} alt={'Contact'}>
-                (634)-777  -****
-=======
               <Text mt={5} fontSize={'lg'} textColor={contactColor} fontWeight={500} alt={'Contact'}>
                 (634)-777-****
->>>>>>> master
               </Text>
             </Flex>
             <Spacer />

@@ -33,7 +33,7 @@ const Explore = () => {
   const handleNumBaths = event => setNumBaths(event.target.value);
   const handlePriceMin = event => setPriceMin(event.target.value);
   const handlePriceMax = event => setPriceMax(event.target.value);
-  const web_url = 'https://algorent-proj.herokuapp.com'
+  const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
   const handleSubmit = () => {
     axios
       .post(web_url+'/explore', {

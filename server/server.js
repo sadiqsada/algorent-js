@@ -12,17 +12,17 @@ dotenv.config();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '20mb' }));
 app.use(cookieParser());
-
+const web_url = 'https://algorent-proj.herokuapp.com' // 'http://localhost:3000'; // THIS NEEDS TO BE WEB URL
 app.use(cors({ origin: web_url, credentials: true })); 
 const router = require('./routes/router');
 app.use('/', router);
 
+/**ONLY HAVE THIS FOR HEROKU DEPLOYMENT! */
 app.use(express.static("public"));
 app.get("*", function (request, response) {
   response.sendFile(path.resolve(__dirname, "public", "index.html"));
 });
 
-//console.log("TEST URL IS: " + process.env.TEST_URL)
 mongoose
   .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
