@@ -47,7 +47,7 @@ const PropertyDetails = () => {
   const shortlistColor = useColorModeValue('red.500', 'red.200');
   const cartColor = useColorModeValue('purple.500', 'purple.200');
   const popupModalColor = useColorModeValue('gray.900', 'gray.400');
-  const web_url = 'https://algorent-proj.herokuapp.com'
+  const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
 
   // const handleSharpen = async () => {
   //   const

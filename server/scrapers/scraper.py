@@ -5,45 +5,45 @@ from webbrowser import get
 import requests
 from bs4 import BeautifulSoup as bs
 import ast
-import cv2
+#import cv2
 import numpy as np
 import copy 
 import matplotlib.pyplot as plt
 
-def histogram_equalization(img_in):
-    # Write histogram equalization here
-    # Fill in your code here
-    HSV = cv2.cvtColor(img_in, cv2.COLOR_RGB2HSV) 
-    img_in_hsv = HSV[:,:,2]
-    total_pix = len(img_in_hsv)*len(img_in_hsv[0])
-    hist = [0 for x in range(256)]
+# def histogram_equalization(img_in):
+#     # Write histogram equalization here
+#     # Fill in your code here
+#     HSV = cv2.cvtColor(img_in, cv2.COLOR_RGB2HSV) 
+#     img_in_hsv = HSV[:,:,2]
+#     total_pix = len(img_in_hsv)*len(img_in_hsv[0])
+#     hist = [0 for x in range(256)]
     
-    for r in range(len(img_in_hsv)):
-      for c in range(len(img_in_hsv[r])):
-        hist[img_in_hsv[r][c]] += 1 #Get freq vals for hist
-    pdf = np.true_divide(np.asarray(hist), total_pix) #pdf for hist
-    cdf = [0 for x in range(256)]
-    run_sum = 0
-    for i in range(len(pdf)):
-      run_sum+=pdf[i]
-      cdf[i] = run_sum 
-    #cdf found
-    intensity_output = np.asarray(cdf)*255
-    intensity = img_in_hsv
-    for r in range(len(img_in_hsv)):
-      for c in range(len(img_in_hsv[r])):
-        intensity[r][c] = intensity_output[intensity[r][c]]
-    #print("img out intensity: ", intensity)
-    img_out = copy.deepcopy(HSV)
-    img_out[:,:,2] = intensity
-    img_out = cv2.cvtColor(img_out, cv2.COLOR_HSV2RGB) 
-    return True, img_out
+#     for r in range(len(img_in_hsv)):
+#       for c in range(len(img_in_hsv[r])):
+#         hist[img_in_hsv[r][c]] += 1 #Get freq vals for hist
+#     pdf = np.true_divide(np.asarray(hist), total_pix) #pdf for hist
+#     cdf = [0 for x in range(256)]
+#     run_sum = 0
+#     for i in range(len(pdf)):
+#       run_sum+=pdf[i]
+#       cdf[i] = run_sum 
+#     #cdf found
+#     intensity_output = np.asarray(cdf)*255
+#     intensity = img_in_hsv
+#     for r in range(len(img_in_hsv)):
+#       for c in range(len(img_in_hsv[r])):
+#         intensity[r][c] = intensity_output[intensity[r][c]]
+#     #print("img out intensity: ", intensity)
+#     img_out = copy.deepcopy(HSV)
+#     img_out[:,:,2] = intensity
+#     img_out = cv2.cvtColor(img_out, cv2.COLOR_HSV2RGB) 
+#     return True, img_out
 
-def sharpen_img(img):
-	kernel = np.asarray([[0,-1,0],
-						[-1,4,0],
-						[0,-1,0]])
-	return cv2.filter2D(src = img, ddepth = -1, kernel=kernel)
+# def sharpen_img(img):
+# 	kernel = np.asarray([[0,-1,0],
+# 						[-1,4,0],
+# 						[0,-1,0]])
+# 	return cv2.filter2D(src = img, ddepth = -1, kernel=kernel)
 '''
 def sharpen_img_colored(img_path):
 	imgB = cv2.imread(img_path, cv2.IMREAD_COLOR)
@@ -55,14 +55,14 @@ def sharpen_img_colored(img_path):
 	succeed, output_image_sharpened_hist = histogram_equalization(output_img_sharpened)
 	return output_image_sharpened_hist[..., ::-1]
 '''
-def sharpen_img_colored(img):
-  img_hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV) 
-  hsv_value_sharpened = sharpen_img(img_hsv[:,:,2])
-  output_img_sharpened = img_hsv
-  output_img_sharpened[:,:,2] = hsv_value_sharpened
-  output_img_sharpened = cv2.cvtColor(output_img_sharpened, cv2.COLOR_HSV2RGB) 
-  return output_img_sharpened[..., ::-1]
-import smtplib
+# def sharpen_img_colored(img):
+#   img_hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV) 
+#   hsv_value_sharpened = sharpen_img(img_hsv[:,:,2])
+#   output_img_sharpened = img_hsv
+#   output_img_sharpened[:,:,2] = hsv_value_sharpened
+#   output_img_sharpened = cv2.cvtColor(output_img_sharpened, cv2.COLOR_HSV2RGB) 
+#   return output_img_sharpened[..., ::-1]
+# import smtplib
 
 def guessLoc(address):
 	g_api = "https://maps.googleapis.com/maps/api/"

@@ -28,9 +28,9 @@ const App = () => {
         setIsLoggedIn(false);
         return;
       }
-      
+      const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
       const tokenRes = await Axios.post(
-        'http://localhost:8000/tokenIsValid',
+        web_url + '/tokenIsValid',
         null,
         {
           headers: { 'x-auth-token': token },
