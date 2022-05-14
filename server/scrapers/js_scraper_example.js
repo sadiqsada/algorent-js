@@ -48,4 +48,4 @@ useScraper(
 // use_scraper("NY|Jamaica|11432", "")
 // ------END OF EXAMPLE------------------------
 
-useSharpen('https://s3.amazonaws.com/rets-images-matrix-hgar/9db17eba12c81cd49afd283784fbc436d6e2155e-1-large.jpeg')
+// useSharpen('https://s3.amazonaws.com/rets-images-matrix-hgar/9db17eba12c81cd49afd283784fbc436d6e2155e-1-large.jpeg')

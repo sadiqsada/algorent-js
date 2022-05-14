@@ -9,7 +9,7 @@ const explore = (req, res) => {
     let address_scraper = address;
     let filter_scraper = filter;
     scraper.guessAddress(address, async (stateCityZip) => {
-      //console.log("Searching DB!");
+      console.log("Searching DB!");
       const zipCode = stateCityZip[2];
       const { minBeds, minBaths, minPrice, maxPrice } = filter;
       let filtersActive = false;
@@ -28,7 +28,8 @@ const explore = (req, res) => {
         numBathrooms: { $gte: minBaths },
         price: { $gte: minPrice, $lte: maxPrice },
       });
-
+      
+      console.log("DB Results Length: " + results.length)
       if ((filtersActive && results.length > 0) || results.length > 8) {
         const houses = results.map((house) => [
           house.imgUrl,
@@ -49,34 +50,34 @@ const explore = (req, res) => {
       ) {
         filter_scraper = ''
       }
-      //console.log("USING SCRAPER");
-      //console.log("Looking for Address: " + address_scraper + " With Filter: " + filter_scraper);
-      scraper.scrapeRemax(address_scraper, filter_scraper, (data) => {
-        data.forEach(async (house) => {
-          const scraperZipCode = house[1].split(', ')[2].split(' ')[1];
-          const newHouse = new House({
-            imgUrl: house[0],
-            address: house[1],
-            price: Number(formatPrice(house[2])),
-            zipCode: scraperZipCode,
-            numBedrooms: Number(house[4]) === 0 ? 1 : Number(house[4]),
-            numBathrooms: Number(house[3]) === 0 ? 1 : Number(house[3]),
-            mapUrls: [house[5], house[6]],
-          });
-          const newHouseArr = [
-            newHouse.imgUrl,
-            newHouse.address,
-            newHouse.price,
-            newHouse.numBathrooms,
-            newHouse.numBedrooms,
-            newHouse.mapUrls[0],
-            newHouse.mapUrls[1],
-          ];
-          houses.push(newHouseArr);
-          await newHouse.save();
-        });
-        return res.json(houses);
-      });
+      // console.log("USING SCRAPER");
+      // console.log("Looking for Address: " + address_scraper + " With Filter: " + filter_scraper);
+      // scraper.scrapeRemax(address_scraper, filter_scraper, (data) => {
+      //   data.forEach(async (house) => {
+      //     const scraperZipCode = house[1].split(', ')[2].split(' ')[1];
+      //     const newHouse = new House({
+      //       imgUrl: house[0],
+      //       address: house[1],
+      //       price: Number(formatPrice(house[2])),
+      //       zipCode: scraperZipCode,
+      //       numBedrooms: Number(house[4]) === 0 ? 1 : Number(house[4]),
+      //       numBathrooms: Number(house[3]) === 0 ? 1 : Number(house[3]),
+      //       mapUrls: [house[5], house[6]],
+      //     });
+      //     const newHouseArr = [
+      //       newHouse.imgUrl,
+      //       newHouse.address,
+      //       newHouse.price,
+      //       newHouse.numBathrooms,
+      //       newHouse.numBedrooms,
+      //       newHouse.mapUrls[0],
+      //       newHouse.mapUrls[1],
+      //     ];
+      //     houses.push(newHouseArr);
+      //     await newHouse.save();
+      //   });
+      //   return res.json(houses);
+      // });
     });
   } catch (error) {
     console.error(error);
@@ -156,7 +157,6 @@ const getRecentlyViewed = async (req, res) => {
 };
 
 module.exports = {
-  sharpen,
   explore,
   shortlist,
   getShortlist,

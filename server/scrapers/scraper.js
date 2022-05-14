@@ -4,11 +4,7 @@ async function scrapeRemax(address, filter, _callback) {
   const args = address + '**' + filter; // If one of the fields is not suppled, make it equal to 0
   let output = [];
   const { spawnSync } = require('child_process');
-<<<<<<< HEAD
-  //  const pyProg = spawnSync('python', ['./scraper.py', args]); // For TEST ONLY
-=======
   //const pyProg = spawnSync('python', ['./scraper.py', args]); // For TEST ONLY
->>>>>>> master
   const pyProg = spawnSync('python', ['./scrapers/scraper.py', args]); // WHEN ACTUAL PROJECT DEPLOY, USE THIS
   //
   
@@ -73,20 +69,3 @@ async function guessAddress(address, _callback) {
   _callback(strData);
 }
 module.exports.guessAddress = guessAddress;
-<<<<<<< HEAD
-
-async function sharpenImage(url, _callback) {
-  const args = url + '**' + 'S'; // If one of the fields is not suppled, make it equal to 0
-  const { spawnSync } = require('child_process');
-  //const pyProg = spawnSync('python', ['./scraper.py', args]); // For TEST ONLY
-  const pyProg = spawnSync('python', ['./scrapers/scraper.py', args]); // WHEN ACTUAL PROJECT DEPLOY, USE THIS
-
-
-  const data = pyProg.stdout;
-  const err = pyProg.stderr;
-  const img_name = data.toString().replace(/(\r\n|\n|\r)/gm, '').split(" , ");
-  _callback(img_name[0])
-}
-module.exports.sharpenImage = sharpenImage;
-=======
->>>>>>> master
