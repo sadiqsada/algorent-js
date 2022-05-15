@@ -38,6 +38,7 @@ router.get('/transactions/getWallets', auth, TransactionController.getWallets);
 router.post('/transactions/selectWallet', auth, TransactionController.selectWallet);
 
 router.post('/offer/addOffer', auth, OfferController.addOffer);
+router.post('/offer/removeOffer', auth, OfferController.removeOffer);
 router.get('/getReceivedOffers', auth, OfferController.getReceivedOffers);
 router.post('/changeUsername', UserController.changeUsername);
 router.post('/sendVerification', UserController.sendVerification);

@@ -7,7 +7,7 @@ const addOffer = async (req, res) => {
   const house = await House.find({ address });
   const user = await User.findById(req.userId);
   const elonUser = await User.findById('628077c1411ce173370edae3');
-  const newOffer = new Offer({ name: user.firstName, price, house: house[0] });
+  const newOffer = new Offer({ name: user.firstName, price, house: house[0], senderID: req.userId });
   await newOffer.save();
   elonUser.receivedOffers.push(newOffer);
   await elonUser.save();
@@ -16,6 +16,19 @@ const addOffer = async (req, res) => {
   console.log('Offer successfully saved');
   return res.json({ message: 'Offer Successfully Saved' });
 };
+
+const removeOffer = async (req, res) => {
+  const { id } = req.body;
+  const offer = await Offer.findById(id);
+  const user = await User.findById(req.userId);
+  user.receivedOffers = user.receivedOffers.filter(itemID => !(itemID.equals(id)));
+  await user.save();
+  const sender = await User.findById(offer.senderID);
+  sender.sentOffers = sender.sentOffers.filter(itemID => !(itemID.equals(id)));
+  await sender.save();
+  await Offer.findByIdAndDelete(offer);
+  return res.json({ message: 'Offer succcessfully deleted' });
+}
 
 const getReceivedOffers = async (req, res) => {
   try {
@@ -30,4 +43,4 @@ const getReceivedOffers = async (req, res) => {
   }
 };
 
-module.exports = { addOffer, getReceivedOffers };
+module.exports = { addOffer, removeOffer, getReceivedOffers };

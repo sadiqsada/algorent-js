@@ -25,8 +25,6 @@ const createAccount = async (req, res) => {
     const currentUser = await User.findById(req.userId);
     currentUser.wallets.push(newWallet);
     await currentUser.save();
-    // console.log('Add funds to account using the TestNet Dispenser: ');
-    // console.log('https://dispenser.testnet.aws.algodev.network/ ');
     return res.json(myAccount);
   } catch (err) {
     console.log('err', err);
