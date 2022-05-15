@@ -21,7 +21,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const web_url = 'https://algorent-proj.herokuapp.com'
+  const web_url = 'http://localhost:8000'
   useEffect(() => {
     const checkLoggedIn = async () => {
       const token = Cookies.get('token');
@@ -29,7 +29,7 @@ const App = () => {
         setIsLoggedIn(false);
         return;
       }
-      const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
+      const web_url = 'http://localhost:8000' //'http://localhost:8000'; //
       const tokenRes = await Axios.post(
         web_url + '/tokenIsValid',
         null,

@@ -7,12 +7,11 @@ const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const app = express();
 const PORT = process.env.PORT || 8000;
-const web_url = 'http://localhost:8000'//https://algorent-proj.herokuapp.com'
+const web_url = 'http://localhost:3000'//https://algorent-proj.herokuapp.com'
 dotenv.config();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '20mb' }));
 app.use(cookieParser());
-const web_url = 'https://algorent-proj.herokuapp.com' // 'http://localhost:3000'; // THIS NEEDS TO BE WEB URL
 app.use(cors({ origin: web_url, credentials: true })); 
 const router = require('./routes/router');
 app.use('/', router);
