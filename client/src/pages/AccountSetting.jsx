@@ -155,7 +155,8 @@ const AccountSetting = () => {
     setAvatar(e.target.files[0])
   }
 
-  const handleChangeAvatar = async() => {
+  const handleChangeAvatar = async(e) => {
+    e.preventDefault()
     const formData = new FormData();
     formData.append('photo', avatar)
     formData.append('user', currentUser._id)
@@ -163,6 +164,7 @@ const AccountSetting = () => {
     if (response.data.success){
       photoOnClose()
       getCurrentUser()
+      photo = null
     }else{
       alert(response.data.message);
     }
@@ -246,7 +248,7 @@ const AccountSetting = () => {
     <Modal isOpen={photoIsOpen} onClose={photoClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <form encType='multipart/form-data' onSubmit={handleChangeAvatar}>
+        <form encType='multipart/form-data' onSubmit={e => handleChangeAvatar(e)}>
           <ModalHeader>Edit Photo</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -477,7 +479,7 @@ const AccountSetting = () => {
                 </Box>
                 <Box marginTop='1%'>
                 <Button onClick={photoOnOpen} float='right' size='sm' colorScheme='teal'>Edit</Button>
-                <Image float='right' marginRight='2%' boxSize ='50px' borderRadius='full' src={`data:image/png;base64,${currentUser&&currentUser.avatar.toString()}`}></Image>
+                <Image float='right' marginRight='2%' boxSize ='50px' borderRadius='full' src={`data:image/png;base64,${currentUser&&currentUser.avatar&&currentUser.avatar[1].toString()}`}/>
                 <h style={{fontSize:'10pt',margin:'3%'}}><b>Photo</b></h>
                 <p style={{fontSize:'10pt',marginLeft:'3%'}}>Personalize your profile pic with a custom photo.</p>
                 {photoModal}

@@ -320,23 +320,45 @@ const changePassword = async (req, res) => {
 
 }
 
-const upload = multer({ storage: multer.memoryStorage() }).single('photo')
+// const upload = multer({ storage: multer.memoryStorage()}).single('photo')
 
-const uploadAvatar = async(req,res) =>{
-  let buffer
-  await upload (req, res, (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      if (req.file == undefined) {
-        return res.json({success:false,message:"Invalid Picture"})
-      } else {
-        buffer = req.file.buffer
-        User.findOneAndUpdate({_id:req.body.user},{avatar:buffer}).exec()
-        return res.json({success:true,message:"Photo changed successfully"})
-      }
+async function uploadFile(req,res) {
+  return new Promise(resolve => {
+    const upload = multer({ storage: multer.memoryStorage()}).single('photo')
+    upload (req, res, (err) => {
+    if (req.file == undefined) {
+      console.log(`no file`)
+       return resolve([`You must select a file.`, null]);
+    }else {
+       console.log(req.file)
+       return resolve([null, req.file.buffer])
     }
   })
+ }).catch((error) => {
+   console.log(error)
+  });
+}
+
+const uploadAvatar = async(req,res) =>{
+  let buffer = await uploadFile(req,res)
+  await User.findOneAndUpdate({_id:req.body.user},{avatar:buffer}).exec()
+  return res.json({success:true,message:"Photo changed successfully"})
+
+  // await upload (req, res, (err) => {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     if (req.file == undefined) {
+  //       return res.json({success:false,message:"Invalid Picture"})
+  //     } else {
+  //       buffer = req.file.buffer
+  //       console.log(`photo changed succefully`)
+  //       // dbUpload(req.body.user,buffer)
+  //       // await User.findOneAndUpdate({_id:req.body.user},{avatar:buffer}).exec()
+  //       return res.json({success:true,message:"Photo changed successfully"})
+  //     }
+  //   }
+  // })
 }
 
 

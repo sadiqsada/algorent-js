@@ -9,6 +9,7 @@ import {
   MenuList,
   Center,
   Avatar,
+  Image,
   MenuDivider,
   MenuItem,
   useDisclosure,
@@ -21,7 +22,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { Logo } from '../ui/Logo';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import AuthContext from '../../context/AuthContext';
 import Axios from 'axios';
 
@@ -47,9 +48,24 @@ const Header = props => {
   const showNavbarOptions = useBreakpointValue({ base: 'base', md: 'md' });
   const bgColor = useColorModeValue('#2eca6a', '#176534');
   const hoverColor = useColorModeValue('#61db8e', '#21944c');
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn, currentUser } = useContext(AuthContext);
+  // const [ currentUser, setCurrentUser ] = useState()
   const navigate = useNavigate();
   // bg=useColorModeValue('gray.100', 'gray.900')}
+
+  const getCurrentUser = async () => {
+    const response = await Axios.get('http://localhost:8000/getCurrentUser', {
+      withCredentials: true,
+      credentials: 'include',
+    });
+    const user = response.data.user;
+    setCurrentUser(user);
+  };
+
+
+  // useEffect(() => {
+  //   getCurrentUser();
+  // }, []);
 
   const handleLogout = async () => {
     try {
@@ -63,6 +79,14 @@ const Header = props => {
     }
   };
 
+  let avatar = <Avatar size={'sm'} src={'https://avatars.dicebear.com/api/male/username.svg'}/>
+  let enlargedAvatar = <Avatar size={'2xl'} src={ 'https://avatars.dicebear.com/api/male/username.svg' }/>
+  if (currentUser){
+    if (currentUser.avatar){
+    avatar = <Image marginRight='2%' boxSize ='30px' borderRadius='full' src={`data:image/png;base64,${currentUser.avatar[1].toString()}`}/>
+    enlargedAvatar = <Image marginRight='2%' boxSize ='120px' borderRadius='full' src={`data:image/png;base64,${currentUser.avatar[1].toString()}`}/>
+    }
+  }
   return (
     <>
       <Box bg={useColorModeValue('#2eca6a', '#176534')} px={4}>
@@ -102,22 +126,12 @@ const Header = props => {
                       minW={0}
                       ml={2}
                     >
-                      <Avatar
-                        size={'sm'}
-                        src={
-                          'https://avatars.dicebear.com/api/male/username.svg'
-                        }
-                      />
+                      {avatar}
                     </MenuButton>
                     <MenuList alignItems={'center'}>
                       <br />
                       <Center>
-                        <Avatar
-                          size={'2xl'}
-                          src={
-                            'https://avatars.dicebear.com/api/male/username.svg'
-                          }
-                        />
+                        {enlargedAvatar}
                       </Center>
                       <br />
                       <Center>

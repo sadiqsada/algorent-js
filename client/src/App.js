@@ -20,6 +20,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [ currentUser, setCurrentUser ] = useState()
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const checkLoggedIn = async () => {
@@ -34,9 +35,17 @@ const App = () => {
         null,
         {
           headers: { 'x-auth-token': token },
+          withCredentials: true,
+          credentials: 'include',
         }
       );
 
+      const response = await Axios.get('http://localhost:8000/getCurrentUser', {
+      withCredentials: true,
+      credentials: 'include',
+      });
+      const user = response.data.user;
+      setCurrentUser(user);
       setIsLoggedIn(tokenRes.data);
       setIsLoading(false);
     };
@@ -45,7 +54,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <AuthContext.Provider value={{ isLoggedIn, isLoading, setIsLoggedIn }}>
+      <AuthContext.Provider value={{ isLoggedIn, isLoading, setIsLoggedIn, currentUser }}>
         <Header />
         <Routes>
           <Route path="/" element={<Landing />} />
