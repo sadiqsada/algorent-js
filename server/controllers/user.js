@@ -2,6 +2,9 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const mail = require('../utils/sendEmails');
+const ShortUniqueId = require('short-unique-id');
+const uid = new ShortUniqueId({ length: 4 });
+const multer = require('multer');
 
 const register = async (req, res) => {
   try {
@@ -268,6 +271,122 @@ const getUser = async (req, res) => {
   const user = await User.findById(req.userId);
   return res.json({ name: user.firstName });
 };
+const getCurrentUser = async (req, res) => {
+  const user = await User.findById(req.userId);
+  return res.json({ user });
+};
+
+const changeUsername = async (req, res) => {
+  const { firstName, lastName, user } = req.body;
+  if (user.firstName === firstName && user.lastName === lastName) {
+    return res.json({
+      success: false,
+      message: 'Please change a different username',
+    });
+  }
+  await User.findOneAndUpdate({ _id: user._id }, { firstName, lastName });
+  return res.json({
+    success: true,
+    message: 'Your username has been successfully changed',
+  });
+};
+
+const sendVerification = async (req, res) => {
+  const { email, user } = req.body;
+  if (user.email === email) {
+    return res.json({
+      success: false,
+      message: 'Please change a different email',
+    });
+  }
+  const code = uid();
+  mail(
+    email,
+    'Email Verification',
+    `<h1>Change Password Comfirmation</h1>
+        <p>Please use this code to verify your email: ${code}</p>`
+  );
+  console.log(code);
+  return res.json({ success: true, code: code });
+};
+
+const changeEmail = async (req, res) => {
+  const { email, user } = req.body;
+  if (user.email === email) {
+    return res.json({
+      success: false,
+      message: 'Please change a different email',
+    });
+  }
+  await User.findOneAndUpdate({ _id: user._id }, { email });
+  return res.json({ success: true });
+};
+
+const changePassword = async (req, res) => {
+  const { oldPass, user, newPass } = req.body;
+
+  const match = await bcrypt.compare(oldPass, user.passwordHash);
+  if (match) {
+    const saltRounds = 10;
+    const salt = await bcrypt.genSalt(saltRounds);
+    const passwordHash = await bcrypt.hash(newPass, salt);
+    await User.findOneAndUpdate(
+      { _id: user._id },
+      { passwordHash: passwordHash }
+    );
+    return res.json({
+      success: true,
+      message: 'Password successfully changed',
+    });
+  } else {
+    return res.json({ success: false, message: 'Incorrect password' });
+  }
+};
+
+// const upload = multer({ storage: multer.memoryStorage()}).single('photo')
+
+async function uploadFile(req, res) {
+  return new Promise((resolve) => {
+    const upload = multer({ storage: multer.memoryStorage() }).single('photo');
+    upload(req, res, (err) => {
+      if (err) console.log('error occurred during upload');
+      if (req.file === undefined) {
+        console.log(`no file`);
+        return resolve([`You must select a file.`, null]);
+      } else {
+        console.log(req.file);
+        return resolve([null, req.file.buffer]);
+      }
+    });
+  }).catch((error) => {
+    console.log(error);
+  });
+}
+
+const uploadAvatar = async (req, res) => {
+  const buffer = await uploadFile(req, res);
+  await User.findOneAndUpdate(
+    { _id: req.body.user },
+    { avatar: buffer }
+  ).exec();
+  return res.json({ success: true, message: 'Photo changed successfully' });
+
+  // await upload (req, res, (err) => {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //     if (req.file == undefined) {
+  //       return res.json({success:false,message:"Invalid Picture"})
+  //     } else {
+  //       buffer = req.file.buffer
+  //       console.log(`photo changed succefully`)
+  //       // dbUpload(req.body.user,buffer)
+  //       // await User.findOneAndUpdate({_id:req.body.user},{avatar:buffer}).exec()
+  //       return res.json({success:true,message:"Photo changed successfully"})
+  //     }
+  //   }
+  // })
+};
 
 module.exports = {
   register,
@@ -278,4 +397,10 @@ module.exports = {
   resetPassword,
   tokenIsValid,
   getUser,
+  getCurrentUser,
+  changeUsername,
+  sendVerification,
+  changeEmail,
+  changePassword,
+  uploadAvatar,
 };

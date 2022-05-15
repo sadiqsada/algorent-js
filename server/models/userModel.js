@@ -13,6 +13,7 @@ const UserSchema = new Schema(
     recentlyViewed: [{ type: Schema.Types.ObjectId, ref: 'House' }],
     receivedOffers: [{ type: Schema.Types.ObjectId, ref: 'Offer' }],
     sentOffers: [{ type: Schema.Types.ObjectId, ref: 'Offer' }],
+    avatar: { data: Buffer, contentType: String },
   },
   { timestamps: true }
 );
