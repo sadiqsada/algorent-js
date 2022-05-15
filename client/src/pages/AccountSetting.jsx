@@ -26,6 +26,7 @@ import {
 import axios from 'axios';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import { Formik, Form, Field } from 'formik';
+import WalletList from '../components/WalletList';
 
 const AccountSetting = () => {
   const [currentUser, setCurrentUser] = useState();
@@ -213,14 +214,15 @@ const AccountSetting = () => {
   const handleWalletConnection = async () => {
     const amount = 1;
     const sender = '3H234AKB3JMGCACL3HR7KVG3ZNXUEMQQWOH3QFL7FPK4E767UXSXA3I5TA';
-    const receiver = 'MJ5RORBIVT3RZE7K6247X2PUGLV6VT22EBAVRPYHC54CD6OCABBXXTXS4Y';
+    const receiver =
+      'MJ5RORBIVT3RZE7K6247X2PUGLV6VT22EBAVRPYHC54CD6OCABBXXTXS4Y';
     const walletID = '6280927a906a2e5622968023';
     await axios.post('http://localhost:8000/transactions/sendTransaction', {
       amount,
       sender,
       receiver,
-      walletID
-    })
+      walletID,
+    });
     // await axios.post('http://localhost:8000/transactions/addWallet', {
     //   id: walletIDField,
     //   mnemonic: walletMnemonicField,
@@ -697,12 +699,21 @@ const AccountSetting = () => {
             </p>
             {passwordModal}
           </Box>
-          <Box>
-            <Button onClick={onOpenWalletConnectModal} margin="3%">
-              Connect your Wallet
-            </Button>
-            {walletModal}
-          </Box>
+          <Flex justifyContent='space-between' mb='3%' mt='3%' ml='3%'>
+            <h style={{ fontSize: '20pt' }}>
+              <b>Wallets</b>
+            </h>
+            <Flex>
+              <Button onClick={onOpenWalletConnectModal} mr={2}>
+                Connect your Wallet
+              </Button>
+              {walletModal}
+              <Button>
+                Generate New Wallet
+              </Button>
+            </Flex>
+          </Flex>
+          <WalletList />
         </Box>
       </Box>
     </>

@@ -3,10 +3,9 @@ const Wallet = require('../models/walletModel');
 const User = require('../models/userModel');
 
 const createClient = () => {
-  const algodToken =
-    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
-  const algodServer = 'http://147.182.180.15';
-  const algodPort = 4001;
+  const algodToken = process.env.ALGOD_SERVER_TOKEN;
+  const algodServer = process.env.ALGOD_SERVER;
+  const algodPort = process.env.ALGOD_SERVER_PORT;
   const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
   return algodClient;
 };
