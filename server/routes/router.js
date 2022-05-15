@@ -23,6 +23,7 @@ router.get('/getShortlist', auth, HouseController.getShortlist);
 router.post('/recentlyViewed', auth, HouseController.recentlyViewed);
 router.get('/getRecentlyViewed', auth, HouseController.getRecentlyViewed);
 router.get('/getCurrentUser', auth, UserController.getCurrentUser);
+router.post('/getHouseByID', HouseController.getHouseByID);
 router.post('/createlisting', ListingController.create);
 
 router.get('/transactions/createAccount', auth, TransactionController.createAccount);
@@ -36,6 +37,7 @@ router.post('/transactions/addWallet', auth, TransactionController.addWallet);
 router.get('/transactions/getWallets', auth, TransactionController.getWallets);
 
 router.post('/offer/addOffer', auth, OfferController.addOffer);
+router.get('/getReceivedOffers', auth, OfferController.getReceivedOffers);
 router.post('/changeUsername', UserController.changeUsername);
 router.post('/sendVerification', UserController.sendVerification);
 router.post('/changeEmail', UserController.changeEmail);
