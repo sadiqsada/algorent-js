@@ -83,4 +83,14 @@ const addWallet = async (req, res) => {
   return res.json({ message: 'Wallet successfully added! '});
 }
 
-module.exports = { addWallet, createAccount, checkBalance, sendTransaction };
+const getWallets = async (req, res) => {
+  const user = await User.findById(req.userId);
+  const wallets = [];
+  for (let i = 0; i < user.wallets.length; i++) {
+    const wallet = await Wallet.findById(user.wallets[i]);
+    wallets.push(wallet);
+  }
+  return res.json(wallets);
+}
+
+module.exports = { addWallet, createAccount, checkBalance, sendTransaction, getWallets };

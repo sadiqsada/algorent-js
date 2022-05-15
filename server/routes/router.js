@@ -33,6 +33,7 @@ router.post(
   TransactionController.sendTransaction
 );
 router.post('/transactions/addWallet', auth, TransactionController.addWallet);
+router.get('/transactions/getWallets', auth, TransactionController.getWallets);
 
 router.post('/offer/addOffer', auth, OfferController.addOffer);
 router.post('/changeUsername', UserController.changeUsername);

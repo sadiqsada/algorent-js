@@ -3,7 +3,7 @@ const Wallet = props => {
   return (
     <Flex maxW="100%" justifyContent="space-between" mb={4}>
       <Flex ml={10}>
-        <Text>wallet address</Text>
+        <Text>{props.wallet.id}</Text>
       </Flex>
       <Flex>
         <Button>select wallet</Button>
