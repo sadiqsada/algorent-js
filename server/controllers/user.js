@@ -48,13 +48,13 @@ const register = async (req, res) => {
       success: true,
       message: 'User was registered successfully! Please check your email',
     });
-    const web_url = 'http://localhost:8000'
+    const webUrl = 'http://localhost:8000';
     mail(
       email,
       'Email Confirmation',
       `<h1>Email Confirmation</h1>
             <p>Thank you for registering with AlgoRent. Please confirm your email by clicking on the following link</p>
-            <a href=${web_url}/verify/${confirmationCode}> Click here</a>
+            <a href=${webUrl}/verify/${confirmationCode}> Click here</a>
             </div>`
     );
   } catch (err) {
@@ -166,6 +166,7 @@ const verify = async (req, res) => {
 
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
+  const webUrl = 'http://localhost:8000';
 
   const existingUser = await User.findOne({ email: email });
   if (!existingUser) {
@@ -193,7 +194,7 @@ const forgotPassword = async (req, res) => {
       'Forgot Password',
       `<h1>Forgot Password</h1>
             <p>Please rest your password by clicking on the following link</p>
-            <a href=${web_url}/password-reset/${resetCode}> Click here</a>
+            <a href=${webUrl}/password-reset/${resetCode}> Click here</a>
             </div>`
     );
   });

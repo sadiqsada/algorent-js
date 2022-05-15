@@ -21,7 +21,7 @@ import handleImages from '../utils/handleImages';
 
 const Explore = () => {
   const [displayName, setDisplayName] = useState('');
-  const [searchField, setSearchField] = useState('NY|Jamaica|11432');
+  const [searchField, setSearchField] = useState('Jamaica 11432');
   const [numBeds, setNumBeds] = useState('1');
   const [numBaths, setNumBaths] = useState('1');
   const [priceMax, setPriceMax] = useState('10000');

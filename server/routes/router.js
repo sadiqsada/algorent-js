@@ -16,7 +16,7 @@ router.get('/logout', UserController.logout);
 router.post('/tokenIsValid', UserController.tokenIsValid);
 router.get('/getUser', auth, UserController.getUser);
 
-//router.post('/sharpen', HouseController.sharpen)
+// router.post('/sharpen', HouseController.sharpen)
 router.post('/explore', HouseController.explore);
 router.post('/shortlist', auth, HouseController.shortlist);
 router.get('/getShortlist', auth, HouseController.getShortlist);
@@ -27,8 +27,11 @@ router.post('/createlisting', ListingController.create);
 router.get('/transactions/createAccount', TransactionController.createAccount);
 router.get('/transactions/createClient', TransactionController.createClient);
 router.get('/transactions/checkBalance', TransactionController.checkBalance);
-router.get('/transactions/sendTransaction', TransactionController.sendTransaction);
+router.get(
+  '/transactions/sendTransaction',
+  TransactionController.sendTransaction
+);
 
-router.post('/offers/addOffer', OfferController.addOffer);
+router.post('/offer/addOffer', auth, OfferController.addOffer);
 
 module.exports = router;

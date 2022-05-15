@@ -25,7 +25,13 @@ import {
 } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 import SimpleImageSlider from 'react-simple-image-slider';
-import { FaSwimmingPool, FaFan, FaFileContract, FaHeart, FaHandshake } from 'react-icons/fa';
+import {
+  FaSwimmingPool,
+  FaFan,
+  FaFileContract,
+  FaHeart,
+  FaHandshake,
+} from 'react-icons/fa';
 import { BiBuildingHouse } from 'react-icons/bi';
 import {
   GiWoodBeam,
@@ -54,27 +60,22 @@ const PropertyDetails = () => {
 
   const [offerField, setOfferField] = useState(props.data.price * 1000);
   const handleOfferField = event => setOfferField(event.target.value);
-  const handleOffer = () => {
-    alert("calling axios with value: "+offerField);
-    axios
-      .post('http://localhost:8000/offers', {
-        offerPrice: offerField
-      })
-      .then(response => {
-        // Testing purposes
-        console.log('response.data');
-        console.log(response.data);
-        // Tell potential buyer that their offer has been sent
-        alert(response.data);
-        // Close the confirmation offer window
-        offerModalPopup();
-      })
-      .catch(error => {
-        console.error(error);
-      });
+  const handleOffer = async () => {
+    console.log(parseInt(offerField) / 1000);
+    console.log(props.data.address);
+    await axios.post(
+      'http://localhost:8000/offer/addOffer',
+      {
+        price: parseInt(offerField) / 1000,
+        address: props.data.address,
+      },
+      { withCredentials: true, credentials: 'include' }
+    );
+    alert('Offer Successfully Sent');
+    offerModalPopup();
   };
 
-  const web_url = 'http://localhost:8000' // http://localhost:8000'; //
+  const web_url = 'http://localhost:8000'; // http://localhost:8000'; //
 
   // const handleSharpen = async () => {
   //   const
@@ -119,11 +120,9 @@ const PropertyDetails = () => {
 
   const popupModalImgContainer = useRef(null);
 
-
-
   const popupModal = useRef(null);
   const popupModalImg = useRef(null);
-  const imgModalPopUp = (idx) => {
+  const imgModalPopUp = idx => {
     if (popupModalImgContainer.current && popupModalImg.current) {
       if (idx !== null) {
         popupModalImg.current.src = images[idx].url;
@@ -132,7 +131,7 @@ const PropertyDetails = () => {
         popupModalImgContainer.current.style.display = 'none';
       }
     }
-  }
+  };
 
   const popupModalOffer = useRef(null);
   const offerModalPopup = () => {
@@ -143,7 +142,7 @@ const PropertyDetails = () => {
         popupModalOffer.current.style.display = 'none';
       }
     }
-  }
+  };
   // const modalPopUp = async (idx) => {
   //   if (popupModal.current && popupModalImg.current) {
   //     if (idx !== null) {
@@ -160,7 +159,7 @@ const PropertyDetails = () => {
   //       .catch(error => {
   //         console.error(error);
   //       });
-        
+
   //       popupModalImg.current.src = require('./sharpened_image.png')//img_s;//images[idx].url;
   //       popupModal.current.style.display = 'flex';
   //     } else {
@@ -181,7 +180,7 @@ const PropertyDetails = () => {
 
   if (!isLoaded) {
     return <></>;
-  };
+  }
 
   async function calculateRoute() {
     if (destinationRef.current.value === '') {
@@ -198,7 +197,7 @@ const PropertyDetails = () => {
     setRouteText(
       `Driving to ${destinationRef.current.value} takes ${duration} (${distance})`
     );
-  };
+  }
 
   const calculateAptSize = () => {
     let size = 500;
@@ -222,7 +221,8 @@ const PropertyDetails = () => {
       if (props.data.numBedrooms > 1) return 'green.500';
       else return 'red.500';
     } else if (amenity === 'gym') {
-      if (props.data.numBedrooms > 3 && props.data.numBathrooms > 2) return 'green.500';
+      if (props.data.numBedrooms > 3 && props.data.numBathrooms > 2)
+        return 'green.500';
       else return 'red.500';
     } else if (amenity === 'on-site laundry') {
       if (props.data.numBedrooms > 2) return 'green.500';
@@ -233,21 +233,21 @@ const PropertyDetails = () => {
     }
   };
 
-  const getConfirmationAmenities = (amenity) => {
+  const getConfirmationAmenities = amenity => {
     if (getAmenities(amenity) === 'green.500') {
-      return `Has `+amenity;
+      return `Has ` + amenity;
     } else {
       //return `Does not have `+amenity;
       return ``;
     }
-  }
+  };
 
   function BasicUsage() {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
     return (
       <>
         <Button onClick={onOpen}>Open Modal</Button>
-  
+
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
@@ -256,17 +256,17 @@ const PropertyDetails = () => {
             <ModalBody>
               <p>This is the Modal Body</p>
             </ModalBody>
-  
+
             <ModalFooter>
-              <Button colorScheme='blue' mr={3} onClick={onClose}>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
                 Close
               </Button>
-              <Button variant='ghost'>Secondary Action</Button>
+              <Button variant="ghost">Secondary Action</Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
       </>
-    )
+    );
   }
   return (
     <Flex direction={'row'} w={'100%'} h={'93vh'} overflow={'hidden'}>
@@ -309,7 +309,13 @@ const PropertyDetails = () => {
               <Text fontSize={'xl'} fontWeight={600} alt={'Title'}>
                 {props.data.title}
               </Text>
-              <Text mt={5} fontSize={'lg'} textColor={contactColor} fontWeight={500} alt={'Contact'}>
+              <Text
+                mt={5}
+                fontSize={'lg'}
+                textColor={contactColor}
+                fontWeight={500}
+                alt={'Contact'}
+              >
                 (634)-777-****
               </Text>
             </Flex>
@@ -521,45 +527,50 @@ const PropertyDetails = () => {
           </Flex>
 
           <Divider borderWidth={1} mt={3} mb={6} />
-          {isLoggedIn?
-          <Center>
-            <Stack direction={'row'} spacing={20}>
-              <Flex direction={'column'}>
-                <IconButton
-                  aria-label={'Favorite property'}
-                  colorScheme={'red'}
-                  icon={<FaHeart size={30} />}
-                  w={16}
-                  h={16}
-                  isRound
-                  onClick={handleShortlist}
-                />
-                <Center mt={1}>
-                  <Text fontSize={'md'} color={shortlistColor} fontWeight={600}>
-                    Shortlist
-                  </Text>
-                </Center>
-              </Flex>
-              <Flex direction={'column'}>
-                <IconButton
-                  aria-label={'Buy property'}
-                  colorScheme={'purple'}
-                  icon={<MdLocalOffer size={35} />}
-                  w={16}
-                  h={16}
-                  isRound
-                  onClick={() => {
-                    offerModalPopup();
-                  }}
-                />
-                <Center mt={1}>
-                  <Text color={cartColor} fontSize={'md'} fontWeight={600}>
-                    Offer
-                  </Text>
-                </Center>
-              </Flex>
-            </Stack>
-          </Center>:null}
+          {isLoggedIn ? (
+            <Center>
+              <Stack direction={'row'} spacing={20}>
+                <Flex direction={'column'}>
+                  <IconButton
+                    aria-label={'Favorite property'}
+                    colorScheme={'red'}
+                    icon={<FaHeart size={30} />}
+                    w={16}
+                    h={16}
+                    isRound
+                    onClick={handleShortlist}
+                  />
+                  <Center mt={1}>
+                    <Text
+                      fontSize={'md'}
+                      color={shortlistColor}
+                      fontWeight={600}
+                    >
+                      Shortlist
+                    </Text>
+                  </Center>
+                </Flex>
+                <Flex direction={'column'}>
+                  <IconButton
+                    aria-label={'Buy property'}
+                    colorScheme={'purple'}
+                    icon={<MdLocalOffer size={35} />}
+                    w={16}
+                    h={16}
+                    isRound
+                    onClick={() => {
+                      offerModalPopup();
+                    }}
+                  />
+                  <Center mt={1}>
+                    <Text color={cartColor} fontSize={'md'} fontWeight={600}>
+                      Offer
+                    </Text>
+                  </Center>
+                </Flex>
+              </Stack>
+            </Center>
+          ) : null}
         </Flex>
       </Flex>
 
@@ -582,11 +593,17 @@ const PropertyDetails = () => {
         display={'none'}
         overflow={'hidden'}
       >
-        <Box pos={'absolute'} w={'100%'} h={'100%'} opacity={0.5}
-          onClick={() => {imgModalPopUp(null);}} cursor={'pointer'}
+        <Box
+          pos={'absolute'}
+          w={'100%'}
+          h={'100%'}
+          opacity={0.5}
+          onClick={() => {
+            imgModalPopUp(null);
+          }}
+          cursor={'pointer'}
           backgroundColor={'gray.900'}
-        >
-		    </Box>
+        ></Box>
         <Center pos={'absolute'} w={'100%'} h={'100%'} pointerEvents={'none'}>
           <Image
             pointerEvents={'auto'}
@@ -611,9 +628,22 @@ const PropertyDetails = () => {
         display={'none'}
         overflow={'hidden'}
       >
-        <Box pos={'absolute'} w={'100%'} h={'100%'} opacity={0.5} backgroundColor={'gray.900'}></Box>
+        <Box
+          pos={'absolute'}
+          w={'100%'}
+          h={'100%'}
+          opacity={0.5}
+          backgroundColor={'gray.900'}
+        ></Box>
         <Center pos={'absolute'} w={'100%'} h={'100%'} pointerEvents={'none'}>
-          <Flex direction={'column'} minW={500} minH={600} backgroundColor={useColorModeValue('white', 'gray.800')} p={5} pointerEvents={'all'}>
+          <Flex
+            direction={'column'}
+            minW={500}
+            minH={600}
+            backgroundColor={useColorModeValue('white', 'gray.800')}
+            p={5}
+            pointerEvents={'all'}
+          >
             <Flex direction={'row'} w={'100%'} justifyContent={'right'}>
               <IconButton
                 aria-label={'Close Offer'}
@@ -628,31 +658,76 @@ const PropertyDetails = () => {
             </Flex>
 
             <Flex direction={'row'} w={'100%'} justifyContent={'center'}>
-              <Text fontSize={'2xl'} fontWeight={600} alt={'Confirmation'}>Offer Confirmation</Text>
+              <Text fontSize={'2xl'} fontWeight={600} alt={'Confirmation'}>
+                Offer Confirmation
+              </Text>
             </Flex>
 
             <Flex direction={'row'} w={'100%'} justifyContent={'center'}>
-              <Text fontSize={'sm'} fontWeight={400}>Please confirm that the following details are correct</Text>
+              <Text fontSize={'sm'} fontWeight={400}>
+                Please confirm that the following details are correct
+              </Text>
             </Flex>
 
             <Flex direction={'column'} w={'100%'} pt={10}>
-                <Text fontSize={'md'} fontWeight={600}>Price: {(props.data.price) * 1000} ALGO / {(props.data.price) * 0.78 * 1000} USD</Text>
-                <Text fontSize={'md'} fontWeight={600}>Location: {props.data.address}</Text>
-                <Text fontSize={'md'} fontWeight={600}>Bedrooms: {props.data.numBedrooms}</Text>
-                <Text fontSize={'md'} fontWeight={600}>Bathrooms: {props.data.numBathrooms}</Text>
-                <Text fontSize={'md'} fontWeight={600}>Apartment sq ft: {calculateAptSize()}</Text>
-                <Text fontSize={'md'} fontWeight={600}>{getConfirmationAmenities('pool')}</Text>
-                <Text fontSize={'md'} fontWeight={600}>{"Has hardwood floor"}</Text>
-                <Text fontSize={'md'} fontWeight={600}>{"Has dishwasher"}</Text>
-                <Text fontSize={'md'} fontWeight={600}>{"Has air conditioning"}</Text>
-                <Text fontSize={'md'} fontWeight={600}>{getConfirmationAmenities('balcony')}</Text>
-                <Text fontSize={'md'} fontWeight={600}>{getConfirmationAmenities('gym')}</Text>
-                <Text fontSize={'md'} fontWeight={600}>{getConfirmationAmenities('on-site laundry')}</Text>
-                <Text fontSize={'md'} fontWeight={600}>{getConfirmationAmenities('garage')}</Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                Price: {props.data.price * 1000} ALGO /{' '}
+                {props.data.price * 0.78 * 1000} USD
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                Location: {props.data.address}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                Bedrooms: {props.data.numBedrooms}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                Bathrooms: {props.data.numBathrooms}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                Apartment sq ft: {calculateAptSize()}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {getConfirmationAmenities('pool')}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {'Has hardwood floor'}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {'Has dishwasher'}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {'Has air conditioning'}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {getConfirmationAmenities('balcony')}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {getConfirmationAmenities('gym')}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {getConfirmationAmenities('on-site laundry')}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {getConfirmationAmenities('garage')}
+              </Text>
             </Flex>
 
-            <Flex mt={5} direction={'row'} width={'100%'} justifyContent={'center'}><Text mt={2} ml={2} fontSize={'md'} fontWeight={600}>Your Offer</Text></Flex>
-            <Flex mt={1} direction={'row'} width={'100%'} justifyContent={'center'}>
+            <Flex
+              mt={5}
+              direction={'row'}
+              width={'100%'}
+              justifyContent={'center'}
+            >
+              <Text mt={2} ml={2} fontSize={'md'} fontWeight={600}>
+                Your Offer
+              </Text>
+            </Flex>
+            <Flex
+              mt={1}
+              direction={'row'}
+              width={'100%'}
+              justifyContent={'center'}
+            >
               <Input
                 value={offerField}
                 onChange={handleOfferField}
@@ -660,16 +735,31 @@ const PropertyDetails = () => {
                 fontWeight={600}
                 w={'50%'}
               />
-              <Text mt={2} ml={2} fontSize={'md'} fontWeight={600}>ALGO</Text>
+              <Text mt={2} ml={2} fontSize={'md'} fontWeight={600}>
+                ALGO
+              </Text>
             </Flex>
 
-            <Flex mt={4} direction={'row'} width={'100%'} justifyContent={'center'}>
-              <Checkbox colorScheme='green'>
-                <Text fontSize={'sm'} fontWeight={600}>By checking this box, I agree to sell my organs to AlgoRent for the greater good</Text>
+            <Flex
+              mt={4}
+              direction={'row'}
+              width={'100%'}
+              justifyContent={'center'}
+            >
+              <Checkbox colorScheme="green">
+                <Text fontSize={'sm'} fontWeight={600}>
+                  By checking this box, I agree to sell my organs to AlgoRent
+                  for the greater good
+                </Text>
               </Checkbox>
             </Flex>
 
-            <Flex mt={4} direction={'row'} width={'100%'} justifyContent={'center'}>
+            <Flex
+              mt={4}
+              direction={'row'}
+              width={'100%'}
+              justifyContent={'center'}
+            >
               <IconButton
                 colorScheme={'purple'}
                 aria-label="Offer Price"
@@ -679,7 +769,6 @@ const PropertyDetails = () => {
                 h={12}
               />
             </Flex>
-
           </Flex>
         </Center>
       </Box>
