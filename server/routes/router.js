@@ -25,7 +25,7 @@ router.get('/getRecentlyViewed', auth, HouseController.getRecentlyViewed);
 router.get('/getCurrentUser', auth, UserController.getCurrentUser);
 router.post('/createlisting', ListingController.create);
 
-router.get('/transactions/createAccount', TransactionController.createAccount);
+router.get('/transactions/createAccount', auth, TransactionController.createAccount);
 // router.get('/transactions/createClient', TransactionController.createClient);
 router.post('/transactions/checkBalance', TransactionController.checkBalance);
 router.post(

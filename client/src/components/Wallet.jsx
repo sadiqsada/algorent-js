@@ -1,4 +1,4 @@
-import { Box, Flex, Text, Button } from '@chakra-ui/react';
+import { Box, Flex, Text, Button, Link } from '@chakra-ui/react';
 const Wallet = props => {
   return (
     <Flex maxW="100%" justifyContent="space-between" mb={4}>
@@ -6,7 +6,10 @@ const Wallet = props => {
         <Text>{props.wallet.id}</Text>
       </Flex>
       <Flex>
-        <Button>select wallet</Button>
+        <Link href="https://dispenser.testnet.aws.algodev.network/" isExternal>
+          <Button>Add Funds</Button>
+        </Link>
+        <Button ml={2}>Select Wallet</Button>
       </Flex>
     </Flex>
   );

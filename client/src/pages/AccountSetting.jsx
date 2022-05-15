@@ -204,6 +204,14 @@ const AccountSetting = () => {
     photoOnClose();
   };
 
+  const handleGenerateWallet = async () => {
+    await axios.get('http://localhost:8000/transactions/createAccount', {
+      withCredentials: true,
+      credentials: 'include',
+    });
+    window.location.reload();
+  };
+
   const walletIDRef = useRef();
   const walletMnemonicRef = useRef();
   const [walletIDField, setWalletIDField] = useState();
@@ -699,7 +707,7 @@ const AccountSetting = () => {
             </p>
             {passwordModal}
           </Box>
-          <Flex justifyContent='space-between' mb='3%' mt='3%' ml='3%'>
+          <Flex justifyContent="space-between" mb="3%" mt="3%" ml="3%">
             <h style={{ fontSize: '20pt' }}>
               <b>Wallets</b>
             </h>
@@ -708,7 +716,7 @@ const AccountSetting = () => {
                 Connect your Wallet
               </Button>
               {walletModal}
-              <Button>
+              <Button onClick={handleGenerateWallet}>
                 Generate New Wallet
               </Button>
             </Flex>

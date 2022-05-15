@@ -10,13 +10,21 @@ const createClient = () => {
   return algodClient;
 };
 
-const createAccount = (req, res) => {
+const createAccount = async (req, res) => {
   try {
     const myAccount = algosdk.generateAccount();
     console.log('Account Address = ' + myAccount.addr);
     const accountMnemonic = algosdk.secretKeyToMnemonic(myAccount.sk);
     console.log('Account Mnemonic = ' + accountMnemonic);
     console.log('Account created. Save off Mnemonic and address');
+    const newWallet = new Wallet({
+      id: myAccount.addr,
+      mnemonic: accountMnemonic,
+    });
+    await newWallet.save();
+    const currentUser = await User.findById(req.userId);
+    currentUser.wallets.push(newWallet);
+    await currentUser.save();
     // console.log('Add funds to account using the TestNet Dispenser: ');
     // console.log('https://dispenser.testnet.aws.algodev.network/ ');
     return res.json(myAccount);
@@ -80,8 +88,8 @@ const addWallet = async (req, res) => {
   const currentUser = await User.findById(req.userId);
   currentUser.wallets.push(newWallet);
   await currentUser.save();
-  return res.json({ message: 'Wallet successfully added! '});
-}
+  return res.json({ message: 'Wallet successfully added! ' });
+};
 
 const getWallets = async (req, res) => {
   const user = await User.findById(req.userId);
@@ -91,6 +99,12 @@ const getWallets = async (req, res) => {
     wallets.push(wallet);
   }
   return res.json(wallets);
-}
+};
 
-module.exports = { addWallet, createAccount, checkBalance, sendTransaction, getWallets };
+module.exports = {
+  addWallet,
+  createAccount,
+  checkBalance,
+  sendTransaction,
+  getWallets,
+};

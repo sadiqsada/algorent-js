@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 const WalletList = () => {
   const [wallets, setWallets] = useState([]);
+  const [walletBalance, setWalletBalance] = useState([]);
   useEffect(() => {
     const getAllWallets = async () => {
       const walletResponse = await axios.get(
@@ -13,6 +14,7 @@ const WalletList = () => {
       setWallets(walletResponse.data);
     };
     getAllWallets();
+
   }, []);
   return (
     <Flex flexDirection="column" justifyContent="center" maxW="100%">
