@@ -74,7 +74,7 @@ const PropertyDetails = () => {
       });
   };
 
-  const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
+  const web_url = 'http://localhost:8000' // http://localhost:8000'; //
 
   // const handleSharpen = async () => {
   //   const
