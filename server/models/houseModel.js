@@ -14,6 +14,7 @@ const HouseSchema = new Schema(
     size: { type: Number },
     contact: { type: String },
     amenities: { type: [String] },
+    owner: { type: Schema.Types.ObjectId, ref: 'User' },
   },
   { timestamps: true }
 );

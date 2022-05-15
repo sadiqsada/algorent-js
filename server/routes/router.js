@@ -4,6 +4,7 @@ const HouseController = require('../controllers/house');
 const auth = require('../middlewares/auth');
 const ListingController = require('../controllers/listing');
 const TransactionController = require('../controllers/transaction');
+const OfferController = require('../controllers/offer');
 const router = express.Router();
 
 router.post('/register', UserController.register);
@@ -26,5 +27,7 @@ router.get('/transactions/createAccount', TransactionController.createAccount);
 router.get('/transactions/createClient', TransactionController.createClient);
 router.get('/transactions/checkBalance', TransactionController.checkBalance);
 router.get('/transactions/sendTransaction', TransactionController.sendTransaction);
+
+router.post('/offers/addOffer', OfferController.addOffer);
 
 module.exports = router;
