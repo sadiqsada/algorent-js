@@ -6,10 +6,10 @@ import handleImages from '../utils/handleImages';
 
 const RecentlyViewed = () => {
   const [houses, setHouses] = useState([]);
-
+  const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
   useEffect(() => {
     axios
-      .get('http://localhost:8000/getRecentlyViewed', {
+      .get(web_url + '/getRecentlyViewed', {
         withCredentials: true,
         credentials: 'include',
       })

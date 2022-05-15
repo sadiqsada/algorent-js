@@ -48,13 +48,13 @@ const register = async (req, res) => {
       success: true,
       message: 'User was registered successfully! Please check your email',
     });
-
+    const web_url = 'https://algorent-proj.herokuapp.com'
     mail(
       email,
       'Email Confirmation',
       `<h1>Email Confirmation</h1>
             <p>Thank you for registering with AlgoRent. Please confirm your email by clicking on the following link</p>
-            <a href=http://localhost:8000/verify/${confirmationCode}> Click here</a>
+            <a href=${web_url}/verify/${confirmationCode}> Click here</a>
             </div>`
     );
   } catch (err) {
@@ -193,7 +193,7 @@ const forgotPassword = async (req, res) => {
       'Forgot Password',
       `<h1>Forgot Password</h1>
             <p>Please rest your password by clicking on the following link</p>
-            <a href=http://localhost:8000/password-reset/${resetCode}> Click here</a>
+            <a href=${web_url}/password-reset/${resetCode}> Click here</a>
             </div>`
     );
   });

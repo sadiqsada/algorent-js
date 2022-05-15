@@ -26,9 +26,10 @@ import AuthContext from '../context/AuthContext';
 const Login = () => {
   const { setIsLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
+  const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
   const handleSubmit = values => {
     Axios.post(
-      'http://localhost:8000/login',
+      web_url + '/login',
       {
         email: values.email,
         password: values.password,

@@ -14,6 +14,14 @@ import {
   Stack,
   IconButton,
   Checkbox,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 import SimpleImageSlider from 'react-simple-image-slider';
@@ -33,7 +41,7 @@ import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 import { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
 import axios from 'axios';
-
+//import img_s from './sharpened_image.png'
 const PropertyDetails = () => {
   const location = useLocation();
   const { props } = location.state;
@@ -66,13 +74,18 @@ const PropertyDetails = () => {
       });
   };
 
+  const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
+
+  // const handleSharpen = async () => {
+  //   const
+  // }
   const handleShortlist = async () => {
     const { address } = props.data;
     const stateZip = address.split(', ')[2];
     const zipCode = stateZip.split(' ')[1];
     try {
       const response = await axios.post(
-        'http://localhost:8000/shortlist',
+        web_url + '/shortlist',
         { address, zipCode },
         {
           withCredentials: true,
@@ -88,7 +101,7 @@ const PropertyDetails = () => {
   useEffect(() => {
     const updateRecentlyViewed = async () => {
       await axios.post(
-        'http://localhost:8000/recentlyViewed',
+        web_url + '/recentlyViewed',
         { address },
         {
           withCredentials: true,
@@ -105,6 +118,10 @@ const PropertyDetails = () => {
   );
 
   const popupModalImgContainer = useRef(null);
+
+
+
+  const popupModal = useRef(null);
   const popupModalImg = useRef(null);
   const imgModalPopUp = (idx) => {
     if (popupModalImgContainer.current && popupModalImg.current) {
@@ -127,6 +144,30 @@ const PropertyDetails = () => {
       }
     }
   }
+  // const modalPopUp = async (idx) => {
+  //   if (popupModal.current && popupModalImg.current) {
+  //     if (idx !== null) {
+  //       let image_url = images[idx].url
+  //       console.log(image_url)
+  //       let img = process.env.PUBLIC_URL + '/sharpened_image.png'
+  //       await axios
+  //       .post(web_url + '/sharpen', {
+  //         url: image_url
+  //       })
+  //       .then(response => {
+  //         console.log(process.env.PUBLIC_URL + '')
+  //       })
+  //       .catch(error => {
+  //         console.error(error);
+  //       });
+        
+  //       popupModalImg.current.src = require('./sharpened_image.png')//img_s;//images[idx].url;
+  //       popupModal.current.style.display = 'flex';
+  //     } else {
+  //       popupModal.current.style.display = 'none';
+  //     }
+  //   }
+  // }
 
   const { isLoaded } = useJsApiLoader({
     //googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -201,6 +242,32 @@ const PropertyDetails = () => {
     }
   }
 
+  function BasicUsage() {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    return (
+      <>
+        <Button onClick={onOpen}>Open Modal</Button>
+  
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Modal Title</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <p>This is the Modal Body</p>
+            </ModalBody>
+  
+            <ModalFooter>
+              <Button colorScheme='blue' mr={3} onClick={onClose}>
+                Close
+              </Button>
+              <Button variant='ghost'>Secondary Action</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    )
+  }
   return (
     <Flex direction={'row'} w={'100%'} h={'93vh'} overflow={'hidden'}>
       <Flex
@@ -225,6 +292,9 @@ const PropertyDetails = () => {
             onClick={(idx, event) => {
               imgModalPopUp(idx);
             }}
+            // onClick={(idx, event) => {{
+            //   modalPopUp(idx)
+            // }}}
           />
         </Box>
         <Flex
