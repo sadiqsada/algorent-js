@@ -35,6 +35,7 @@ router.post(
 );
 router.post('/transactions/addWallet', auth, TransactionController.addWallet);
 router.get('/transactions/getWallets', auth, TransactionController.getWallets);
+router.post('/transactions/selectWallet', auth, TransactionController.selectWallet);
 
 router.post('/offer/addOffer', auth, OfferController.addOffer);
 router.get('/getReceivedOffers', auth, OfferController.getReceivedOffers);

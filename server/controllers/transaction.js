@@ -101,10 +101,20 @@ const getWallets = async (req, res) => {
   return res.json(wallets);
 };
 
+const selectWallet = async (req, res) => {
+  const { address } = req.body;
+  const user = await User.findById(req.userId);
+  const selectedWallet = await Wallet.find({ id: address });
+  user.selectedWallet = selectedWallet[0];
+  await user.save();
+  return res.json({ message: `Selected Wallet with addr: ${address}`});
+}
+
 module.exports = {
   addWallet,
   createAccount,
   checkBalance,
   sendTransaction,
   getWallets,
+  selectWallet
 };
