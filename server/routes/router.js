@@ -3,6 +3,7 @@ const UserController = require('../controllers/user');
 const HouseController = require('../controllers/house');
 const auth = require('../middlewares/auth');
 const ListingController = require('../controllers/listing');
+const TransactionController = require('../controllers/transaction');
 const router = express.Router();
 
 router.post('/register', UserController.register);
@@ -20,5 +21,10 @@ router.get('/getShortlist', auth, HouseController.getShortlist);
 router.post('/recentlyViewed', auth, HouseController.recentlyViewed);
 router.get('/getRecentlyViewed', auth, HouseController.getRecentlyViewed);
 router.post('/createlisting', ListingController.create);
+
+router.get('/transactions/createAccount', TransactionController.createAccount);
+router.get('/transactions/createClient', TransactionController.createClient);
+router.get('/transactions/checkBalance', TransactionController.checkBalance);
+router.get('/transactions/sendTransaction', TransactionController.sendTransaction);
 
 module.exports = router;
