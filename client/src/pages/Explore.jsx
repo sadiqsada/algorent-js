@@ -33,9 +33,10 @@ const Explore = () => {
   const handleNumBaths = event => setNumBaths(event.target.value);
   const handlePriceMin = event => setPriceMin(event.target.value);
   const handlePriceMax = event => setPriceMax(event.target.value);
+  const web_url = 'http://localhost:8000'; //https://algorent-proj.herokuapp.com
   const handleSubmit = () => {
     axios
-      .post('http://localhost:8000/explore', {
+      .post(web_url+'/explore', {
         address: searchField,
         filter: {
           minBeds: numBeds,
@@ -56,7 +57,7 @@ const Explore = () => {
 
   useEffect(() => {
     const getDisplayName = async () => {
-      const response = await axios.get('http://localhost:8000/getUser', {
+      const response = await axios.get(web_url + '/getUser', {
         withCredentials: true,
         credentials: 'include',
       });

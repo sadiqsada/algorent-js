@@ -11,7 +11,7 @@ import CreateListing from './pages/CreateListing';
 import Shortlist from './pages/Shortlist';
 import RecentlyViewed from './pages/RecentlyViewed';
 import PropertyDetails from './pages/PropertyDetails';
-import Wallet from './pages/Wallet';
+import Offers from './pages/Offers';
 import AccountSetting from './pages/AccountSetting'
 import Axios from 'axios';
 import Cookies from 'js-cookie';
@@ -21,6 +21,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const web_url = 'http://localhost:8000'
   useEffect(() => {
     const checkLoggedIn = async () => {
       const token = Cookies.get('token');
@@ -28,9 +29,9 @@ const App = () => {
         setIsLoggedIn(false);
         return;
       }
-      
+      const web_url = 'http://localhost:8000' //'http://localhost:8000'; //
       const tokenRes = await Axios.post(
-        'http://localhost:8000/tokenIsValid',
+        web_url + '/tokenIsValid',
         null,
         {
           headers: { 'x-auth-token': token },
@@ -79,10 +80,10 @@ const App = () => {
             }
           />
           <Route
-            path="/Wallet"
+            path="Offers"
             element={
               <ProtectedRoute>
-                <Wallet />
+                <Offers />
               </ProtectedRoute>
             }
           />

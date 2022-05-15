@@ -3,46 +3,67 @@ import sys
 from warnings import filters
 from webbrowser import get
 import requests
-#from geopy.geocoders import Nominatim
 from bs4 import BeautifulSoup as bs
 import ast
-import smtplib
+#import cv2
+import numpy as np
+import copy 
 
-def guessLoc(address):
-	g_api = "https://maps.googleapis.com/maps/api/"
-	place_api = g_api + "place/"
-	auto_c = "autocomplete/json?input="
-	details_url = "details/json?place_id="
-	details_api = place_api + details_url
-	req = address 
-	api_key = "&key=AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4"
 
-	auto_crequest = requests.get(place_api + auto_c + req + api_key)
-	auto_cresponse = auto_crequest.json()
-	#print(auto_cresponse)
-	pred = auto_cresponse['predictions'][0]
-	address = pred['description']
-	place_id = pred['place_id']
-	#print("Address: ", address)
-	#print("Place ID: ", place_id, "\n")
-	details_req = requests.get(details_api + place_id + api_key)
-	details = details_req.json()['result']
-	address_formatted = details['formatted_address']
+# def histogram_equalization(img_in):
+#     # Write histogram equalization here
+#     # Fill in your code here
+#     HSV = cv2.cvtColor(img_in, cv2.COLOR_RGB2HSV) 
+#     img_in_hsv = HSV[:,:,2]
+#     total_pix = len(img_in_hsv)*len(img_in_hsv[0])
+#     hist = [0 for x in range(256)]
+    
+#     for r in range(len(img_in_hsv)):
+#       for c in range(len(img_in_hsv[r])):
+#         hist[img_in_hsv[r][c]] += 1 #Get freq vals for hist
+#     pdf = np.true_divide(np.asarray(hist), total_pix) #pdf for hist
+#     cdf = [0 for x in range(256)]
+#     run_sum = 0
+#     for i in range(len(pdf)):
+#       run_sum+=pdf[i]
+#       cdf[i] = run_sum 
+#     #cdf found
+#     intensity_output = np.asarray(cdf)*255
+#     intensity = img_in_hsv
+#     for r in range(len(img_in_hsv)):
+#       for c in range(len(img_in_hsv[r])):
+#         intensity[r][c] = intensity_output[intensity[r][c]]
+#     #print("img out intensity: ", intensity)
+#     img_out = copy.deepcopy(HSV)
+#     img_out[:,:,2] = intensity
+#     img_out = cv2.cvtColor(img_out, cv2.COLOR_HSV2RGB) 
+#     return True, img_out
 
-	address_component = details['address_components']
-	city = None
-	state = None
-	zip = None 
-	for address_c in address_component:
-		if('postal_code' in address_c['types']):
-			zip = address_c['short_name']
-		if('neighborhood' in address_c['types']):
-			city = address_c['short_name']
-		if('administrative_area_level_1' in address_c['types']):
-			state = address_c['short_name']
-	output_addr = {"state":state, "city":city, "zip": zip}
-	#print(output_addr)
-	return output_addr
+# def sharpen_img(img):
+# 	kernel = np.asarray([[0,-1,0],
+# 						[-1,4,0],
+# 						[0,-1,0]])
+# 	return cv2.filter2D(src = img, ddepth = -1, kernel=kernel)
+'''
+def sharpen_img_colored(img_path):
+	imgB = cv2.imread(img_path, cv2.IMREAD_COLOR)
+	img_hsv = cv2.cvtColor(imgB, cv2.COLOR_RGB2HSV) 
+	hsv_value_sharpened = sharpen_img(img_hsv[:,:,2])
+	output_img_sharpened = img_hsv
+	output_img_sharpened[:,:,2] = hsv_value_sharpened
+	output_img_sharpened = cv2.cvtColor(output_img_sharpened, cv2.COLOR_HSV2RGB) 
+	succeed, output_image_sharpened_hist = histogram_equalization(output_img_sharpened)
+	return output_image_sharpened_hist[..., ::-1]
+	return output_img_sharpened[..., ::-1]
+'''
+# def sharpen_img_colored(img):
+#   img_hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV) 
+#   hsv_value_sharpened = sharpen_img(img_hsv[:,:,2])
+#   output_img_sharpened = img_hsv
+#   output_img_sharpened[:,:,2] = hsv_value_sharpened
+#   output_img_sharpened = cv2.cvtColor(output_img_sharpened, cv2.COLOR_HSV2RGB) 
+#   return output_img_sharpened[..., ::-1]
+# import smtplib
 
 def guessLoc(address):
 	g_api = "https://maps.googleapis.com/maps/api/"
@@ -213,16 +234,6 @@ def process_remax_page(url):
 	info_list["image"] = image
 	info_list["address"] =  address
 	return info_list
-	
-'''
-def get_coords(address):
-	#address = "32-22 204TH ST BAYSIDE, NY 11361"
-	address.replace(" ", "+")
-	geolocator = Nominatim(user_agent="html")
-	location = geolocator.geocode("175 5th Avenue NYC")
-	resp_json_payload = (location.latitude, location.longitude)
-	return resp_json_payload
-'''
 
 def get_complete_addr_link(address): #format of address : {"country": ,"state": , "city": , "zip": }
 	try:
@@ -277,10 +288,13 @@ if(len(my_args) > 0):
 	addr_filter = my_args[0].split("**")
 	addr = addr_filter[0]
 	filter = addr_filter[1] if len(addr_filter) > 1 else None
+	#print("Addr: ", addr, "Filter: ", filter)
+	#print("My Args: ", my_args)
+	#sys.exit()
 	if(filter == 'G'):
 		addr = guessLoc(addr)
 		print(addr["state"], ",",addr["city"], ",", addr["zip"])
-		sys.exit()
+		#sys.exit()
 	else:
 		address = None
 		if("|" in addr):
@@ -303,9 +317,6 @@ if(len(my_args) > 0):
 		else:
 			house_info = house_info_from_address(address)
 			print(house_info)
-
-
-
 
 
 
@@ -363,5 +374,24 @@ print("list: \n", list)
 #print("Test is: \n", test)
 #process_remax_page_fast("https://www.remax.com/ny/jamaica/home-details/84-50-169th-st-102-jamaica-ny-11432/9637000322339336887/M00000489/3378032")
 
+'''
+imgOrig = cv2.imread("./test_blurry_3.jpeg", cv2.IMREAD_COLOR)[..., ::-1]
+imgSharpened = sharpen_img_colored("./test_blurry_3.jpeg")
+
+fig = plt.figure(figsize=(20, 15))
+plt.subplot(1, 2, 1)
+plt.imshow(imgOrig)
+plt.title('original image')
+plt.axis("off")
+'''
+
+'''
+plt.subplot(1, 2, 2)
+plt.imshow(imgSharpened)
+plt.title('SHARPENED image')
+plt.axis("off")
+
+plt.show()
 #addr = guessLoc("Jamaica US 11417")
 #print(addr)
+'''

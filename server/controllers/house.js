@@ -3,11 +3,17 @@ const House = require('../models/houseModel');
 const User = require('../models/userModel');
 const formatPrice = require('../utils/formatPrice');
 
-const explore = (req, res) => {
+const explore = async (req, res) => {
   try {
+    // console.log("Using Address Guesser: ");
+    // scraper.guessAddress("NY Jamaica 11432", async (stateCityZip) => {console.log(stateCityZip);});
     const { address, filter } = req.body;
-    scraper.guessAddress(address, async (stateCityZip) => {
-      const zipCode = stateCityZip[2];
+    let scraper_address = address;
+    let scraper_filter = filter;
+    if(address.includes("|"))
+    {
+      console.log("DB Look Up for address: " + address);
+      let zipCode = address.split("|")[2];
       const { minBeds, minBaths, minPrice, maxPrice } = filter;
       let filtersActive = false;
       if (
@@ -20,7 +26,7 @@ const explore = (req, res) => {
       }
 
       const results = await House.find({
-        zipCode,
+        zipCode: 11432, // Previously: zipCode
         numBedrooms: { $gte: minBeds },
         numBathrooms: { $gte: minBaths },
         price: { $gte: minPrice, $lte: maxPrice },
@@ -38,8 +44,51 @@ const explore = (req, res) => {
         ]);
         return res.json(houses);
       }
+    }
+    scraper.guessAddress(address, async (stateCityZip) => {
+      console.log("Searching DB! Address: " + address + " stateCityZip from Guesser is: " + stateCityZip);
+      let zipCode = stateCityZip[2];
+      const { minBeds, minBaths, minPrice, maxPrice } = filter;
+      let filtersActive = false;
+      if (
+        Number(minBeds) > 1 ||
+        Number(minBaths) > 1 ||
+        Number(minPrice) !== 0 ||
+        Number(maxPrice !== 100000000)
+      ) {
+        filtersActive = true;
+      }
+
+      const results = await House.find({
+        zipCode,
+        numBedrooms: { $gte: minBeds },
+        numBathrooms: { $gte: minBaths },
+        price: { $gte: minPrice, $lte: maxPrice },
+      });
+      
+      console.log("DB Results Length: " + results.length)
+      if ((filtersActive && results.length > 0) || results.length > 8) {
+        const houses = results.map((house) => [
+          house.imgUrl,
+          house.address,
+          house.price,
+          house.numBathrooms,
+          house.numBedrooms,
+          house.mapUrls[0],
+          house.mapUrls[1],
+        ]);
+        return res.json(houses);
+      }
+      if (
+        Number(minBeds) > 1 &&
+        Number(minBaths) > 1 &&
+        Number(minPrice) !== 0
+      ) {
+        scraper_filter = '';
+      }
       const houses = [];
-      scraper.scrapeRemax(address, filter, (data) => {
+      console.log("Using Scraper! Address: " + scraper_address + " Filter: " + scraper_filter);
+      scraper.scrapeRemax(scraper_address, scraper_filter, (data) => {
         data.forEach(async (house) => {
           const scraperZipCode = house[1].split(', ')[2].split(' ')[1];
           const newHouse = new House({

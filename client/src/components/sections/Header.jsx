@@ -53,10 +53,10 @@ const Header = props => {
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
   const navigate = useNavigate();
   // bg=useColorModeValue('gray.100', 'gray.900')}
-
+  const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
   const handleLogout = async () => {
     try {
-      await Axios.get('http://localhost:8000/logout', {
+      await Axios.get(web_url + '/logout', {
         withCredentials: true,
       });
       setIsLoggedIn(false);
@@ -92,7 +92,6 @@ const Header = props => {
                     {isLoggedIn ? <NavLink>CreateListing</NavLink> : null}
                     {isLoggedIn ? <NavLink>Shortlist</NavLink> : null}
                     {isLoggedIn ? <NavLink>RecentlyViewed</NavLink> : null}
-                    {isLoggedIn ? <NavLink>Wallet</NavLink> : null}
                   </HStack>
                 ) : null}
                 {isLoggedIn ? (
@@ -128,6 +127,12 @@ const Header = props => {
                       </Center>
                       <br />
                       <MenuDivider />
+                      <Link href='/Offers' style={{ textDecoration: 'none' }}>
+                        <MenuItem>Offers</MenuItem>
+                      </Link>
+                      <Link href='/SentOffers' style={{ textDecoration: 'none' }}>
+                        <MenuItem>Sent Offers</MenuItem>
+                      </Link>
                       <Link href='/AccountSetting' style={{ textDecoration: 'none' }}>
                         <MenuItem>Account Settings</MenuItem>
                       </Link>
