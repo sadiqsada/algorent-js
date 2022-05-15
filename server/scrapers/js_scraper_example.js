@@ -27,10 +27,7 @@ const useGuesser = (address) => {
   });
 };
 
-useScraper(
-  'NY|Ozone Park|11417',
-  ''
-); // PLEASE GIVE ADDRESS IN FORM: "<state>|<city>|zip"
+useScraper('NY|Ozone Park|11417', ''); // PLEASE GIVE ADDRESS IN FORM: "<state>|<city>|zip"
 
 // useScraper('NY|Staten Island|10311', '')
 /** Scraper With ANY Address String:  
