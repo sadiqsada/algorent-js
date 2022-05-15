@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const app = express();
 const PORT = process.env.PORT || 8000;
-const webUrl = 'http://localhost:3000'; // https://algorent-proj.herokuapp.com'
+const webUrl = 'http://localhost:3000';  // https://algorent-proj.herokuapp.com'
 dotenv.config();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: '20mb' }));
@@ -17,10 +17,10 @@ const router = require('./routes/router');
 app.use('/', router);
 
 // ONLY HAVE THIS FOR HEROKU DEPLOYMENT!
-app.use(express.static('public'));
-app.get('*', function (request, response) {
-  response.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-});
+// app.use(express.static('public'));
+// app.get('*', function (request, response) {
+//   response.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+// });
 
 mongoose
   .connect(process.env.MONGODB_URI, {

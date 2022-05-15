@@ -27,10 +27,10 @@ const useGuesser = (address) => {
   });
 };
 
-// useScraper(
-//   'NY|Ozone Park|11417',
-//   '{"minBeds":2, "minBaths":2, "minPrice":"1000000","maxPrice":"10000000"}'
-// ); // PLEASE GIVE ADDRESS IN FORM: "<state>|<city>|zip"
+useScraper(
+  'NY|Ozone Park|11417',
+  ''
+); // PLEASE GIVE ADDRESS IN FORM: "<state>|<city>|zip"
 
 // useScraper('NY|Staten Island|10311', '')
 /** Scraper With ANY Address String:  

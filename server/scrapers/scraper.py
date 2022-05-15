@@ -177,9 +177,14 @@ def process_remax_page_fast(url):
 	address = address[0:address.index('|')]
 	address_google = url[url.rfind(ref_string) + len(ref_string):]
 	address_google = address_google[0:address_google.index("/")]
+	api_key = "AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4"
+	embed_link = "https://www.google.com/maps/embed/v1/place?key=" + api_key + "&q=" + address_google
 	link = "https://maps.googleapis.com/maps/api/staticmap?center=" + address_google + "&zoom=13&scale=2&size=600x1000&maptype=roadmap&format=png&key=AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4"
+	link = embed_link
+
 	dark_hex = "0F1210"
-	night_link = "https://maps.googleapis.com/maps/api/staticmap?center=" + address_google + "&zoom=13&scale=2&size=600x1000&maptype=roadmap&format=png&key=AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4&style=element%3Ageometry%7Ccolor%3A0x"+dark_hex+"&style=element%3Alabels.text.stroke%7Ccolor%3A0x242f3e&style=element%3Alabels.text.fill%7Ccolor%3A0x746855&style=feature%3Aadministrative.locality%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Apoi%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Apoi.park%7Celement%3Ageometry%7Ccolor%3A0x263c3f&style=feature%3Apoi.park%7Celement%3Alabels.text.fill%7Ccolor%3A0x6b9a76&style=feature%3Aroad%7Celement%3Ageometry%7Ccolor%3A0x38414e&style=feature%3Aroad%7Celement%3Ageometry.stroke%7Ccolor%3A0x212a37&style=feature%3Aroad%7Celement%3Alabels.text.fill%7Ccolor%3A0x9ca5b3&style=feature%3Aroad.highway%7Celement%3Ageometry%7Ccolor%3A0x746855&style=feature%3Aroad.highway%7Celement%3Ageometry.stroke%7Ccolor%3A0x1f2835&style=feature%3Aroad.highway%7Celement%3Alabels.text.fill%7Ccolor%3A0xf3d19c&style=feature%3Atransit%7Celement%3Ageometry%7Ccolor%3A0x2f3948&style=feature%3Atransit.station%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Awater%7Celement%3Ageometry%7Ccolor%3A0x17263c&style=feature%3Awater%7Celement%3Alabels.text.fill%7Ccolor%3A0x515c6d&style=feature%3Awater%7Celement%3Alabels.text.stroke%7Ccolor%3A0x17263" #google maps api link
+	night_style = "&style=element%3Ageometry%7Ccolor%3A0x"+dark_hex+"&style=element%3Alabels.text.stroke%7Ccolor%3A0x242f3e&style=element%3Alabels.text.fill%7Ccolor%3A0x746855&style=feature%3Aadministrative.locality%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Apoi%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Apoi.park%7Celement%3Ageometry%7Ccolor%3A0x263c3f&style=feature%3Apoi.park%7Celement%3Alabels.text.fill%7Ccolor%3A0x6b9a76&style=feature%3Aroad%7Celement%3Ageometry%7Ccolor%3A0x38414e&style=feature%3Aroad%7Celement%3Ageometry.stroke%7Ccolor%3A0x212a37&style=feature%3Aroad%7Celement%3Alabels.text.fill%7Ccolor%3A0x9ca5b3&style=feature%3Aroad.highway%7Celement%3Ageometry%7Ccolor%3A0x746855&style=feature%3Aroad.highway%7Celement%3Ageometry.stroke%7Ccolor%3A0x1f2835&style=feature%3Aroad.highway%7Celement%3Alabels.text.fill%7Ccolor%3A0xf3d19c&style=feature%3Atransit%7Celement%3Ageometry%7Ccolor%3A0x2f3948&style=feature%3Atransit.station%7Celement%3Alabels.text.fill%7Ccolor%3A0xd59563&style=feature%3Awater%7Celement%3Ageometry%7Ccolor%3A0x17263c&style=feature%3Awater%7Celement%3Alabels.text.fill%7Ccolor%3A0x515c6d&style=feature%3Awater%7Celement%3Alabels.text.stroke%7Ccolor%3A0x17263" #google maps api link
+	night_link = link + night_style
 
 	#print("address is: ", address) 
 	amens = [0,0,0]
@@ -344,8 +349,6 @@ list = process_remax_page("https://www.remax.com/ny/jamaica/home-details/84-50-1
 end = time.time()
 print("python time taken: ", 1000*(end - start), "ms")
 print("list: \n", list)
-
-
 address = {"country": "US", "state": "", "city" : "", "zip":"11432"}
 img_urls_from_address(address)
 args = sys.argv[1:]
@@ -377,7 +380,6 @@ print("list: \n", list)
 '''
 imgOrig = cv2.imread("./test_blurry_3.jpeg", cv2.IMREAD_COLOR)[..., ::-1]
 imgSharpened = sharpen_img_colored("./test_blurry_3.jpeg")
-
 fig = plt.figure(figsize=(20, 15))
 plt.subplot(1, 2, 1)
 plt.imshow(imgOrig)
@@ -390,7 +392,6 @@ plt.subplot(1, 2, 2)
 plt.imshow(imgSharpened)
 plt.title('SHARPENED image')
 plt.axis("off")
-
 plt.show()
 #addr = guessLoc("Jamaica US 11417")
 #print(addr)
