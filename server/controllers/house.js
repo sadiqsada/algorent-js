@@ -167,10 +167,21 @@ const getRecentlyViewed = async (req, res) => {
   }
 };
 
+const getHouseByID = async (req, res) => {
+  try {
+    const { houseID } = req.body;
+    const house = await House.findById(houseID);
+    return res.status(200).json(house);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 module.exports = {
   explore,
   shortlist,
   getShortlist,
   recentlyViewed,
   getRecentlyViewed,
+  getHouseByID,
 };
