@@ -11,7 +11,7 @@ import CreateListing from './pages/CreateListing';
 import Shortlist from './pages/Shortlist';
 import RecentlyViewed from './pages/RecentlyViewed';
 import PropertyDetails from './pages/PropertyDetails';
-import Wallet from './pages/Wallet';
+import Offers from './pages/Offers';
 import AccountSetting from './pages/AccountSetting'
 import Axios from 'axios';
 import Cookies from 'js-cookie';
@@ -79,10 +79,10 @@ const App = () => {
             }
           />
           <Route
-            path="/Wallet"
+            path="Offers"
             element={
               <ProtectedRoute>
-                <Wallet />
+                <Offers />
               </ProtectedRoute>
             }
           />

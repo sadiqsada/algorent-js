@@ -8,6 +8,7 @@ const explore = (req, res) => {
     const { address, filter } = req.body;
     scraper.guessAddress(address, async (stateCityZip) => {
       const zipCode = stateCityZip[2];
+      console.log(zipCode);
       const { minBeds, minBaths, minPrice, maxPrice } = filter;
       let filtersActive = false;
       if (
@@ -20,7 +21,7 @@ const explore = (req, res) => {
       }
 
       const results = await House.find({
-        zipCode,
+        zipCode: 11432, // Previously: zipCode
         numBedrooms: { $gte: minBeds },
         numBathrooms: { $gte: minBaths },
         price: { $gte: minPrice, $lte: maxPrice },
