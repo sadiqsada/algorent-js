@@ -21,7 +21,7 @@ import handleImages from '../utils/handleImages';
 
 const Explore = () => {
   const [displayName, setDisplayName] = useState('');
-  const [searchField, setSearchField] = useState('NY|Jamaica|11432');
+  const [searchField, setSearchField] = useState('Jamaica 11432');
   const [numBeds, setNumBeds] = useState('1');
   const [numBaths, setNumBaths] = useState('1');
   const [priceMax, setPriceMax] = useState('10000');
@@ -33,7 +33,7 @@ const Explore = () => {
   const handleNumBaths = event => setNumBaths(event.target.value);
   const handlePriceMin = event => setPriceMin(event.target.value);
   const handlePriceMax = event => setPriceMax(event.target.value);
-  const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
+  const web_url = 'http://localhost:8000'; //https://algorent-proj.herokuapp.com
   const handleSubmit = () => {
     axios
       .post(web_url+'/explore', {

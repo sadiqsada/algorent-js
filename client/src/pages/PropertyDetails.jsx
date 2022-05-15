@@ -13,6 +13,7 @@ import {
   Button,
   Stack,
   IconButton,
+  Checkbox,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -24,7 +25,13 @@ import {
 } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 import SimpleImageSlider from 'react-simple-image-slider';
-import { FaSwimmingPool, FaFan, FaFileContract, FaHeart } from 'react-icons/fa';
+import {
+  FaSwimmingPool,
+  FaFan,
+  FaFileContract,
+  FaHeart,
+  FaHandshake,
+} from 'react-icons/fa';
 import { BiBuildingHouse } from 'react-icons/bi';
 import {
   GiWoodBeam,
@@ -32,11 +39,13 @@ import {
   GiHomeGarage,
   GiPathDistance,
 } from 'react-icons/gi';
-import { MdBalcony, MdLocationOn } from 'react-icons/md';
+import { IoIosClose } from 'react-icons/io';
+import { MdBalcony, MdLocationOn, MdLocalOffer } from 'react-icons/md';
 import { CgGym, CgSmartHomeWashMachine } from 'react-icons/cg';
-import { BsCartPlusFill } from 'react-icons/bs';
 import { useRef, useState } from 'react';
 import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
+import { useContext } from 'react';
+import AuthContext from '../context/AuthContext';
 import axios from 'axios';
 //import img_s from './sharpened_image.png'
 const PropertyDetails = () => {
@@ -47,7 +56,26 @@ const PropertyDetails = () => {
   const shortlistColor = useColorModeValue('red.500', 'red.200');
   const cartColor = useColorModeValue('purple.500', 'purple.200');
   const popupModalColor = useColorModeValue('gray.900', 'gray.400');
-  const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+
+  const [offerField, setOfferField] = useState(props.data.price * 1000);
+  const handleOfferField = event => setOfferField(event.target.value);
+  const handleOffer = async () => {
+    console.log(parseInt(offerField) / 1000);
+    console.log(props.data.address);
+    await axios.post(
+      'http://localhost:8000/offer/addOffer',
+      {
+        price: parseInt(offerField) / 1000,
+        address: props.data.address,
+      },
+      { withCredentials: true, credentials: 'include' }
+    );
+    alert('Offer Successfully Sent');
+    offerModalPopup();
+  };
+
+  const web_url = 'http://localhost:8000'; // http://localhost:8000'; //
 
   // const handleSharpen = async () => {
   //   const
@@ -90,21 +118,31 @@ const PropertyDetails = () => {
     props.data.mapUrls[1]
   );
 
-
-
+  const popupModalImgContainer = useRef(null);
 
   const popupModal = useRef(null);
   const popupModalImg = useRef(null);
-  const modalPopUp = (idx) => {
-    if (popupModal.current && popupModalImg.current) {
+  const imgModalPopUp = idx => {
+    if (popupModalImgContainer.current && popupModalImg.current) {
       if (idx !== null) {
         popupModalImg.current.src = images[idx].url;
-        popupModal.current.style.display = 'block';
+        popupModalImgContainer.current.style.display = 'block';
       } else {
-        popupModal.current.style.display = 'none';
+        popupModalImgContainer.current.style.display = 'none';
       }
     }
-  }
+  };
+
+  const popupModalOffer = useRef(null);
+  const offerModalPopup = () => {
+    if (popupModalOffer.current) {
+      if (popupModalOffer.current.style.display == 'none') {
+        popupModalOffer.current.style.display = 'block';
+      } else {
+        popupModalOffer.current.style.display = 'none';
+      }
+    }
+  };
   // const modalPopUp = async (idx) => {
   //   if (popupModal.current && popupModalImg.current) {
   //     if (idx !== null) {
@@ -121,7 +159,7 @@ const PropertyDetails = () => {
   //       .catch(error => {
   //         console.error(error);
   //       });
-        
+
   //       popupModalImg.current.src = require('./sharpened_image.png')//img_s;//images[idx].url;
   //       popupModal.current.style.display = 'flex';
   //     } else {
@@ -183,7 +221,8 @@ const PropertyDetails = () => {
       if (props.data.numBedrooms > 1) return 'green.500';
       else return 'red.500';
     } else if (amenity === 'gym') {
-      if (props.data.numBedrooms > 3 && props.data.numBathrooms > 2) return 'green.500';
+      if (props.data.numBedrooms > 3 && props.data.numBathrooms > 2)
+        return 'green.500';
       else return 'red.500';
     } else if (amenity === 'on-site laundry') {
       if (props.data.numBedrooms > 2) return 'green.500';
@@ -194,12 +233,21 @@ const PropertyDetails = () => {
     }
   };
 
+  const getConfirmationAmenities = amenity => {
+    if (getAmenities(amenity) === 'green.500') {
+      return `Has ` + amenity;
+    } else {
+      //return `Does not have `+amenity;
+      return ``;
+    }
+  };
+
   function BasicUsage() {
-    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen, onOpen, onClose } = useDisclosure();
     return (
       <>
         <Button onClick={onOpen}>Open Modal</Button>
-  
+
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
@@ -208,17 +256,17 @@ const PropertyDetails = () => {
             <ModalBody>
               <p>This is the Modal Body</p>
             </ModalBody>
-  
+
             <ModalFooter>
-              <Button colorScheme='blue' mr={3} onClick={onClose}>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
                 Close
               </Button>
-              <Button variant='ghost'>Secondary Action</Button>
+              <Button variant="ghost">Secondary Action</Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
       </>
-    )
+    );
   }
   return (
     <Flex direction={'row'} w={'100%'} h={'93vh'} overflow={'hidden'}>
@@ -241,9 +289,12 @@ const PropertyDetails = () => {
             navSize={60}
             navMargin={0}
             style={{ cursor: 'pointer' }}
-            onClick={(idx, event) => {{
-              modalPopUp(idx)
-            }}}
+            onClick={(idx, event) => {
+              imgModalPopUp(idx);
+            }}
+            // onClick={(idx, event) => {{
+            //   modalPopUp(idx)
+            // }}}
           />
         </Box>
         <Flex
@@ -258,7 +309,13 @@ const PropertyDetails = () => {
               <Text fontSize={'xl'} fontWeight={600} alt={'Title'}>
                 {props.data.title}
               </Text>
-              <Text mt={5} fontSize={'lg'} textColor={contactColor} fontWeight={500} alt={'Contact'}>
+              <Text
+                mt={5}
+                fontSize={'lg'}
+                textColor={contactColor}
+                fontWeight={500}
+                alt={'Contact'}
+              >
                 (634)-777-****
               </Text>
             </Flex>
@@ -470,45 +527,50 @@ const PropertyDetails = () => {
           </Flex>
 
           <Divider borderWidth={1} mt={3} mb={6} />
-
-          <Center>
-            <Stack direction={'row'} spacing={20}>
-              <Flex direction={'column'}>
-                <IconButton
-                  aria-label={'Favorite property'}
-                  colorScheme={'red'}
-                  icon={<FaHeart size={30} />}
-                  w={16}
-                  h={16}
-                  isRound
-                  onClick={handleShortlist}
-                />
-                <Center mt={1}>
-                  <Text fontSize={'md'} color={shortlistColor} fontWeight={600}>
-                    Fav
-                  </Text>
-                </Center>
-              </Flex>
-              <Flex direction={'column'}>
-                <IconButton
-                  aria-label={'Buy property'}
-                  colorScheme={'purple'}
-                  icon={<BsCartPlusFill size={30} />}
-                  w={16}
-                  h={16}
-                  isRound
-                  onClick={() => {
-                    alert('BUY!');
-                  }}
-                />
-                <Center mt={1}>
-                  <Text color={cartColor} fontSize={'md'} fontWeight={600}>
-                    Cart
-                  </Text>
-                </Center>
-              </Flex>
-            </Stack>
-          </Center>
+          {isLoggedIn ? (
+            <Center>
+              <Stack direction={'row'} spacing={20}>
+                <Flex direction={'column'}>
+                  <IconButton
+                    aria-label={'Favorite property'}
+                    colorScheme={'red'}
+                    icon={<FaHeart size={30} />}
+                    w={16}
+                    h={16}
+                    isRound
+                    onClick={handleShortlist}
+                  />
+                  <Center mt={1}>
+                    <Text
+                      fontSize={'md'}
+                      color={shortlistColor}
+                      fontWeight={600}
+                    >
+                      Shortlist
+                    </Text>
+                  </Center>
+                </Flex>
+                <Flex direction={'column'}>
+                  <IconButton
+                    aria-label={'Buy property'}
+                    colorScheme={'purple'}
+                    icon={<MdLocalOffer size={35} />}
+                    w={16}
+                    h={16}
+                    isRound
+                    onClick={() => {
+                      offerModalPopup();
+                    }}
+                  />
+                  <Center mt={1}>
+                    <Text color={cartColor} fontSize={'md'} fontWeight={600}>
+                      Offer
+                    </Text>
+                  </Center>
+                </Flex>
+              </Stack>
+            </Center>
+          ) : null}
         </Flex>
       </Flex>
 
@@ -523,7 +585,7 @@ const PropertyDetails = () => {
       />
 
       <Box
-        ref={popupModal}
+        ref={popupModalImgContainer}
         pos={'absolute'}
         w={'100%'}
         h={'94vh'}
@@ -531,13 +593,17 @@ const PropertyDetails = () => {
         display={'none'}
         overflow={'hidden'}
       >
-        <Box pos={'absolute'} w={'100%'} h={'100%'} bg={popupModalColor} opacity={0.5}>
-          onClick=
-          {() => {
-            modalPopUp(null);
-          }}{' '}
+        <Box
+          pos={'absolute'}
+          w={'100%'}
+          h={'100%'}
+          opacity={0.5}
+          onClick={() => {
+            imgModalPopUp(null);
+          }}
           cursor={'pointer'}
-        </Box>
+          backgroundColor={'gray.900'}
+        ></Box>
         <Center pos={'absolute'} w={'100%'} h={'100%'} pointerEvents={'none'}>
           <Image
             pointerEvents={'auto'}
@@ -550,6 +616,160 @@ const PropertyDetails = () => {
             maxW={'90vw'}
             maxH={'85vh'}
           />
+        </Center>
+      </Box>
+
+      <Box
+        ref={popupModalOffer}
+        pos={'absolute'}
+        w={'100%'}
+        h={'94vh'}
+        zIndex={10}
+        display={'none'}
+        overflow={'hidden'}
+      >
+        <Box
+          pos={'absolute'}
+          w={'100%'}
+          h={'100%'}
+          opacity={0.5}
+          backgroundColor={'gray.900'}
+        ></Box>
+        <Center pos={'absolute'} w={'100%'} h={'100%'} pointerEvents={'none'}>
+          <Flex
+            direction={'column'}
+            minW={500}
+            minH={600}
+            backgroundColor={useColorModeValue('white', 'gray.800')}
+            p={5}
+            pointerEvents={'all'}
+          >
+            <Flex direction={'row'} w={'100%'} justifyContent={'right'}>
+              <IconButton
+                aria-label={'Close Offer'}
+                icon={<IoIosClose size={55} />}
+                w={12}
+                h={12}
+                isRound
+                onClick={() => {
+                  offerModalPopup();
+                }}
+              />
+            </Flex>
+
+            <Flex direction={'row'} w={'100%'} justifyContent={'center'}>
+              <Text fontSize={'2xl'} fontWeight={600} alt={'Confirmation'}>
+                Offer Confirmation
+              </Text>
+            </Flex>
+
+            <Flex direction={'row'} w={'100%'} justifyContent={'center'}>
+              <Text fontSize={'sm'} fontWeight={400}>
+                Please confirm that the following details are correct
+              </Text>
+            </Flex>
+
+            <Flex direction={'column'} w={'100%'} pt={10}>
+              <Text fontSize={'md'} fontWeight={600}>
+                Price: {props.data.price * 1000} ALGO /{' '}
+                {props.data.price * 0.78 * 1000} USD
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                Location: {props.data.address}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                Bedrooms: {props.data.numBedrooms}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                Bathrooms: {props.data.numBathrooms}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                Apartment sq ft: {calculateAptSize()}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {getConfirmationAmenities('pool')}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {'Has hardwood floor'}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {'Has dishwasher'}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {'Has air conditioning'}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {getConfirmationAmenities('balcony')}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {getConfirmationAmenities('gym')}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {getConfirmationAmenities('on-site laundry')}
+              </Text>
+              <Text fontSize={'md'} fontWeight={600}>
+                {getConfirmationAmenities('garage')}
+              </Text>
+            </Flex>
+
+            <Flex
+              mt={5}
+              direction={'row'}
+              width={'100%'}
+              justifyContent={'center'}
+            >
+              <Text mt={2} ml={2} fontSize={'md'} fontWeight={600}>
+                Your Offer
+              </Text>
+            </Flex>
+            <Flex
+              mt={1}
+              direction={'row'}
+              width={'100%'}
+              justifyContent={'center'}
+            >
+              <Input
+                value={offerField}
+                onChange={handleOfferField}
+                fontSize={'md'}
+                fontWeight={600}
+                w={'50%'}
+              />
+              <Text mt={2} ml={2} fontSize={'md'} fontWeight={600}>
+                ALGO
+              </Text>
+            </Flex>
+
+            <Flex
+              mt={4}
+              direction={'row'}
+              width={'100%'}
+              justifyContent={'center'}
+            >
+              <Checkbox colorScheme="green">
+                <Text fontSize={'sm'} fontWeight={600}>
+                  By checking this box, I agree to sell my organs to AlgoRent
+                  for the greater good
+                </Text>
+              </Checkbox>
+            </Flex>
+
+            <Flex
+              mt={4}
+              direction={'row'}
+              width={'100%'}
+              justifyContent={'center'}
+            >
+              <IconButton
+                colorScheme={'purple'}
+                aria-label="Offer Price"
+                onClick={handleOffer}
+                icon={<FaHandshake size={35} />}
+                w={24}
+                h={12}
+              />
+            </Flex>
+          </Flex>
         </Center>
       </Box>
     </Flex>

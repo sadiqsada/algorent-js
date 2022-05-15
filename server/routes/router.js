@@ -3,6 +3,8 @@ const UserController = require('../controllers/user');
 const HouseController = require('../controllers/house');
 const auth = require('../middlewares/auth');
 const ListingController = require('../controllers/listing');
+const TransactionController = require('../controllers/transaction');
+const OfferController = require('../controllers/offer');
 const router = express.Router();
 
 router.post('/register', UserController.register);
@@ -14,12 +16,30 @@ router.get('/logout', UserController.logout);
 router.post('/tokenIsValid', UserController.tokenIsValid);
 router.get('/getUser', auth, UserController.getUser);
 
-//router.post('/sharpen', HouseController.sharpen)
+// router.post('/sharpen', HouseController.sharpen)
 router.post('/explore', HouseController.explore);
 router.post('/shortlist', auth, HouseController.shortlist);
 router.get('/getShortlist', auth, HouseController.getShortlist);
 router.post('/recentlyViewed', auth, HouseController.recentlyViewed);
 router.get('/getRecentlyViewed', auth, HouseController.getRecentlyViewed);
+router.get('/getCurrentUser', auth, UserController.getCurrentUser);
+router.post('/getHouseByID', HouseController.getHouseByID);
 router.post('/createlisting', ListingController.create);
+
+router.get('/transactions/createAccount', TransactionController.createAccount);
+router.get('/transactions/createClient', TransactionController.createClient);
+router.get('/transactions/checkBalance', TransactionController.checkBalance);
+router.get(
+  '/transactions/sendTransaction',
+  TransactionController.sendTransaction
+);
+
+router.post('/offer/addOffer', auth, OfferController.addOffer);
+router.get('/getReceivedOffers', auth, OfferController.getReceivedOffers);
+router.post('/changeUsername', UserController.changeUsername);
+router.post('/sendVerification', UserController.sendVerification);
+router.post('/changeEmail', UserController.changeEmail);
+router.post('/changePassword', UserController.changePassword);
+router.post('/uploadAvatar', UserController.uploadAvatar);
 
 module.exports = router;

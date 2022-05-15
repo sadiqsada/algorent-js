@@ -1,6 +1,7 @@
 import {
     Box,
     Button,
+    Checkbox,
     Flex,
     FormControl,
     FormLabel,
@@ -17,7 +18,7 @@ import { useState } from 'react';
 const CreateListing =  () =>{
     const [checked, setChecked] = useState(false)
     const [images, setImages] = useState([])
-    const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
+    const web_url = 'http://localhost:8000' //'http://localhost:8000'; //
     const handleSubmit = (values) => {
         Axios
           .post(web_url + '/createListing', {

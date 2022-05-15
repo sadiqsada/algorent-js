@@ -11,6 +11,9 @@ const UserSchema = new Schema(
     resetCode: { type: String, unique: false },
     shortlistedHouses: [{ type: Schema.Types.ObjectId, ref: 'House' }],
     recentlyViewed: [{ type: Schema.Types.ObjectId, ref: 'House' }],
+    receivedOffers: [{ type: Schema.Types.ObjectId, ref: 'Offer' }],
+    sentOffers: [{ type: Schema.Types.ObjectId, ref: 'Offer' }],
+    avatar: { data: Buffer, contentType: String },
   },
   { timestamps: true }
 );

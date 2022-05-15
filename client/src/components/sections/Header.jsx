@@ -9,6 +9,7 @@ import {
   MenuList,
   Center,
   Avatar,
+  Image,
   MenuDivider,
   MenuItem,
   useDisclosure,
@@ -21,7 +22,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { Logo } from '../ui/Logo';
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import AuthContext from '../../context/AuthContext';
 import Axios from 'axios';
 
@@ -50,13 +51,13 @@ const Header = props => {
   const showNavbarOptions = useBreakpointValue({ base: 'base', md: 'md' });
   const bgColor = useColorModeValue('#2eca6a', '#176534');
   const hoverColor = useColorModeValue('#61db8e', '#21944c');
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn, currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   // bg=useColorModeValue('gray.100', 'gray.900')}
-  const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
+  const webUrl = 'http://localhost:8000'; // 'https://algorent-proj.herokuapp.com'
   const handleLogout = async () => {
     try {
-      await Axios.get(web_url + '/logout', {
+      await Axios.get(webUrl + '/logout', {
         withCredentials: true,
       });
       setIsLoggedIn(false);
@@ -66,6 +67,15 @@ const Header = props => {
     }
   };
 
+  let avatar = <Avatar size={'sm'} src={'https://avatars.dicebear.com/api/male/username.svg'}/>
+  let enlargedAvatar = <Avatar size={'2xl'} src={ 'https://avatars.dicebear.com/api/male/username.svg' }/>
+
+  if (currentUser){
+    if (currentUser.avatar){
+    avatar = <Image marginRight='2%' boxSize ='30px' borderRadius='full' src={`data:image/png;base64,${currentUser.avatar[1].toString()}`}/>
+    enlargedAvatar = <Image marginRight='2%' boxSize ='120px' borderRadius='full' src={`data:image/png;base64,${currentUser.avatar[1].toString()}`}/>
+    }
+  }
   return (
     <>
       <Box bg={useColorModeValue('#2eca6a', '#176534')} px={4}>
@@ -92,7 +102,6 @@ const Header = props => {
                     {isLoggedIn ? <NavLink>CreateListing</NavLink> : null}
                     {isLoggedIn ? <NavLink>Shortlist</NavLink> : null}
                     {isLoggedIn ? <NavLink>RecentlyViewed</NavLink> : null}
-                    {isLoggedIn ? <NavLink>Wallet</NavLink> : null}
                   </HStack>
                 ) : null}
                 {isLoggedIn ? (
@@ -105,22 +114,12 @@ const Header = props => {
                       minW={0}
                       ml={2}
                     >
-                      <Avatar
-                        size={'sm'}
-                        src={
-                          'https://avatars.dicebear.com/api/male/username.svg'
-                        }
-                      />
+                      {avatar}
                     </MenuButton>
                     <MenuList alignItems={'center'}>
                       <br />
                       <Center>
-                        <Avatar
-                          size={'2xl'}
-                          src={
-                            'https://avatars.dicebear.com/api/male/username.svg'
-                          }
-                        />
+                        {enlargedAvatar}
                       </Center>
                       <br />
                       <Center>
@@ -128,6 +127,12 @@ const Header = props => {
                       </Center>
                       <br />
                       <MenuDivider />
+                      <Link href='/Offers' style={{ textDecoration: 'none' }}>
+                        <MenuItem>Offers</MenuItem>
+                      </Link>
+                      <Link href='/SentOffers' style={{ textDecoration: 'none' }}>
+                        <MenuItem>Sent Offers</MenuItem>
+                      </Link>
                       <Link href='/AccountSetting' style={{ textDecoration: 'none' }}>
                         <MenuItem>Account Settings</MenuItem>
                       </Link>

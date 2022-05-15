@@ -11,7 +11,7 @@ import CreateListing from './pages/CreateListing';
 import Shortlist from './pages/Shortlist';
 import RecentlyViewed from './pages/RecentlyViewed';
 import PropertyDetails from './pages/PropertyDetails';
-import Wallet from './pages/Wallet';
+import Offers from './pages/Offers';
 import AccountSetting from './pages/AccountSetting'
 import Axios from 'axios';
 import Cookies from 'js-cookie';
@@ -20,8 +20,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [ currentUser, setCurrentUser ] = useState()
   const [isLoading, setIsLoading] = useState(true);
-  const web_url = 'https://algorent-proj.herokuapp.com' //'http://localhost:8000'; //
+  const web_url = 'http://localhost:8000'
   useEffect(() => {
     const checkLoggedIn = async () => {
       const token = Cookies.get('token');
@@ -34,9 +35,17 @@ const App = () => {
         null,
         {
           headers: { 'x-auth-token': token },
+          withCredentials: true,
+          credentials: 'include',
         }
       );
 
+      const response = await Axios.get(web_url + '/getCurrentUser', {
+      withCredentials: true,
+      credentials: 'include',
+      });
+      const user = response.data.user;
+      setCurrentUser(user);
       setIsLoggedIn(tokenRes.data);
       setIsLoading(false);
     };
@@ -45,7 +54,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <AuthContext.Provider value={{ isLoggedIn, isLoading, setIsLoggedIn }}>
+      <AuthContext.Provider value={{ isLoggedIn, isLoading, setIsLoggedIn, currentUser }}>
         <Header />
         <Routes>
           <Route path="/" element={<Landing />} />
@@ -79,10 +88,10 @@ const App = () => {
             }
           />
           <Route
-            path="/Wallet"
+            path="Offers"
             element={
               <ProtectedRoute>
-                <Wallet />
+                <Offers />
               </ProtectedRoute>
             }
           />
