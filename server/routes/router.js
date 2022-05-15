@@ -26,12 +26,13 @@ router.get('/getCurrentUser', auth, UserController.getCurrentUser);
 router.post('/createlisting', ListingController.create);
 
 router.get('/transactions/createAccount', TransactionController.createAccount);
-router.get('/transactions/createClient', TransactionController.createClient);
-router.get('/transactions/checkBalance', TransactionController.checkBalance);
-router.get(
+// router.get('/transactions/createClient', TransactionController.createClient);
+router.post('/transactions/checkBalance', TransactionController.checkBalance);
+router.post(
   '/transactions/sendTransaction',
   TransactionController.sendTransaction
 );
+router.post('/transactions/addWallet', auth, TransactionController.addWallet);
 
 router.post('/offer/addOffer', auth, OfferController.addOffer);
 router.post('/changeUsername', UserController.changeUsername);

@@ -1,4 +1,16 @@
 const algosdk = require('algosdk');
+const Wallet = require('../models/walletModel');
+const User = require('../models/userModel');
+
+const createClient = () => {
+  const algodToken =
+    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+  const algodServer = 'http://147.182.180.15';
+  const algodPort = 4001;
+  const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
+  return algodClient;
+};
+
 const createAccount = (req, res) => {
   try {
     const myAccount = algosdk.generateAccount();
@@ -8,30 +20,23 @@ const createAccount = (req, res) => {
     console.log('Account created. Save off Mnemonic and address');
     // console.log('Add funds to account using the TestNet Dispenser: ');
     // console.log('https://dispenser.testnet.aws.algodev.network/ ');
-    console.log(myAccount);
     return res.json(myAccount);
   } catch (err) {
     console.log('err', err);
   }
 };
 
-const createClient = (req, res) => {
-  const algodToken =
-    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
-  const algodServer = 'http://147.182.180.15';
-  const algodPort = 4001;
-  const algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
-  return algodClient;
-};
-
 const checkBalance = async (req, res) => {
-  const { algodClient, myAccount } = req.body;
+  const { myAccount } = req.body;
+  const algodClient = createClient();
   const accountInfo = await algodClient.accountInformation(myAccount.addr).do();
   return res.json(accountInfo.amount);
 };
 
 const sendTransaction = async (req, res) => {
-  const { sender, receiver, amount, algodClient, myAccount } = req.body;
+  const { sender, receiver, amount, myAccount, walletID } = req.body;
+  const algodClient = createClient();
+  const wallet = await Wallet.findById(walletID);
   const params = await algodClient.getTransactionParams().do();
   params.fee = algosdk.ALGORAND_MIN_TX_FEE;
   params.flatFee = true;
@@ -43,7 +48,8 @@ const sendTransaction = async (req, res) => {
   });
 
   // Sign the transaction
-  const signedTxn = txn.signTxn(myAccount.sk);
+  const account = algosdk.mnemonicToSecretKey(wallet.mnemonic);
+  const signedTxn = txn.signTxn(account.sk);
   const txId = txn.txID().toString();
   console.log('Signed transaction with txID: %s', txId);
 
@@ -60,11 +66,22 @@ const sendTransaction = async (req, res) => {
       ' confirmed in round ' +
       confirmedTxn['confirmed-round']
   );
-  const accountInfo = await algodClient.accountInformation(myAccount.addr).do();
+  const accountInfo = await algodClient.accountInformation(account.addr).do();
   console.log('Transaction Amount: %d microAlgos', confirmedTxn.txn.txn.amt);
   console.log('Transaction Fee: %d microAlgos', confirmedTxn.txn.txn.fee);
 
   console.log('Account balance: %d microAlgos', accountInfo.amount);
+  return res.json({ message: 'Transaction Processed Successfully' });
 };
 
-module.exports = { createAccount, createClient, checkBalance, sendTransaction };
+const addWallet = async (req, res) => {
+  const { id, mnemonic } = req.body;
+  const newWallet = new Wallet({ id, mnemonic });
+  await newWallet.save();
+  const currentUser = await User.findById(req.userId);
+  currentUser.wallets.push(newWallet);
+  await currentUser.save();
+  return res.json({ message: 'Wallet successfully added! '});
+}
+
+module.exports = { addWallet, createAccount, checkBalance, sendTransaction };
