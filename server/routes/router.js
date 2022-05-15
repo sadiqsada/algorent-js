@@ -26,16 +26,25 @@ router.get('/getCurrentUser', auth, UserController.getCurrentUser);
 router.post('/getHouseByID', HouseController.getHouseByID);
 router.post('/createlisting', ListingController.create);
 
-router.get('/transactions/createAccount', auth, TransactionController.createAccount);
+router.get(
+  '/transactions/createAccount',
+  auth,
+  TransactionController.createAccount
+);
 // router.get('/transactions/createClient', TransactionController.createClient);
 router.post('/transactions/checkBalance', TransactionController.checkBalance);
 router.post(
   '/transactions/sendTransaction',
+  auth,
   TransactionController.sendTransaction
 );
 router.post('/transactions/addWallet', auth, TransactionController.addWallet);
 router.get('/transactions/getWallets', auth, TransactionController.getWallets);
-router.post('/transactions/selectWallet', auth, TransactionController.selectWallet);
+router.post(
+  '/transactions/selectWallet',
+  auth,
+  TransactionController.selectWallet
+);
 
 router.post('/offer/addOffer', auth, OfferController.addOffer);
 router.post('/offer/removeOffer', auth, OfferController.removeOffer);

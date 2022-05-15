@@ -175,7 +175,7 @@ const getHouseByID = async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 module.exports = {
   explore,

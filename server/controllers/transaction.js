@@ -24,6 +24,9 @@ const createAccount = async (req, res) => {
     await newWallet.save();
     const currentUser = await User.findById(req.userId);
     currentUser.wallets.push(newWallet);
+    if (!currentUser.selectedWallet) {
+      currentUser.selectedWallet = newWallet;
+    }
     await currentUser.save();
     return res.json(myAccount);
   } catch (err) {
@@ -39,21 +42,24 @@ const checkBalance = async (req, res) => {
 };
 
 const sendTransaction = async (req, res) => {
-  const { sender, receiver, amount, myAccount, walletID } = req.body;
+  const { amount } = req.body;
   const algodClient = createClient();
-  const wallet = await Wallet.findById(walletID);
+  const sender = await User.findById(req.userId);
+  const senderWallet = await Wallet.findById(sender.selectedWallet);
+  const elonUser = await User.find({ email: 'elonmusk@twitter.com' });
+  const receiver = elonUser.selectedWallet;
   const params = await algodClient.getTransactionParams().do();
   params.fee = algosdk.ALGORAND_MIN_TX_FEE;
   params.flatFee = true;
   const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
-    from: sender,
+    from: senderWallet.id,
     to: receiver,
     amount: amount,
     suggestedParams: params,
   });
 
   // Sign the transaction
-  const account = algosdk.mnemonicToSecretKey(wallet.mnemonic);
+  const account = algosdk.mnemonicToSecretKey(senderWallet.mnemonic);
   const signedTxn = txn.signTxn(account.sk);
   const txId = txn.txID().toString();
   console.log('Signed transaction with txID: %s', txId);
@@ -85,6 +91,9 @@ const addWallet = async (req, res) => {
   await newWallet.save();
   const currentUser = await User.findById(req.userId);
   currentUser.wallets.push(newWallet);
+  if (!currentUser.selectedWallet) {
+    currentUser.selectedWallet = newWallet;
+  }
   await currentUser.save();
   return res.json({ message: 'Wallet successfully added! ' });
 };
@@ -105,8 +114,8 @@ const selectWallet = async (req, res) => {
   const selectedWallet = await Wallet.find({ id: address });
   user.selectedWallet = selectedWallet[0];
   await user.save();
-  return res.json({ message: `Selected Wallet with addr: ${address}`});
-}
+  return res.json({ message: `Selected Wallet with addr: ${address}` });
+};
 
 module.exports = {
   addWallet,
@@ -114,5 +123,5 @@ module.exports = {
   checkBalance,
   sendTransaction,
   getWallets,
-  selectWallet
+  selectWallet,
 };

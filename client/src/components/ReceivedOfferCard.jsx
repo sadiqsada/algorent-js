@@ -53,9 +53,16 @@ const ReceivedOfferCard = props => {
       alert('Offer Deleted');
       window.location.reload();
     }
-    // else {
-    //   await axios.post(`${webUrl}/transaction/sendTransaction`)
-    // }
+    else {
+      await axios.post(`${webUrl}/transactions/sendTransaction`, {
+        amount: 1,
+      }, { withCredentials: true, credentials: 'include' });
+      await axios.post(`${webUrl}/offer/removeOffer`, {
+        id: props.data.id,
+      }, { withCredentials: true, credentials: 'include' });
+      alert('Transaction Processed Successfully');
+      window.location.reload();
+    }
   }
 
   return (
