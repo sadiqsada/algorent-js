@@ -99,9 +99,9 @@ const Header = props => {
                     <NavLink>Explore</NavLink>
                     {!isLoggedIn ? <NavLink>Login</NavLink> : null}
                     {!isLoggedIn ? <NavLink>Register</NavLink> : null}
-                    {isLoggedIn ? <NavLink>CreateListing</NavLink> : null}
-                    {isLoggedIn ? <NavLink>Shortlist</NavLink> : null}
-                    {isLoggedIn ? <NavLink>RecentlyViewed</NavLink> : null}
+                    {isLoggedIn ? <NavLink>Auction</NavLink> : null}
+                    {isLoggedIn ? <NavLink>Saved</NavLink> : null}
+                    {isLoggedIn ? <NavLink>Viewed</NavLink> : null}
                   </HStack>
                 ) : null}
                 {isLoggedIn ? (
@@ -158,9 +158,9 @@ const Header = props => {
               <NavLink>Explore</NavLink>
               {!isLoggedIn ? <NavLink>Login</NavLink> : null}
               {!isLoggedIn ? <NavLink>Register</NavLink> : null}
-              {isLoggedIn ? <NavLink>CreateListing</NavLink> : null}
-              {isLoggedIn ? <NavLink>Shortlist</NavLink> : null}
-              {isLoggedIn ? <NavLink>RecentlyViewed</NavLink> : null}
+              {isLoggedIn ? <NavLink>Auction</NavLink> : null}
+              {isLoggedIn ? <NavLink>Saved</NavLink> : null}
+              {isLoggedIn ? <NavLink>Viewed</NavLink> : null}
               {isLoggedIn ? <NavLink>Wallet</NavLink> : null}
             </Stack>
           </Box>

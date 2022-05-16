@@ -47,7 +47,7 @@ import { useRef, useState } from 'react';
 import { useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 import { useContext } from 'react';
 import AuthContext from '../context/AuthContext';
-import axios from 'axios';
+import axios from 'axios'; 
 //import img_s from './sharpened_image.png'
 const PropertyDetails = () => {
   const location = useLocation();

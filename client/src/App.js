@@ -64,7 +64,7 @@ const App = () => {
           <Route path="/Explore" element={<Explore />} />
           <Route path="/PropertyDetails" element={<PropertyDetails />} />
           <Route
-            path="/CreateListing"
+            path="/Auction"
             element={
               <ProtectedRoute>
                 <CreateListing />
@@ -72,7 +72,7 @@ const App = () => {
             }
           />
           <Route
-            path="/Shortlist"
+            path="/Saved"
             element={
               <ProtectedRoute>
                 <Shortlist />
@@ -80,7 +80,7 @@ const App = () => {
             }
           />
           <Route
-            path="/RecentlyViewed"
+            path="/Viewed"
             element={
               <ProtectedRoute>
                 <RecentlyViewed />
