@@ -17,7 +17,7 @@ import axios from 'axios';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 
 const ReceivedOfferCard = props => {
-  const web_url = 'http://localhost:8000' //'http://localhost:8000';
+  const webUrl = 'http://localhost:8000' //'http://localhost:8000';
   const cardBackground = useColorModeValue('gray.100', 'gray.900');
 
   const [house, setHouse] = useState({
@@ -32,7 +32,7 @@ const ReceivedOfferCard = props => {
   });
   useEffect(() => {
     axios
-      .post(web_url + '/getHouseByID', {
+      .post(webUrl + '/getHouseByID', {
         houseID: props.data.house
       })
       .then(response => {
@@ -46,14 +46,23 @@ const ReceivedOfferCard = props => {
 
   // When accept button is clicked, this function is called with "true" boolean value, and "false" boolean value for decline button
   const handleOfferAnswer = async (answer) => {
-    answer?alert("Offer has been accepted."):alert("Offer has been declined");
-    await axios.post(web_url + '/offer/offerResponse',
-      {
-        response: answer
-      },
-      { withCredentials: true, credentials: 'include' }
-      );
-    //We might want to refresh the page so that the accepted/declined offer card is removed once page is refreshed
+    if (!answer) {
+      await axios.post(`${webUrl}/offer/removeOffer`, {
+        id: props.data.id,
+      }, { withCredentials: true, credentials: 'include' });
+      alert('Offer Deleted');
+      window.location.reload();
+    }
+    else {
+      await axios.post(`${webUrl}/transactions/sendTransaction`, {
+        amount: 1,
+      }, { withCredentials: true, credentials: 'include' });
+      await axios.post(`${webUrl}/offer/removeOffer`, {
+        id: props.data.id,
+      }, { withCredentials: true, credentials: 'include' });
+      alert('Transaction Processed Successfully');
+      window.location.reload();
+    }
   }
 
   return (

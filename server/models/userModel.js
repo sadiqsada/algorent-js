@@ -14,6 +14,8 @@ const UserSchema = new Schema(
     receivedOffers: [{ type: Schema.Types.ObjectId, ref: 'Offer' }],
     sentOffers: [{ type: Schema.Types.ObjectId, ref: 'Offer' }],
     avatar: { data: Buffer, contentType: String },
+    wallets: [{ type: Schema.Types.ObjectId, ref: 'Wallet' }],
+    selectedWallet: { type: Schema.Types.ObjectId, ref: 'Wallet' },
   },
   { timestamps: true }
 );

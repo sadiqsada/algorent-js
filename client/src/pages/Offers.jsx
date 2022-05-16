@@ -5,10 +5,10 @@ import axios from 'axios';
 
 const Offers = () => {
 	const [offers, setOffers] = useState([]);
-	const web_url = 'http://localhost:8000' //'http://localhost:8000'; //
+	const webUrl = 'http://localhost:8000' //'http://localhost:8000'; //
 	useEffect(() => {
 		axios
-			.get(web_url + '/getReceivedOffers', {
+			.get(webUrl + '/getReceivedOffers', {
 				withCredentials: true,
 				credentials: 'include',
 			})
@@ -35,9 +35,10 @@ const Offers = () => {
 						<ReceivedOfferCard
 							key={item._id}
 							data={{
-									name: item.name,
-									price: item.price,
-									house: item.house
+								id: item._id, 
+								name: item.name,
+								price: item.price,
+								house: item.house
 							}}
 						/>
 						);
