@@ -23,7 +23,7 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [ currentUser, setCurrentUser ] = useState()
   const [isLoading, setIsLoading] = useState(true);
-  const web_url = 'http://localhost:8000'
+  const web_url = 'https://algorent-proj.herokuapp.com'
   useEffect(() => {
     const checkLoggedIn = async () => {
       const token = Cookies.get('token');

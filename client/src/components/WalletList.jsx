@@ -8,7 +8,7 @@ const WalletList = () => {
   useEffect(() => {
     const getAllWallets = async () => {
       const walletResponse = await axios.get(
-        'http://localhost:8000/transactions/getWallets',
+        'https://algorent-proj.herokuapp.com/transactions/getWallets',
         { withCredentials: true, credentials: 'include' }
       );
       setWallets(walletResponse.data);

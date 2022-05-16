@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 const Wallet = props => {
   const handleSelectWallet = async () => {
-    await axios.post('http://localhost:8000/transactions/selectWallet', {
+    await axios.post('https://algorent-proj.herokuapp.com/transactions/selectWallet', {
       address: props.wallet.id
     }, { withCredentials: true, credentials: 'include' });
     alert(`Selected wallet with address: ${props.wallet.id}`);
@@ -13,7 +13,7 @@ const Wallet = props => {
 
   useEffect(() => {
     axios
-      .post('http://localhost:8000/transactions/checkBalance', { 
+      .post('https://algorent-proj.herokuapp.com/transactions/checkBalance', { 
           address: props.wallet.id
       })
       .then(response => {

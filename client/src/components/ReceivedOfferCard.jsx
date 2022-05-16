@@ -17,7 +17,7 @@ import axios from 'axios';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 
 const ReceivedOfferCard = props => {
-  const webUrl = 'http://localhost:8000'; //'http://localhost:8000';
+  const webUrl = 'https://algorent-proj.herokuapp.com'; //'https://algorent-proj.herokuapp.com';
   const cardBackground = useColorModeValue('gray.100', 'gray.900');
 
   const [house, setHouse] = useState({

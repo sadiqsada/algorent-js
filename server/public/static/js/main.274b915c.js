@@ -31962,7 +31962,7 @@
                               (e.prev = 0),
                               (e.next = 3),
                               $w().get(
-                                'https://algorent-proj.herokuapp.com/logout',
+                                'https://algorent-proj.herokuapp.comlogout',
                                 { withCredentials: !0 }
                               )
                             );
@@ -35736,7 +35736,7 @@
                         !(function (e) {
                           $w()
                             .post(
-                              'https://algorent-proj.herokuapp.com/login',
+                              'https://algorent-proj.herokuapp.comlogin',
                               { email: e.email, password: e.password },
                               { withCredentials: !0, credentials: 'include' }
                             )
@@ -36019,7 +36019,7 @@
                         !(function (e) {
                           $w()
                             .post(
-                              'https://algorent-proj.herokuapp.com/register',
+                              'https://algorent-proj.herokuapp.comregister',
                               {
                                 firstName: e.firstname,
                                 lastName: e.lastname,
@@ -42433,7 +42433,7 @@
               onSubmit: function (e, t) {
                 !(function (e) {
                   $w()
-                    .post('https://algorent-proj.herokuapp.com/createListing', {
+                    .post('https://algorent-proj.herokuapp.comcreateListing', {
                       image: i,
                       address: e.address,
                       zipCode: e.zipCode,
@@ -42905,7 +42905,7 @@
           return (
             (0, e.useEffect)(function () {
               $w()
-                .get('https://algorent-proj.herokuapp.com/getShortlist', {
+                .get('https://algorent-proj.herokuapp.comgetShortlist', {
                   withCredentials: !0,
                   credentials: 'include',
                 })
@@ -42948,7 +42948,7 @@
           return (
             (0, e.useEffect)(function () {
               $w()
-                .get('https://algorent-proj.herokuapp.com/getRecentlyViewed', {
+                .get('https://algorent-proj.herokuapp.comgetRecentlyViewed', {
                   withCredentials: !0,
                   credentials: 'include',
                 })
@@ -51929,7 +51929,7 @@
                               'https://algorent-proj.herokuapp.com',
                               (e.next = 7),
                               $w().post(
-                                'https://algorent-proj.herokuapp.com/tokenIsValid',
+                                'https://algorent-proj.herokuapp.comtokenIsValid',
                                 null,
                                 { headers: { 'x-auth-token': t } }
                               )

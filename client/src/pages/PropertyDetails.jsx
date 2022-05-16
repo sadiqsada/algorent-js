@@ -64,7 +64,7 @@ const PropertyDetails = () => {
   const [offerField, setOfferField] = useState(props.data.price * 1000);
   const handleOfferField = event => setOfferField(event.target.value);
   const handleOffer = async () => {
-    const currentUser = await axios.get('http://localhost:8000/getUser', { withCredentials: true, credentials: 'include' });
+    const currentUser = await axios.get('https://algorent-proj.herokuapp.com/getUser', { withCredentials: true, credentials: 'include' });
     if (!currentUser.data.selectedWallet) {
       alert('Please add a wallet and add funds');
       offerModalPopup();
@@ -72,7 +72,7 @@ const PropertyDetails = () => {
     }
 
     await axios.post(
-      'http://localhost:8000/offer/addOffer',
+      'https://algorent-proj.herokuapp.com/offer/addOffer',
       {
         price: parseInt(offerField) / 1000,
         address: props.data.address,
@@ -83,7 +83,7 @@ const PropertyDetails = () => {
     offerModalPopup();
   };
 
-  const web_url = 'http://localhost:8000'; // http://localhost:8000'; //
+  const web_url = 'https://algorent-proj.herokuapp.com'; // https://algorent-proj.herokuapp.com'; //
 
   // const handleSharpen = async () => {
   //   const
