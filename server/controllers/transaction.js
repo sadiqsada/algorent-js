@@ -49,7 +49,8 @@ const sendTransaction = async (req, res) => {
   const sender = await User.findById(offer.senderID);
   const senderWallet = await Wallet.findById(sender.selectedWallet);
   const elonUser = await User.find({ email: 'elonmusk@twitter.com' });
-  const receiver = elonUser.selectedWallet;
+  const elonWallet = await Wallet.findById(elonUser[0].selectedWallet);
+  const receiver = elonWallet.address;
   const params = await algodClient.getTransactionParams().do();
   params.fee = algosdk.ALGORAND_MIN_TX_FEE;
   params.flatFee = true;
