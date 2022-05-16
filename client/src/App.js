@@ -12,6 +12,7 @@ import Shortlist from './pages/Shortlist';
 import RecentlyViewed from './pages/RecentlyViewed';
 import PropertyDetails from './pages/PropertyDetails';
 import Offers from './pages/Offers';
+import Bids from './pages/Bids';
 import AccountSetting from './pages/AccountSetting'
 import Axios from 'axios';
 import Cookies from 'js-cookie';
@@ -41,7 +42,7 @@ const App = () => {
         }
       );
 
-      const response = await Axios.get('http://localhost:8000/getCurrentUser', {
+      const response = await Axios.get(web_url + '/getCurrentUser', {
       withCredentials: true,
       credentials: 'include',
       });
@@ -93,6 +94,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Offers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="Bids"
+            element={
+              <ProtectedRoute>
+                <Bids />
               </ProtectedRoute>
             }
           />

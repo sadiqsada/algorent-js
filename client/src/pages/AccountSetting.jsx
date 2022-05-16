@@ -39,9 +39,10 @@ const AccountSetting = () => {
   const { isOpen:emailIsOpen, onOpen:emailOnOpen, onClose:emailOnClose } = useDisclosure()
   const { isOpen:passwordIsOpen, onOpen:passwordOnOpen, onClose:passwordOnClose } = useDisclosure()
   const { isOpen: isOpenWalletConnectModal, onOpen: onOpenWalletConnectModal, onClose: onCloseWalletConnectModal } = useDisclosure();
+  const web_url = 'http://localhost:8000'; //'https://algorent-proj.herokuapp.com'
 
   const getCurrentUser = async () => {
-    const response = await axios.get('http://localhost:8000/getCurrentUser', {
+    const response = await axios.get(web_url + '/getCurrentUser', {
       withCredentials: true,
       credentials: 'include',
     });
@@ -54,7 +55,7 @@ const AccountSetting = () => {
   }, []);
 
   const handleChangeName = async(values) => {
-    const response = await axios.post('http://localhost:8000/changeUsername', {
+    const response = await axios.post(web_url + '/changeUsername', {
         withCredentials: true,
         credentials: 'include',
         user: currentUser,
@@ -70,7 +71,7 @@ const AccountSetting = () => {
   }
 
   const handleSendVerification = async() => {
-      const response = await axios.post('http://localhost:8000/sendVerification', {
+      const response = await axios.post(web_url + '/sendVerification', {
           withCredentials: true,
           credentials: 'include',
           user: currentUser,
@@ -78,6 +79,7 @@ const AccountSetting = () => {
       });
       if (response.data.success){
         setCode(response.data.code)
+        alert(response.data.message);
       }else{
         alert(response.data.message);
       }
@@ -85,7 +87,7 @@ const AccountSetting = () => {
 
   const handleChangeEmail = async(values) => {
     if (code === ref.current.values.verification){
-      const response = await axios.post('http://localhost:8000/changeEmail', {
+      const response = await axios.post(web_url + '/changeEmail', {
           withCredentials: true,
           credentials: 'include',
           user: currentUser,
@@ -136,7 +138,7 @@ const AccountSetting = () => {
   };
 
   const handleChangePassword = async(values) => {
-    const response = await axios.post('http://localhost:8000/changePassword', {
+    const response = await axios.post(web_url + '/changePassword', {
           withCredentials: true,
           credentials: 'include',
           user: currentUser,
@@ -161,11 +163,10 @@ const AccountSetting = () => {
     const formData = new FormData();
     formData.append('photo', avatar)
     formData.append('user', currentUser._id)
-    const response = await axios.post('http://localhost:8000/uploadAvatar', formData);
+    const response = await axios.post(web_url + '/uploadAvatar', formData);
     if (response.data.success){
-      photoOnClose()
+      photoClose()
       getCurrentUser()
-      photo = null
     }else{
       alert(response.data.message);
     }
@@ -174,6 +175,7 @@ const AccountSetting = () => {
   const photoClose = () => {
     setAvatar(null)
     setImg(null)
+    photo = null
     photoOnClose()
   }
 
@@ -186,7 +188,7 @@ const AccountSetting = () => {
   const handleWalletConnection = () => {
     alert(`Calling Axios with wallet ID: ${walletIDField} and wallet mnemonic: ${walletMnemonicField}`);
     axios
-      .post('http://localhost:8000/connectWallet', {
+      .post(web_url + '/connectWallet', {
         walletID: walletIDField,
         walletMnemonic: walletMnemonicField
       })
@@ -269,8 +271,14 @@ const AccountSetting = () => {
       </Modal>
 
   let photo;
+  let image = <Avatar float='right' marginRight='2%' size={'sm'} src={'https://avatars.dicebear.com/api/male/username.svg'}/>
   if(avatar){
     photo = <Center marginBottom='5%'><Image boxSize='250px' borderRadius='full' src={img}/></Center>
+  }
+  if (currentUser) {
+    if (currentUser.avatar) {
+      image = <Image float='right' marginRight='2%' boxSize ='50px' borderRadius='full' src={`data:image/png;base64,${currentUser.avatar[1].toString()}`}/>
+    }
   }
   const photoModal =
     <Modal isOpen={photoIsOpen} onClose={photoClose} isCentered>
@@ -486,41 +494,41 @@ const AccountSetting = () => {
     </Modal>
 
 const walletModal =
-<Modal
-initialFocusRef={walletIDRef}
-isOpen={isOpenWalletConnectModal}
-onClose={onCloseWalletConnectModal}
->
-<ModalOverlay />
-<ModalContent>
-  <ModalHeader>Enter Wallet Credentials</ModalHeader>
-  <ModalCloseButton />
-  <ModalBody pb={6}>
-    <FormControl>
-      <FormLabel>Wallet ID</FormLabel>
-      <Input
-        value={walletIDField}
-        onChange={handleWalletIDField} 
-        ref={walletIDRef} placeholder='Wallet ID' />
-    </FormControl>
+  <Modal
+    initialFocusRef={walletIDRef}
+    isOpen={isOpenWalletConnectModal}
+    onClose={onCloseWalletConnectModal}
+  >
+  <ModalOverlay />
+  <ModalContent>
+    <ModalHeader>Enter Wallet Credentials</ModalHeader>
+    <ModalCloseButton />
+    <ModalBody pb={6}>
+      <FormControl>
+        <FormLabel>Wallet ID</FormLabel>
+        <Input
+          value={walletIDField}
+          onChange={handleWalletIDField} 
+          ref={walletIDRef} placeholder='Wallet ID' />
+      </FormControl>
 
-    <FormControl mt={4}>
-      <FormLabel>Wallet Mnemonic</FormLabel>
-      <Input
-        value={walletMnemonicField}
-        onChange={handleWalletMnemonicField} 
-        ref={walletMnemonicRef} placeholder='Wallet Mnemonic' />
-    </FormControl>
-  </ModalBody>
+      <FormControl mt={4}>
+        <FormLabel>Wallet Mnemonic</FormLabel>
+        <Input
+          value={walletMnemonicField}
+          onChange={handleWalletMnemonicField} 
+          ref={walletMnemonicRef} placeholder='Wallet Mnemonic' />
+      </FormControl>
+    </ModalBody>
 
-  <ModalFooter>
-    <Button onClick={handleWalletConnection} colorScheme='blue' mr={3}>
-      Connect
-    </Button>
-    <Button onClick={onCloseWalletConnectModal}>Cancel</Button>
-  </ModalFooter>
-</ModalContent>
-</Modal>
+    <ModalFooter>
+      <Button onClick={handleWalletConnection} colorScheme='teal' mr={3}>
+        Connect
+      </Button>
+      <Button onClick={onCloseWalletConnectModal}>Cancel</Button>
+    </ModalFooter>
+  </ModalContent>
+  </Modal>
 
     return (
         <>
@@ -544,7 +552,7 @@ onClose={onCloseWalletConnectModal}
                 </Box>
                 <Box marginTop='1%'>
                 <Button onClick={photoOnOpen} float='right' size='sm' colorScheme='teal'>Edit</Button>
-                <Image float='right' marginRight='2%' boxSize ='50px' borderRadius='full' src={`data:image/png;base64,${currentUser&&currentUser.avatar&&currentUser.avatar.toString()}`}/>
+                {image}
                 <h style={{fontSize:'10pt',margin:'3%'}}><b>Photo</b></h>
                 <p style={{fontSize:'10pt',marginLeft:'3%'}}>Personalize your profile pic with a custom photo.</p>
                 {photoModal}
@@ -566,7 +574,7 @@ onClose={onCloseWalletConnectModal}
                 {passwordModal}
                 </Box>
                 <Box>
-                  <Button onClick={onOpenWalletConnectModal} margin='3%'>Connect your Wallet</Button>
+                  <Button onClick={onOpenWalletConnectModal} colorScheme='teal' marginLeft='3%' marginTop='2%'>Connect Your Wallet</Button>
                   {walletModal}
                 </Box>
             </Box>

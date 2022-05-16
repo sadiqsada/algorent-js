@@ -271,6 +271,7 @@ const getUser = async (req, res) => {
   const user = await User.findById(req.userId);
   return res.json({ name: user.firstName });
 };
+
 const getCurrentUser = async (req, res) => {
   const user = await User.findById(req.userId);
   return res.json({ user });
@@ -299,6 +300,15 @@ const sendVerification = async (req, res) => {
       message: 'Please change a different email',
     });
   }
+
+  const existingUser = User.findOne({ email:email })
+  if (existingUser) {
+    return res.json({
+      success: false,
+      message: 'This email is assoicated with another account',
+    });
+  }
+
   const code = uid();
   mail(
     email,
@@ -312,12 +322,14 @@ const sendVerification = async (req, res) => {
 
 const changeEmail = async (req, res) => {
   const { email, user } = req.body;
+
   if (user.email === email) {
     return res.json({
       success: false,
       message: 'Please change a different email',
     });
   }
+
   await User.findOneAndUpdate({ _id: user._id }, { email });
   return res.json({ success: true });
 };
@@ -342,8 +354,6 @@ const changePassword = async (req, res) => {
     return res.json({ success: false, message: 'Incorrect password' });
   }
 };
-
-// const upload = multer({ storage: multer.memoryStorage()}).single('photo')
 
 async function uploadFile(req, res) {
   return new Promise((resolve) => {
@@ -370,22 +380,6 @@ const uploadAvatar = async (req, res) => {
     { avatar: buffer }
   ).exec();
   return res.json({ success: true, message: 'Photo changed successfully' });
-
-  // await upload (req, res, (err) => {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //     if (req.file == undefined) {
-  //       return res.json({success:false,message:"Invalid Picture"})
-  //     } else {
-  //       buffer = req.file.buffer
-  //       console.log(`photo changed succefully`)
-  //       // dbUpload(req.body.user,buffer)
-  //       // await User.findOneAndUpdate({_id:req.body.user},{avatar:buffer}).exec()
-  //       return res.json({success:true,message:"Photo changed successfully"})
-  //     }
-  //   }
-  // })
 };
 
 module.exports = {
@@ -402,5 +396,5 @@ module.exports = {
   sendVerification,
   changeEmail,
   changePassword,
-  uploadAvatar,
+  uploadAvatar
 };
