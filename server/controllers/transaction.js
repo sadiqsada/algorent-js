@@ -44,12 +44,16 @@ const checkBalance = async (req, res) => {
 
 const sendTransaction = async (req, res) => {
   const { amount, offerId } = req.body;
+  console.log('amount');
+  console.log(amount);
   const algodClient = createClient();
   const offer = await Offer.findById(offerId);
   const sender = await User.findById(offer.senderID);
   const senderWallet = await Wallet.findById(sender.selectedWallet);
   const elonUser = await User.find({ email: 'elonmusk@twitter.com' });
-  const receiver = elonUser.selectedWallet;
+  const elonWallet = await Wallet.findById(elonUser[0].selectedWallet);
+  const receiver = elonWallet.id;
+  console.log(receiver);
   const params = await algodClient.getTransactionParams().do();
   params.fee = algosdk.ALGORAND_MIN_TX_FEE;
   params.flatFee = true;
