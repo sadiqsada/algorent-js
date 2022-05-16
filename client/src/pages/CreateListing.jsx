@@ -20,10 +20,14 @@ const CreateListing =  () =>{
     const [images, setImages] = useState([])
     const web_url = 'http://localhost:8000' //'http://localhost:8000'; //
     const handleSubmit = (values) => {
+      let fullAddress = `${values.address}, ${values.city}, ${values.state} ${values.zipCode}`
+      const api_key = "AIzaSyD96V2GIJeJPJqp7wFky7Z6u53dBI_KCR4"
+      const embed_link = "https://www.google.com/maps/embed/v1/place?key=" + api_key + "&q=" + fullAddress
         Axios
           .post(web_url + '/createListing', {
               image: images,
-              address: values.address,
+              mapUrls:embed_link,
+              address: fullAddress,
               zipCode: values.zipCode,
               state: values.state,
               city: values.city,
@@ -33,9 +37,12 @@ const CreateListing =  () =>{
               amenities: values.amenities,
               price: values.price,
               contact: values.contact,
-          })
+          },
+          { withCredentials: true, credentials: 'include' }
+          )
           .then(response => {
             alert(response.data.message);
+            window.location.reload();
           })
           .catch(error => {
             alert(error);
@@ -292,7 +299,7 @@ const CreateListing =  () =>{
                         isInvalid={form.errors.price && form.touched.price}
                         isRequired
                       >
-                        <FormLabel htmlFor="price">Price (in USD)</FormLabel>
+                        <FormLabel htmlFor="price">Price (in Algo)</FormLabel>
                         <Input
                           {...field}
                           id="price"

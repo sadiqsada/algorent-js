@@ -1,4 +1,5 @@
 const House = require('../models/houseModel');
+const User = require('../models/userModel');
 const cloudinary = require('cloudinary').v2;
 
 cloudinary.config({
@@ -9,6 +10,7 @@ cloudinary.config({
 const create = async (req, res) => {
   const {
     image,
+    mapUrls,
     address,
     zipCode,
     state,
@@ -20,6 +22,8 @@ const create = async (req, res) => {
     price,
     contact,
   } = req.body;
+
+  const owner = await User.findById(req.userId);
 
   try {
     const promises = [];
@@ -37,28 +41,36 @@ const create = async (req, res) => {
           imgUrl.push(info.url);
         });
 
+        var stringUrl = "["
+        imgUrl.forEach((url) =>{
+          stringUrl += "'" + url + "', "
+        })
+        stringUrl += "]"
+
         const newHouse = new House({
           address,
           state,
           city,
           zipCode,
           price,
-          imgUrl,
+          imgUrl:stringUrl,
+          mapUrls,
           numBedrooms: numBed,
           numBathrooms: numBath,
           size,
           contact,
           amenities,
+          owner,
         });
         newHouse.save();
+        return res
+        .status(200)
+        .json({ success: true, message: 'House listing created successfully' });
       })
       .catch((err) => console.log(err));
   } catch (err) {
     console.log(err);
   }
-  return res
-    .status(200)
-    .json({ success: true, message: 'House listing created successfully' });
 };
 
 module.exports = { create };

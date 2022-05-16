@@ -29,6 +29,7 @@ router.get('/getShortlist', auth, HouseController.getShortlist);
 router.post('/recentlyViewed', auth, HouseController.recentlyViewed);
 router.get('/getRecentlyViewed', auth, HouseController.getRecentlyViewed);
 router.post('/getHouseByID', HouseController.getHouseByID);
+router.post('/createlisting', auth, ListingController.create);
 
 router.get(
   '/transactions/createAccount',
