@@ -269,7 +269,7 @@ const tokenIsValid = async (req, res) => {
 
 const getUser = async (req, res) => {
   const user = await User.findById(req.userId);
-  return res.json({ name: user.firstName });
+  return res.json(user);
 };
 
 const getCurrentUser = async (req, res) => {

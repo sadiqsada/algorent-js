@@ -36,9 +36,9 @@ const createAccount = async (req, res) => {
 };
 
 const checkBalance = async (req, res) => {
-  const { myAccount } = req.body;
+  const { address } = req.body;
   const algodClient = createClient();
-  const accountInfo = await algodClient.accountInformation(myAccount.addr).do();
+  const accountInfo = await algodClient.accountInformation(address).do();
   return res.json(accountInfo.amount);
 };
 

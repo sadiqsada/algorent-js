@@ -65,11 +65,12 @@ const PropertyDetails = () => {
   const handleOfferField = event => setOfferField(event.target.value);
   const handleOffer = async () => {
     const currentUser = await axios.get('http://localhost:8000/getUser', { withCredentials: true, credentials: 'include' });
-    if (!currentUser.selectedWallet) {
-      alert('Please add a wallet');
+    if (!currentUser.data.selectedWallet) {
+      alert('Please add a wallet and add funds');
       offerModalPopup();
       return;
     }
+
     await axios.post(
       'http://localhost:8000/offer/addOffer',
       {
