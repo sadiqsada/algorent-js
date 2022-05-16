@@ -15,6 +15,12 @@ router.post('/password-rest/:resetCode', UserController.resetPassword);
 router.get('/logout', UserController.logout);
 router.post('/tokenIsValid', UserController.tokenIsValid);
 router.get('/getUser', auth, UserController.getUser);
+router.get('/getCurrentUser', auth, UserController.getCurrentUser);
+router.post('/changeUsername', UserController.changeUsername);
+router.post('/sendVerification', UserController.sendVerification);
+router.post('/changeEmail', UserController.changeEmail);
+router.post('/changePassword', UserController.changePassword);
+router.post('/uploadAvatar', UserController.uploadAvatar);
 
 // router.post('/sharpen', HouseController.sharpen)
 router.post('/explore', HouseController.explore);
@@ -22,9 +28,7 @@ router.post('/shortlist', auth, HouseController.shortlist);
 router.get('/getShortlist', auth, HouseController.getShortlist);
 router.post('/recentlyViewed', auth, HouseController.recentlyViewed);
 router.get('/getRecentlyViewed', auth, HouseController.getRecentlyViewed);
-router.get('/getCurrentUser', auth, UserController.getCurrentUser);
 router.post('/getHouseByID', HouseController.getHouseByID);
-router.post('/createlisting', ListingController.create);
 
 router.get(
   '/transactions/createAccount',
@@ -48,11 +52,8 @@ router.post(
 
 router.post('/offer/addOffer', auth, OfferController.addOffer);
 router.post('/offer/removeOffer', auth, OfferController.removeOffer);
+router.post('/offer/removeBid', auth, OfferController.removeBid);
 router.get('/getReceivedOffers', auth, OfferController.getReceivedOffers);
-router.post('/changeUsername', UserController.changeUsername);
-router.post('/sendVerification', UserController.sendVerification);
-router.post('/changeEmail', UserController.changeEmail);
-router.post('/changePassword', UserController.changePassword);
-router.post('/uploadAvatar', UserController.uploadAvatar);
+router.get('/getBidHouses', auth, OfferController.getBidHouses);
 
 module.exports = router;

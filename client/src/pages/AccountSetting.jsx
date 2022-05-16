@@ -35,34 +35,15 @@ const AccountSetting = () => {
   const [avatar, setAvatar] = useState();
   const [img, setImg] = useState();
   const ref = useRef(null);
-  const {
-    isOpen: nameIsOpen,
-    onOpen: nameOnOpen,
-    onClose: nameOnClose,
-  } = useDisclosure();
-  const {
-    isOpen: photoIsOpen,
-    onOpen: photoOnOpen,
-    onClose: photoOnClose,
-  } = useDisclosure();
-  const {
-    isOpen: emailIsOpen,
-    onOpen: emailOnOpen,
-    onClose: emailOnClose,
-  } = useDisclosure();
-  const {
-    isOpen: passwordIsOpen,
-    onOpen: passwordOnOpen,
-    onClose: passwordOnClose,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenWalletConnectModal,
-    onOpen: onOpenWalletConnectModal,
-    onClose: onCloseWalletConnectModal,
-  } = useDisclosure();
+  const { isOpen:nameIsOpen, onOpen:nameOnOpen, onClose:nameOnClose } = useDisclosure()
+  const { isOpen:photoIsOpen, onOpen:photoOnOpen, onClose:photoOnClose } = useDisclosure()
+  const { isOpen:emailIsOpen, onOpen:emailOnOpen, onClose:emailOnClose } = useDisclosure()
+  const { isOpen:passwordIsOpen, onOpen:passwordOnOpen, onClose:passwordOnClose } = useDisclosure()
+  const { isOpen: isOpenWalletConnectModal, onOpen: onOpenWalletConnectModal, onClose: onCloseWalletConnectModal } = useDisclosure();
+  const web_url = 'http://localhost:8000'; //'https://algorent-proj.herokuapp.com'
 
   const getCurrentUser = async () => {
-    const response = await axios.get('http://localhost:8000/getCurrentUser', {
+    const response = await axios.get(web_url + '/getCurrentUser', {
       withCredentials: true,
       credentials: 'include',
     });
@@ -74,13 +55,13 @@ const AccountSetting = () => {
     getCurrentUser();
   }, []);
 
-  const handleChangeName = async values => {
-    const response = await axios.post('http://localhost:8000/changeUsername', {
-      withCredentials: true,
-      credentials: 'include',
-      user: currentUser,
-      firstName: values.firstName,
-      lastName: values.lastName,
+  const handleChangeName = async(values) => {
+    const response = await axios.post(web_url + '/changeUsername', {
+        withCredentials: true,
+        credentials: 'include',
+        user: currentUser,
+        firstName: values.firstName,
+        lastName: values.lastName
     });
     if (response.data.success) {
       nameOnClose();
@@ -91,9 +72,7 @@ const AccountSetting = () => {
   };
 
   const handleSendVerification = async () => {
-    const response = await axios.post(
-      'http://localhost:8000/sendVerification',
-      {
+    const response = await axios.post(web_url + '/sendVerification', {
         withCredentials: true,
         credentials: 'include',
         user: currentUser,
@@ -107,13 +86,13 @@ const AccountSetting = () => {
     }
   };
 
-  const handleChangeEmail = async values => {
-    if (code === ref.current.values.verification) {
-      const response = await axios.post('http://localhost:8000/changeEmail', {
-        withCredentials: true,
-        credentials: 'include',
-        user: currentUser,
-        email: values.email,
+  const handleChangeEmail = async(values) => {
+    if (code === ref.current.values.verification){
+      const response = await axios.post(web_url + '/changeEmail', {
+          withCredentials: true,
+          credentials: 'include',
+          user: currentUser,
+          email: values.email,
       });
       if (response.data.success) {
         emailOnClose();
@@ -159,13 +138,13 @@ const AccountSetting = () => {
     return error;
   };
 
-  const handleChangePassword = async values => {
-    const response = await axios.post('http://localhost:8000/changePassword', {
-      withCredentials: true,
-      credentials: 'include',
-      user: currentUser,
-      oldPass: values.oldPass,
-      newPass: values.newPass,
+  const handleChangePassword = async(values) => {
+    const response = await axios.post(web_url + '/changePassword', {
+          withCredentials: true,
+          credentials: 'include',
+          user: currentUser,
+          oldPass: values.oldPass,
+          newPass: values.newPass
     });
     if (response.data.success) {
       passwordOnClose();
@@ -183,26 +162,22 @@ const AccountSetting = () => {
   const handleChangeAvatar = async e => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append('photo', avatar);
-    formData.append('user', currentUser._id);
-    const response = await axios.post(
-      'http://localhost:8000/uploadAvatar',
-      formData
-    );
-    if (response.data.success) {
-      photoOnClose();
-      getCurrentUser();
-      photo = null;
-    } else {
+    formData.append('photo', avatar)
+    formData.append('user', currentUser._id)
+    const response = await axios.post(web_url + '/uploadAvatar', formData);
+    if (response.data.success){
+      photoClose()
+      getCurrentUser()
+    }else{
       alert(response.data.message);
     }
   };
 
   const photoClose = () => {
-    setAvatar(null);
-    setImg(null);
-    photoOnClose();
-  };
+    setAvatar(null)
+    setImg(null)
+    photoOnClose()
+  }
 
   const handleGenerateWallet = async () => {
     await axios.get('http://localhost:8000/transactions/createAccount', {
@@ -654,7 +629,7 @@ const AccountSetting = () => {
               src={`data:image/png;base64,${
                 currentUser &&
                 currentUser.avatar &&
-                currentUser.avatar.toString()
+                currentUser.avatar[1].toString()
               }`}
             />
             <h style={{ fontSize: '10pt', margin: '3%' }}>

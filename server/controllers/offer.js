@@ -37,6 +37,22 @@ const removeOffer = async (req, res) => {
   return res.json({ message: 'Offer succcessfully deleted' });
 };
 
+const removeBid = async (req, res) => {
+  const { id } = req.body;
+  const offer = await Offer.findById(id);
+  const house = await House.findById(offer.house);
+  const user = await User.findById(house.owner);
+  user.receivedOffers = user.receivedOffers.filter(
+    (itemID) => !itemID.equals(id)
+  );
+  await user.save();
+  const sender = await User.findById(offer.senderID);
+  sender.sentOffers = sender.sentOffers.filter((itemID) => !itemID.equals(id));
+  await sender.save();
+  await Offer.findByIdAndDelete(offer);
+  return res.json({ message: 'Offer succcessfully deleted' });
+};
+
 const getReceivedOffers = async (req, res) => {
   try {
     const user = await User.findById(req.userId);
@@ -50,4 +66,13 @@ const getReceivedOffers = async (req, res) => {
   }
 };
 
-module.exports = { addOffer, removeOffer, getReceivedOffers };
+const getBidHouses = async (req, res) => {
+  const user = await User.findById(req.userId);
+  const bids = await Offer.find()
+    .where('_id')
+    .in(user.sentOffers)
+    .exec();
+  return res.status(200).json(bids.reverse());
+}
+
+module.exports = { addOffer, removeOffer, removeBid, getReceivedOffers, getBidHouses };

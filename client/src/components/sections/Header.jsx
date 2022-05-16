@@ -130,8 +130,8 @@ const Header = props => {
                       <Link href='/Offers' style={{ textDecoration: 'none' }}>
                         <MenuItem>Offers</MenuItem>
                       </Link>
-                      <Link href='/SentOffers' style={{ textDecoration: 'none' }}>
-                        <MenuItem>Sent Offers</MenuItem>
+                      <Link href='/Bids' style={{ textDecoration: 'none' }}>
+                        <MenuItem>Bids</MenuItem>
                       </Link>
                       <Link href='/AccountSetting' style={{ textDecoration: 'none' }}>
                         <MenuItem>Account Settings</MenuItem>
