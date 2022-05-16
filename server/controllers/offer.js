@@ -6,7 +6,8 @@ const addOffer = async (req, res) => {
   const { address, price } = req.body;
   const house = await House.find({ address });
   const user = await User.findById(req.userId);
-  const elonUser = await User.findById('628077c1411ce173370edae3');
+  const elonUserResponse = await User.find({ email: 'elonmusk@twitter.com' });
+  const elonUser = elonUserResponse[0];
   const newOffer = new Offer({
     name: user.firstName,
     price,

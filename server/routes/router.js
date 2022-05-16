@@ -28,7 +28,7 @@ router.post('/shortlist', auth, HouseController.shortlist);
 router.get('/getShortlist', auth, HouseController.getShortlist);
 router.post('/recentlyViewed', auth, HouseController.recentlyViewed);
 router.get('/getRecentlyViewed', auth, HouseController.getRecentlyViewed);
-router.post('/getHouseByID', HouseController.getHouseByID);
+router.post('/getHouseByID', auth, HouseController.getHouseByID);
 router.post('/createlisting', auth, ListingController.create);
 
 router.get(
@@ -50,6 +50,7 @@ router.post(
   auth,
   TransactionController.selectWallet
 );
+router.get('/transactions/getWallet', auth, TransactionController.getWallet);
 
 router.post('/offer/addOffer', auth, OfferController.addOffer);
 router.post('/offer/removeOffer', auth, OfferController.removeOffer);

@@ -63,7 +63,7 @@ const ReceivedOfferCard = props => {
       await axios.post(
         `${webUrl}/transactions/sendTransaction`,
         {
-          amount: house.price * 1000,
+          amount: props.data.price * 1000,
           offerId: props.data.id
         },
         { withCredentials: true, credentials: 'include' }

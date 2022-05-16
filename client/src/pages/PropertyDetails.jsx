@@ -70,7 +70,15 @@ const PropertyDetails = () => {
       offerModalPopup();
       return;
     }
-
+    const currentlySelectedWallet = await axios.get('http://localhost:8000/transactions/getWallet', { withCredentials: true, credentials: 'include' });
+    const currentBalance = await axios.post('http://localhost:8000/transactions/checkBalance', {
+      address: currentlySelectedWallet.data.id
+    }, { withCredentials: true, credentials: 'include' });
+    if (currentBalance.data < parseInt(offerField)) {
+      alert('Please add funds to your wallet');
+      offerModalPopup();
+      return;
+    }
     await axios.post(
       'http://localhost:8000/offer/addOffer',
       {

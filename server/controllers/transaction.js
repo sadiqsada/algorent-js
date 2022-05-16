@@ -53,6 +53,7 @@ const sendTransaction = async (req, res) => {
   const elonUser = await User.find({ email: 'elonmusk@twitter.com' });
   const elonWallet = await Wallet.findById(elonUser[0].selectedWallet);
   const receiver = elonWallet.id;
+  console.log('receiver');
   console.log(receiver);
   const params = await algodClient.getTransactionParams().do();
   params.fee = algosdk.ALGORAND_MIN_TX_FEE;
@@ -123,6 +124,12 @@ const selectWallet = async (req, res) => {
   return res.json({ message: `Selected Wallet with addr: ${address}` });
 };
 
+const getWallet = async (req, res) => {
+  const user = await User.findById(req.userId);
+  const wallet = await Wallet.findById(user.selectedWallet);
+  return res.json(wallet);
+}
+
 module.exports = {
   addWallet,
   createAccount,
@@ -130,4 +137,5 @@ module.exports = {
   sendTransaction,
   getWallets,
   selectWallet,
+  getWallet
 };
