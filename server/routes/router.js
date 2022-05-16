@@ -28,14 +28,26 @@ router.post('/shortlist', auth, HouseController.shortlist);
 router.get('/getShortlist', auth, HouseController.getShortlist);
 router.post('/recentlyViewed', auth, HouseController.recentlyViewed);
 router.get('/getRecentlyViewed', auth, HouseController.getRecentlyViewed);
-router.get('/getBidHouses', auth, HouseController.getBidHouses);
+router.post('/getHouseByID', HouseController.getHouseByID);
 
-router.get('/transactions/createAccount', TransactionController.createAccount);
-router.get('/transactions/createClient', TransactionController.createClient);
-router.get('/transactions/checkBalance', TransactionController.checkBalance);
 router.get(
+  '/transactions/createAccount',
+  auth,
+  TransactionController.createAccount
+);
+// router.get('/transactions/createClient', TransactionController.createClient);
+router.post('/transactions/checkBalance', TransactionController.checkBalance);
+router.post(
   '/transactions/sendTransaction',
+  auth,
   TransactionController.sendTransaction
+);
+router.post('/transactions/addWallet', auth, TransactionController.addWallet);
+router.get('/transactions/getWallets', auth, TransactionController.getWallets);
+router.post(
+  '/transactions/selectWallet',
+  auth,
+  TransactionController.selectWallet
 );
 
 router.post('/offer/addOffer', auth, OfferController.addOffer);

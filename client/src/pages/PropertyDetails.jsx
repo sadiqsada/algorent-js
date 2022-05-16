@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Icon } from '@chakra-ui/icons';
 import {
   Flex,
+  AspectRatio,
   Image,
   Text,
   Box,
@@ -52,6 +53,7 @@ const PropertyDetails = () => {
   const location = useLocation();
   const { props } = location.state;
   const { address } = props.data;
+  const iframe_style = useColorModeValue('invert(0%)', 'invert(90%)');
   const contactColor = useColorModeValue('#2eca6a', '#176534');
   const shortlistColor = useColorModeValue('red.500', 'red.200');
   const cartColor = useColorModeValue('purple.500', 'purple.200');
@@ -113,10 +115,7 @@ const PropertyDetails = () => {
     updateRecentlyViewed();
   }, [address]);
   const images = props.data.imgUrl;
-  const mapColor = useColorModeValue(
-    props.data.mapUrls[0],
-    props.data.mapUrls[1]
-  );
+  const mapColor = props.data.mapUrls[0]
 
   const popupModalImgContainer = useRef(null);
 
@@ -574,7 +573,18 @@ const PropertyDetails = () => {
         </Flex>
       </Flex>
 
-      <Image
+
+      <AspectRatio 
+        w={'100%'}
+        h={'100vh'}
+        objectFit={'cover'}
+        borderRadius={'md'}
+        zIndex={0}
+      >
+      <iframe style={{filter: iframe_style}} src={mapColor} allowFullScreen />
+      </AspectRatio>
+
+      {/* <Image
         w={'100%'}
         h={'100vh'}
         objectFit={'cover'}
@@ -582,7 +592,7 @@ const PropertyDetails = () => {
         alt={'GoogleMapsLocation'}
         borderRadius={'md'}
         zIndex={0}
-      />
+      /> */}
 
       <Box
         ref={popupModalImgContainer}

@@ -175,6 +175,16 @@ const getBidHouses = async (req, res) => {
     .in(user.sentOffers)
     .exec();
   return res.status(200).json(bids.reverse());
+}
+  
+const getHouseByID = async (req, res) => {
+  try {
+    const { houseID } = req.body;
+    const house = await House.findById(houseID);
+    return res.status(200).json(house);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 module.exports = {
@@ -183,5 +193,6 @@ module.exports = {
   getShortlist,
   recentlyViewed,
   getRecentlyViewed,
-  getBidHouses
-};
+  getBidHouses,
+  getHouseByID,
+}

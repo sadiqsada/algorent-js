@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-// Accessing the path module
 const path = require('path');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -17,10 +16,10 @@ const router = require('./routes/router');
 app.use('/', router);
 
 // ONLY HAVE THIS FOR HEROKU DEPLOYMENT!
-app.use(express.static('public'));
-app.get('*', function (request, response) {
-  response.sendFile(path.resolve(__dirname, 'public', 'index.html'));
-});
+// app.use(express.static('public'));
+// app.get('*', function (request, response) {
+//   response.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+// });
 
 mongoose
   .connect(process.env.MONGODB_URI, {
