@@ -61,7 +61,7 @@ const Explore = () => {
         withCredentials: true,
         credentials: 'include',
       });
-      const currentFirstname = capitalizeFirstLetter(response.data.name);
+      const currentFirstname = capitalizeFirstLetter(response.data.firstName);
       setDisplayName(currentFirstname);
     };
     getDisplayName();

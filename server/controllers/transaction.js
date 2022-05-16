@@ -1,6 +1,7 @@
 const algosdk = require('algosdk');
 const Wallet = require('../models/walletModel');
 const User = require('../models/userModel');
+const Offer = require('../models/offerModel');
 
 const createClient = () => {
   const algodToken = process.env.ALGOD_SERVER_TOKEN;
@@ -42,9 +43,10 @@ const checkBalance = async (req, res) => {
 };
 
 const sendTransaction = async (req, res) => {
-  const { amount } = req.body;
+  const { amount, offerId } = req.body;
   const algodClient = createClient();
-  const sender = await User.findById(req.userId);
+  const offer = await Offer.findById(offerId);
+  const sender = await User.findById(offer.senderID);
   const senderWallet = await Wallet.findById(sender.selectedWallet);
   const elonUser = await User.find({ email: 'elonmusk@twitter.com' });
   const receiver = elonUser.selectedWallet;

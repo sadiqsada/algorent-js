@@ -17,23 +17,25 @@ import axios from 'axios';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 
 const ReceivedOfferCard = props => {
-  const webUrl = 'http://localhost:8000' //'http://localhost:8000';
+  const webUrl = 'http://localhost:8000'; //'http://localhost:8000';
   const cardBackground = useColorModeValue('gray.100', 'gray.900');
 
   const [house, setHouse] = useState({
-    imgUrl: ["https://pixselo.com/wp-content/uploads/2018/03/dummy-placeholder-image-400x400.jpg"],
+    imgUrl: [
+      'https://pixselo.com/wp-content/uploads/2018/03/dummy-placeholder-image-400x400.jpg',
+    ],
     numBedrooms: 0,
     numBathrooms: 0,
-    address: "",
-    city: "",
-    state: "",
-    zipCode: "00000",
+    address: '',
+    city: '',
+    state: '',
+    zipCode: '00000',
     price: 0,
   });
   useEffect(() => {
     axios
       .post(webUrl + '/getHouseByID', {
-        houseID: props.data.house
+        houseID: props.data.house,
       })
       .then(response => {
         setHouse(response.data);
@@ -42,28 +44,41 @@ const ReceivedOfferCard = props => {
         console.error(error);
       });
   }, []);
-  const {isOpen: isOpenHouseDetails, onToggle: onToggleHouseDetails} = useDisclosure();
+  const { isOpen: isOpenHouseDetails, onToggle: onToggleHouseDetails } =
+    useDisclosure();
 
   // When accept button is clicked, this function is called with "true" boolean value, and "false" boolean value for decline button
-  const handleOfferAnswer = async (answer) => {
+  const handleOfferAnswer = async answer => {
     if (!answer) {
-      await axios.post(`${webUrl}/offer/removeOffer`, {
-        id: props.data.id,
-      }, { withCredentials: true, credentials: 'include' });
+      await axios.post(
+        `${webUrl}/offer/removeOffer`,
+        {
+          id: props.data.id,
+        },
+        { withCredentials: true, credentials: 'include' }
+      );
       alert('Offer Deleted');
       window.location.reload();
-    }
-    else {
-      await axios.post(`${webUrl}/transactions/sendTransaction`, {
-        amount: 1,
-      }, { withCredentials: true, credentials: 'include' });
-      await axios.post(`${webUrl}/offer/removeOffer`, {
-        id: props.data.id,
-      }, { withCredentials: true, credentials: 'include' });
+    } else {
+      await axios.post(
+        `${webUrl}/transactions/sendTransaction`,
+        {
+          amount: 1,
+          offerId: props.data.id
+        },
+        { withCredentials: true, credentials: 'include' }
+      );
+      await axios.post(
+        `${webUrl}/offer/removeOffer`,
+        {
+          id: props.data.id,
+        },
+        { withCredentials: true, credentials: 'include' }
+      );
       alert('Transaction Processed Successfully');
       window.location.reload();
     }
-  }
+  };
 
   return (
     <Flex
@@ -121,14 +136,18 @@ const ReceivedOfferCard = props => {
         </Flex>
         <Divider />
         <Button size={'sm'} onClick={onToggleHouseDetails}>
-          {isOpenHouseDetails ? "Close House Details" : "Show House Details"}
+          {isOpenHouseDetails ? 'Close House Details' : 'Show House Details'}
         </Button>
         <Collapse mt={4} in={isOpenHouseDetails}>
           <Flex direction={{ base: 'column', lg: 'row' }} flexGrow={1}>
             <Image
               w={{ base: 'auto', lg: 140 }}
               h={{ base: 200, lg: 140 }}
-              src={house.imgUrl[0].toString().slice(1,-1).split(',')[0].slice(1,-1)}
+              src={house.imgUrl[0]
+                .toString()
+                .slice(1, -1)
+                .split(',')[0]
+                .slice(1, -1)}
               objectFit={'cover'}
               alt={'imgURL'}
               borderRadius={'md'}
@@ -148,7 +167,7 @@ const ReceivedOfferCard = props => {
                 </Flex>
               </Flex>
               <Text fontSize={'md'} fontWeight={'bold'}>
-                  Original Price: {house.price}K Algo
+                Original Price: {house.price}K Algo
               </Text>
             </Flex>
           </Flex>
