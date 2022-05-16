@@ -28,7 +28,9 @@ router.post('/shortlist', auth, HouseController.shortlist);
 router.get('/getShortlist', auth, HouseController.getShortlist);
 router.post('/recentlyViewed', auth, HouseController.recentlyViewed);
 router.get('/getRecentlyViewed', auth, HouseController.getRecentlyViewed);
+router.get('/getCurrentUser', auth, UserController.getCurrentUser);
 router.post('/getHouseByID', HouseController.getHouseByID);
+router.post('/createlisting', ListingController.create);
 
 router.get(
   '/transactions/createAccount',
@@ -51,6 +53,9 @@ router.post(
 );
 
 router.post('/offer/addOffer', auth, OfferController.addOffer);
-router.post('/createlisting', ListingController.create);
+router.post('/offer/removeOffer', auth, OfferController.removeOffer);
+router.post('/offer/removeBid', auth, OfferController.removeBid);
+router.get('/getReceivedOffers', auth, OfferController.getReceivedOffers);
+router.get('/getBidHouses', auth, OfferController.getBidHouses);
 
 module.exports = router;
