@@ -220,23 +220,12 @@ const AccountSetting = () => {
   const handleWalletMnemonicField = event =>
     setWalletMnemonicField(event.target.value);
   const handleWalletConnection = async () => {
-    const amount = 1;
-    const sender = '3H234AKB3JMGCACL3HR7KVG3ZNXUEMQQWOH3QFL7FPK4E767UXSXA3I5TA';
-    const receiver =
-      'MJ5RORBIVT3RZE7K6247X2PUGLV6VT22EBAVRPYHC54CD6OCABBXXTXS4Y';
-    const walletID = '6280927a906a2e5622968023';
-    await axios.post('http://localhost:8000/transactions/sendTransaction', {
-      amount,
-      sender,
-      receiver,
-      walletID,
-    });
-    // await axios.post('http://localhost:8000/transactions/addWallet', {
-    //   id: walletIDField,
-    //   mnemonic: walletMnemonicField,
-    // }, { withCredentials: true, credentials: 'include' });
-    // alert('Wallet Successfully Added!');
-    // onCloseWalletConnectModal();
+    await axios.post('http://localhost:8000/transactions/addWallet', {
+      id: walletIDField,
+      mnemonic: walletMnemonicField,
+    }, { withCredentials: true, credentials: 'include' });
+    alert('Wallet Successfully Added!');
+    onCloseWalletConnectModal();
   };
 
   const nameModal = (

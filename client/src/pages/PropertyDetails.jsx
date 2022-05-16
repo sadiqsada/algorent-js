@@ -58,13 +58,18 @@ const PropertyDetails = () => {
   const shortlistColor = useColorModeValue('red.500', 'red.200');
   const cartColor = useColorModeValue('purple.500', 'purple.200');
   const popupModalColor = useColorModeValue('gray.900', 'gray.400');
+  const modalColor = useColorModeValue('white', 'gray.800');
   const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
 
   const [offerField, setOfferField] = useState(props.data.price * 1000);
   const handleOfferField = event => setOfferField(event.target.value);
   const handleOffer = async () => {
-    console.log(parseInt(offerField) / 1000);
-    console.log(props.data.address);
+    const currentUser = await axios.get('http://localhost:8000/getUser', { withCredentials: true, credentials: 'include' });
+    if (!currentUser.selectedWallet) {
+      alert('Please add a wallet');
+      offerModalPopup();
+      return;
+    }
     await axios.post(
       'http://localhost:8000/offer/addOffer',
       {
@@ -135,7 +140,8 @@ const PropertyDetails = () => {
   const popupModalOffer = useRef(null);
   const offerModalPopup = () => {
     if (popupModalOffer.current) {
-      if (popupModalOffer.current.style.display == 'none') {
+      console.log(popupModalOffer.current.style.display);
+      if (!popupModalOffer.current.style.display || popupModalOffer.current.style.display === 'none') {
         popupModalOffer.current.style.display = 'block';
       } else {
         popupModalOffer.current.style.display = 'none';
@@ -650,7 +656,7 @@ const PropertyDetails = () => {
             direction={'column'}
             minW={500}
             minH={600}
-            backgroundColor={useColorModeValue('white', 'gray.800')}
+            backgroundColor={modalColor}
             p={5}
             pointerEvents={'all'}
           >
