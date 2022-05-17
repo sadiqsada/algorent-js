@@ -129,7 +129,7 @@ const getWallet = async (req, res) => {
   const user = await User.findById(req.userId);
   const wallet = await Wallet.findById(user.selectedWallet);
   return res.json(wallet);
-}
+};
 
 module.exports = {
   addWallet,
@@ -138,5 +138,5 @@ module.exports = {
   sendTransaction,
   getWallets,
   selectWallet,
-  getWallet
+  getWallet,
 };

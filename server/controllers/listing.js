@@ -41,11 +41,11 @@ const create = async (req, res) => {
           imgUrl.push(info.url);
         });
 
-        var stringUrl = "["
-        imgUrl.forEach((url) =>{
-          stringUrl += "'" + url + "', "
-        })
-        stringUrl += "]"
+        let stringUrl = '[';
+        imgUrl.forEach((url) => {
+          stringUrl += "'" + url + "', ";
+        });
+        stringUrl += ']';
 
         const newHouse = new House({
           address,
@@ -53,7 +53,7 @@ const create = async (req, res) => {
           city,
           zipCode,
           price: price / 1000,
-          imgUrl:stringUrl,
+          imgUrl: stringUrl,
           mapUrls,
           numBedrooms: numBed,
           numBathrooms: numBath,
@@ -64,8 +64,11 @@ const create = async (req, res) => {
         });
         newHouse.save();
         return res
-        .status(200)
-        .json({ success: true, message: 'House listing created successfully' });
+          .status(200)
+          .json({
+            success: true,
+            message: 'House listing created successfully',
+          });
       })
       .catch((err) => console.log(err));
   } catch (err) {

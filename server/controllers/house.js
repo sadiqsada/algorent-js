@@ -171,13 +171,10 @@ const getRecentlyViewed = async (req, res) => {
 
 const getBidHouses = async (req, res) => {
   const user = await User.findById(req.userId);
-  const bids = await Offer.find()
-    .where('_id')
-    .in(user.sentOffers)
-    .exec();
+  const bids = await Offer.find().where('_id').in(user.sentOffers).exec();
   return res.status(200).json(bids.reverse());
-}
-  
+};
+
 const getHouseByID = async (req, res) => {
   try {
     const { houseID } = req.body;
@@ -196,4 +193,4 @@ module.exports = {
   getRecentlyViewed,
   getBidHouses,
   getHouseByID,
-}
+};

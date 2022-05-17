@@ -301,7 +301,7 @@ const sendVerification = async (req, res) => {
     });
   }
 
-  const existingUser = User.findOne({ email:email })
+  const existingUser = User.findOne({ email: email });
   if (existingUser) {
     return res.json({
       success: false,
@@ -396,5 +396,5 @@ module.exports = {
   sendVerification,
   changeEmail,
   changePassword,
-  uploadAvatar
+  uploadAvatar,
 };
