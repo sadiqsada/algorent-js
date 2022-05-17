@@ -54,7 +54,7 @@ const Header = props => {
   const { isLoggedIn, setIsLoggedIn, currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   // bg=useColorModeValue('gray.100', 'gray.900')}
-  const webUrl = 'http://localhost:8000'; // 'https://algorent-proj.herokuapp.com'
+  const webUrl = 'https://algorent-proj.herokuapp.com'; // 'https://algorent-proj.herokuapp.com'
   const handleLogout = async () => {
     try {
       await Axios.get(webUrl + '/logout', {
@@ -99,9 +99,9 @@ const Header = props => {
                     <NavLink>Explore</NavLink>
                     {!isLoggedIn ? <NavLink>Login</NavLink> : null}
                     {!isLoggedIn ? <NavLink>Register</NavLink> : null}
-                    {isLoggedIn ? <NavLink>CreateListing</NavLink> : null}
-                    {isLoggedIn ? <NavLink>Shortlist</NavLink> : null}
-                    {isLoggedIn ? <NavLink>RecentlyViewed</NavLink> : null}
+                    {isLoggedIn ? <NavLink>Auction</NavLink> : null}
+                    {isLoggedIn ? <NavLink>Saved</NavLink> : null}
+                    {isLoggedIn ? <NavLink>Viewed</NavLink> : null}
                   </HStack>
                 ) : null}
                 {isLoggedIn ? (
@@ -158,9 +158,9 @@ const Header = props => {
               <NavLink>Explore</NavLink>
               {!isLoggedIn ? <NavLink>Login</NavLink> : null}
               {!isLoggedIn ? <NavLink>Register</NavLink> : null}
-              {isLoggedIn ? <NavLink>CreateListing</NavLink> : null}
-              {isLoggedIn ? <NavLink>Shortlist</NavLink> : null}
-              {isLoggedIn ? <NavLink>RecentlyViewed</NavLink> : null}
+              {isLoggedIn ? <NavLink>Auction</NavLink> : null}
+              {isLoggedIn ? <NavLink>Saved</NavLink> : null}
+              {isLoggedIn ? <NavLink>Viewed</NavLink> : null}
               {isLoggedIn ? <NavLink>Wallet</NavLink> : null}
             </Stack>
           </Box>

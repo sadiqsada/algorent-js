@@ -23,7 +23,7 @@ const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [ currentUser, setCurrentUser ] = useState()
   const [isLoading, setIsLoading] = useState(true);
-  const web_url = 'http://localhost:8000'
+  const web_url = 'https://algorent-proj.herokuapp.com'
   useEffect(() => {
     const checkLoggedIn = async () => {
       const token = Cookies.get('token');
@@ -65,7 +65,7 @@ const App = () => {
           <Route path="/Explore" element={<Explore />} />
           <Route path="/PropertyDetails" element={<PropertyDetails />} />
           <Route
-            path="/CreateListing"
+            path="/Auction"
             element={
               <ProtectedRoute>
                 <CreateListing />
@@ -73,7 +73,7 @@ const App = () => {
             }
           />
           <Route
-            path="/Shortlist"
+            path="/Saved"
             element={
               <ProtectedRoute>
                 <Shortlist />
@@ -81,7 +81,7 @@ const App = () => {
             }
           />
           <Route
-            path="/RecentlyViewed"
+            path="/Viewed"
             element={
               <ProtectedRoute>
                 <RecentlyViewed />
@@ -89,7 +89,7 @@ const App = () => {
             }
           />
           <Route
-            path="Offers"
+            path="/Offers"
             element={
               <ProtectedRoute>
                 <Offers />
@@ -97,7 +97,7 @@ const App = () => {
             }
           />
           <Route
-            path="Bids"
+            path="/Bids"
             element={
               <ProtectedRoute>
                 <Bids />

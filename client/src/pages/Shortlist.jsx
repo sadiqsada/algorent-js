@@ -5,7 +5,7 @@ import axios from 'axios';
 import handleImages from '../utils/handleImages';
 const Shortlist = () => {
   const [houses, setHouses] = useState([]);
-  const web_url = 'http://localhost:8000' //'http://localhost:8000'; //
+  const web_url = 'https://algorent-proj.herokuapp.com' //'https://algorent-proj.herokuapp.com'; //
   useEffect(() => {
     axios
       .get(web_url + '/getShortlist', {
