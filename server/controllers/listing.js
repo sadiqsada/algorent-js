@@ -52,7 +52,7 @@ const create = async (req, res) => {
           state,
           city,
           zipCode,
-          price,
+          price: price / 1000,
           imgUrl:stringUrl,
           mapUrls,
           numBedrooms: numBed,

@@ -56,7 +56,8 @@ const explore = async (req, res) => {
         scraperFilter = '';
       }
       const houses = [];
-      const elonUser = await User.findById('628077c1411ce173370edae3');
+      const findElonUser = await User.find({ email: 'elonmusk@twitter.com' });
+      const elonUser = findElonUser[0];
       console.log(
         'Using Scraper! Address: ' +
           scraperAddress +

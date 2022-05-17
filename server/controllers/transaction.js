@@ -107,12 +107,13 @@ const addWallet = async (req, res) => {
 
 const getWallets = async (req, res) => {
   const user = await User.findById(req.userId);
+  const selectedWallet = await Wallet.findById(user.selectedWallet);
   const wallets = [];
   for (let i = 0; i < user.wallets.length; i++) {
     const wallet = await Wallet.findById(user.wallets[i]);
     wallets.push(wallet);
   }
-  return res.json(wallets);
+  return res.json({ wallets, selectedWallet });
 };
 
 const selectWallet = async (req, res) => {

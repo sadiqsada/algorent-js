@@ -5,13 +5,15 @@ import axios from 'axios';
 const WalletList = () => {
   const [wallets, setWallets] = useState([]);
   const [walletBalance, setWalletBalance] = useState([]);
+  const [selectedWallet, setSelectedWallet] = useState('');
   useEffect(() => {
     const getAllWallets = async () => {
       const walletResponse = await axios.get(
         'http://localhost:8000/transactions/getWallets',
         { withCredentials: true, credentials: 'include' }
       );
-      setWallets(walletResponse.data);
+      setWallets(walletResponse.data.wallets);
+      setSelectedWallet(walletResponse.data.selectedWallet);
     };
     getAllWallets();
 
@@ -19,7 +21,7 @@ const WalletList = () => {
   return (
     <Flex flexDirection="column" justifyContent="center" maxW="100%">
       {wallets.map((wallet, i) => 
-        <Wallet key={i} wallet={wallet} />
+        <Wallet key={i} wallet={wallet} selectedWallet={selectedWallet} />
       )}
     </Flex>
   );
