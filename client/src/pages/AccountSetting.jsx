@@ -40,7 +40,7 @@ const AccountSetting = () => {
   const { isOpen:emailIsOpen, onOpen:emailOnOpen, onClose:emailOnClose } = useDisclosure()
   const { isOpen:passwordIsOpen, onOpen:passwordOnOpen, onClose:passwordOnClose } = useDisclosure()
   const { isOpen: isOpenWalletConnectModal, onOpen: onOpenWalletConnectModal, onClose: onCloseWalletConnectModal } = useDisclosure();
-  const web_url = 'https://algorent-proj.herokuapp.com'; //'https://algorent-proj.herokuapp.com'
+  const web_url = 'http://localhost:8000'; //'http://localhost:8000'
 
   const getCurrentUser = async () => {
     const response = await axios.get(web_url + '/getCurrentUser', {
@@ -180,7 +180,7 @@ const AccountSetting = () => {
   }
 
   const handleGenerateWallet = async () => {
-    await axios.get('https://algorent-proj.herokuapp.com/transactions/createAccount', {
+    await axios.get('http://localhost:8000/transactions/createAccount', {
       withCredentials: true,
       credentials: 'include',
     });
@@ -195,7 +195,7 @@ const AccountSetting = () => {
   const handleWalletMnemonicField = event =>
     setWalletMnemonicField(event.target.value);
   const handleWalletConnection = async () => {
-    await axios.post('https://algorent-proj.herokuapp.com/transactions/addWallet', {
+    await axios.post('http://localhost:8000/transactions/addWallet', {
       id: walletIDField,
       mnemonic: walletMnemonicField,
     }, { withCredentials: true, credentials: 'include' });

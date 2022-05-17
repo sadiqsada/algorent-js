@@ -28,11 +28,7 @@ router.post('/shortlist', auth, HouseController.shortlist);
 router.get('/getShortlist', auth, HouseController.getShortlist);
 router.post('/recentlyViewed', auth, HouseController.recentlyViewed);
 router.get('/getRecentlyViewed', auth, HouseController.getRecentlyViewed);
-<<<<<<< HEAD
-router.post('/getHouseByID', auth, HouseController.getHouseByID);
-=======
 router.post('/getHouseByID', HouseController.getHouseByID);
->>>>>>> deploy
 router.post('/createlisting', auth, ListingController.create);
 
 router.get(

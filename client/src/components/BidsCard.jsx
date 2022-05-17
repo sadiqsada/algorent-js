@@ -10,7 +10,7 @@ import axios from 'axios';
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai';
 
 const BidsCard = props => {
-    const web_url = 'https://algorent-proj.herokuapp.com'
+    const web_url = 'http://localhost:8000'
     const cardBackground = useColorModeValue('gray.100', 'gray.900');
 
     const [house, setHouse] = useState({

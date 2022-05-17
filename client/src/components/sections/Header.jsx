@@ -54,7 +54,7 @@ const Header = props => {
   const { isLoggedIn, setIsLoggedIn, currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   // bg=useColorModeValue('gray.100', 'gray.900')}
-  const webUrl = 'https://algorent-proj.herokuapp.com'; // 'https://algorent-proj.herokuapp.com'
+  const webUrl = 'http://localhost:8000'; // 'http://localhost:8000'
   const handleLogout = async () => {
     try {
       await Axios.get(webUrl + '/logout', {

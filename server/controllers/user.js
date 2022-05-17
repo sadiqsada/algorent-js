@@ -51,7 +51,7 @@ const register = async (req, res) => {
       success: true,
       message: 'User was registered successfully! Please check your email',
     });
-    const webUrl = 'https://algorent-proj.herokuapp.com';
+    const webUrl = 'http://localhost:8000';
     mail(
       email,
       'Email Confirmation',
@@ -169,7 +169,7 @@ const verify = async (req, res) => {
 
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
-  const webUrl = 'https://algorent-proj.herokuapp.com';
+  const webUrl = 'http://localhost:8000';
 
   const existingUser = await User.findOne({ email: email });
   if (!existingUser) {

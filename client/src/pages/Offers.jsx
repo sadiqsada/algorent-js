@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const Offers = () => {
 	const [offers, setOffers] = useState([]);
-	const webUrl = 'https://algorent-proj.herokuapp.com' //'https://algorent-proj.herokuapp.com'; //
+	const webUrl = 'http://localhost:8000' //'http://localhost:8000'; //
 	useEffect(() => {
 		axios
 			.get(webUrl + '/getReceivedOffers', {

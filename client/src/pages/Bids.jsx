@@ -11,7 +11,7 @@ import BidsCard from '../components/BidsCard';
 
 const Bids = () => {
     const [houses, setHouses] = useState([]);
-    const web_url = 'https://algorent-proj.herokuapp.com'; //https://algorent-proj.herokuapp.com
+    const web_url = 'http://localhost:8000'; //http://localhost:8000
     
     useEffect(() => {
         const getBidHouses = async () => {

@@ -276,64 +276,7 @@ const CreateListing =  () =>{
                 </Flex>
               </Box>
 
-<<<<<<< HEAD
-                <Box 
-                  bg={useColorModeValue('white', 'gray.700')}
-                  boxShadow={'lg'}
-                  width='98%'
-                  p={5}
-                  marginLeft={'1%'}
-                  display='inline-flex'
-                >
-                  <Flex margin='2%' width='50%' display='block'>
-                  <FormLabel htmlFor="amenities">Amenities</FormLabel>
-                  <Field name="amenities" 
-                    isMulti={true}
-                    options={amenitiesOptions} 
-                    component={CustomSelect}
-                  />
-                  </Flex>
-                  <Flex width='50%' margin='2%'>
-                  <Field name="price">
-                    {({ field, form }) => (
-                      <FormControl
-                        isInvalid={form.errors.price && form.touched.price}
-                        isRequired
-                      >
-                        <FormLabel htmlFor="price">Price (in Algo)</FormLabel>
-                        <Input
-                          {...field}
-                          id="price"
-                          placeholder="$"
-                          type={'text'}
-                        />
-                        <FormErrorMessage>{form.errors.numBed}</FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                  <Field name="contact">
-                    {({ field, form }) => (
-                      <FormControl
-                        isInvalid={form.errors.contact && form.touched.contact}
-                        isRequired
-                      >
-                        <FormLabel htmlFor="contact">Contact Information</FormLabel>
-                        <Input
-                          {...field}
-                          id="contact"
-                          placeholder=""
-                          type={'text'}
-                        />
-                        <FormErrorMessage>{form.errors.cont}</FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                  </Flex>
-                </Box>
-                <Box
-=======
               <Box 
->>>>>>> deploy
                 bg={useColorModeValue('white', 'gray.700')}
                 boxShadow={'lg'}
                 width='98%'
